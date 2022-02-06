@@ -34,4 +34,32 @@ for (let i = 0; i < projectTitles.length; i++) {
   });
 }
 
+// const genreCounts = { rock: 0, hipHop: 0, pop: 0, electronic: 0, other: 0 };
+// for (const project of project)
+//   genreCounts[project.genre]++;
+// console.log(genreCounts);
+
+// // to find artists w/ most projects
+// const seen = {};
+// for (let i = 0; i < 15; i++) {
+//   let curArtist, maxArtist;
+//   let curCt = 0, maxCt = 0;
+//   for (const project of projects) {
+//     const { artist } = project;
+//     if (seen[artist]) continue;
+//     if (artist !== curArtist) {
+//       curArtist = artist;
+//       curCt = 0;
+//     } else
+//       curCt++;
+
+//     if (curCt > maxCt) {
+//       maxCt = curCt;
+//       maxArtist = curArtist;
+//     }
+//   }
+//   seen[maxArtist] = maxCt;
+// }
+// console.log(seen);
+
 export default projects;

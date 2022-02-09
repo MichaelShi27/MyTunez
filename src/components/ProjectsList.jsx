@@ -6,19 +6,20 @@ const ProjectsList = ({ projects }) => {
     let curArtist;
 
     for (const project of projects) {
-      const { artist } = project;
+      const { artist, title } = project;
+      let newTitle = title;
       if (artist !== curArtist) {
-        project.title += ` - ${artist}`;
+        newTitle += ` - ${artist}`;
         curArtist = artist;
       }
-      list.push(project);
+      list.push({ ...project, title: newTitle });
     }
     return list;
   };
   const list = convertToList(projects);
 
   return list.map(({ title, genre }, idx) => (
-    <div key={idx} >
+    <div key={idx}>
       <span className={genre}>{title}</span>
     </div>
   ));

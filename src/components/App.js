@@ -5,25 +5,43 @@ import React, { useState, useEffect } from 'react';
 import ListButton from './ListButton';
 import AddProjectForm from './AddProjectForm';
 import ProjectsList from './ProjectsList';
-import { projectsData } from '../projects.js';
 import axios from 'axios';
 
 const App = () => {
-  const [ projects, setProjects ] = useState(projectsData);
+  const [ startingUp, setStartingUp ] = useState(true);
+  const [ projects, setProjects ] = useState([]);
+  const [ addingNewProject, setAddingNewProject ] = useState(false);
   const [ displayList, setDisplayList ] = useState(false);
 
   const addProject = e => {
     e.preventDefault();
-    const { title, artist, genre, year } = e.target;
-    const newProject = { title, artist, genre, year };
+    const { title, artist, genre, releaseYear } = e.target;
+    const dateAdded = new Date();
+    const newProject = { title, artist, genre, releaseYear, dateAdded };
+
     for (const key in newProject)
-      newProject[key] = newProject[key].value;
-    // setProjects([ ...projects, newProject ]);
-    axios.post('/addProject', newProject)
-      .then(res => console.log(res));
+      if (key !== 'dateAdded')
+        newProject[key] = newProject[key].value;
+
+    let artistForSorting = newProject.artist.toLowerCase(); // MongoDB doesn't allow case-insensitive sorting
+    if (artistForSorting.indexOf('the ') === 0)
+      artistForSorting = artistForSorting.slice(4);
+    newProject.artistForSorting = artistForSorting;
+
+    axios.post('/addProject', newProject);
+    setAddingNewProject(true);
   };
 
-  // const getProjects = useEffect();
+  const getProjects = () => {
+    if (addingNewProject || startingUp) {
+      axios('projects')
+        .then(({ data }) => setProjects(data));
+      addingNewProject && setAddingNewProject(false);
+    }
+  };
+  useEffect(getProjects, [ addingNewProject, startingUp ]);
+
+  useEffect(() => setStartingUp(false), []);
 
   return (<>
     <AddProjectForm handleSubmit={addProject} />

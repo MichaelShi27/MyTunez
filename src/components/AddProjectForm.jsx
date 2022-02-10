@@ -4,7 +4,7 @@ const AddProjectForm = ({ handleSubmit }) => {
   const [ title, setTitle ] = useState('');
   const [ artist, setArtist ] = useState('');
   const [ genre, setGenre ] = useState('');
-  const [ year, setYear ] = useState('');
+  const [ releaseYear, setReleaseYear] = useState('');
 
   return (
     <form className="form" onSubmit={handleSubmit}>
@@ -32,13 +32,13 @@ const AddProjectForm = ({ handleSubmit }) => {
         value={genre}
         onChange={e => setGenre(e.target.value)}
       />
-      <label htmlFor="year">Release Year: </label>
+      <label htmlFor="releaseYear">Release Year: </label>
       <input
         type="text"
-        id="year"
-        name="year"
-        value={year}
-        onChange={e => setYear(e.target.value)}
+        id="releaseYear"
+        name="releaseYear"
+        value={releaseYear}
+        onChange={e => setReleaseYear(e.target.value)}
       />
       <button type="submit">Submit</button>
     </form>

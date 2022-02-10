@@ -5,7 +5,9 @@ const projectSchema = new mongoose.Schema({
   title: { type: String, required: true },
   genre: { type: String, required: true },
   subgenre: String,
-  year: { type: Number, required: true }
+  dateAdded: { type: Date, required: true },
+  artistForSorting: { type: String, required: true },
+  releaseYear: { type: Number }
 });
 
 module.exports = mongoose.model('Project', projectSchema);

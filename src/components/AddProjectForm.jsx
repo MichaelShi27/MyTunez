@@ -25,13 +25,17 @@ const AddProjectForm = ({ handleSubmit }) => {
         onChange={e => setArtist(e.target.value)}
       />
       <label htmlFor="genre">Genre: </label>
-      <input
-        type="text"
+      <select
         id="genre"
-        name="genre"
         value={genre}
         onChange={e => setGenre(e.target.value)}
-      />
+      >
+        <option value="rock">Rock</option>
+        <option value="pop">Pop</option>
+        <option value="hip-hop">Hip-hop</option>
+        <option value="electronic">Electronic</option>
+        <option value="other">Other</option>
+      </select>
       <label htmlFor="releaseYear">Release Year: </label>
       <input
         type="text"

@@ -12,7 +12,18 @@ const App = () => {
   const [ projects, setProjects ] = useState([]);
   const [ addingNewProject, setAddingNewProject ] = useState(false);
   const [ displayList, setDisplayList ] = useState(false);
-  const [ invalidInput, setInvalidInput ] = useState('');
+  const [ errorMessage, setErrorMessage ] = useState('');
+
+  const validateInput = ({ title, artist, releaseYear }) => {
+    console.log(new Date().getYear())
+    if (!title || !artist)
+      return 'Please fill in both the title and artist fields!';
+    if (isNaN(releaseYear))
+      return 'Please enter a number in the year field!';
+    if (releaseYear > new Date().getYear() + 1900)
+      return 'Please enter a valid year!';
+    return '';
+  };
 
   const addProject = e => {
     e.preventDefault();
@@ -29,11 +40,15 @@ const App = () => {
       artistForSorting = artistForSorting.slice(4);
     newProject.artistForSorting = artistForSorting;
 
-    setInvalidInput('');
-    axios.post('/addProject', newProject)
-      .then(({ data }) => data === 'duplicate input' && setInvalidInput(data))
-      .catch(console.log);
-    setAddingNewProject(true);
+    const errMsg = validateInput(newProject);
+    setErrorMessage(errMsg);
+
+    if (!errMsg) {
+      axios.post('/addProject', newProject)
+        .then(({ data }) => data === 'duplicate input' && setErrorMessage('This project has already been entered!'))
+        .catch(console.log);
+      setAddingNewProject(true);
+    }
   };
 
   const getProjects = () => {
@@ -48,7 +63,7 @@ const App = () => {
   useEffect(() => setStartingUp(false), []);
 
   return (<>
-    {invalidInput && <div>Error!</div>}
+    {errorMessage && <div>Error: {errorMessage}</div>}
     <AddProjectForm handleSubmit={addProject} />
     <ListButton projects={projects} handleClick={() => setDisplayList(!displayList)} />
     {displayList && <ProjectsList projects={projects} />}

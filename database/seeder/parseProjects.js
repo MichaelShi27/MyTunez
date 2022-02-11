@@ -10,7 +10,8 @@ const { projectTitles } = require('./projectTitles');
 
 const projects = [];
 
-let title, artist, artistForSorting, fakeDate = 0;
+let title, artist, artistForSorting;
+let fakeDate = 0;
 for (const projectTitle of projectTitles) {
   const [ text, genreChar ] = projectTitle.split('***');
 

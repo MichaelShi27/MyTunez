@@ -12,6 +12,7 @@ const App = () => {
   const [ projects, setProjects ] = useState([]);
   const [ addingNewProject, setAddingNewProject ] = useState(false);
   const [ displayList, setDisplayList ] = useState(false);
+  const [ invalidInput, setInvalidInput ] = useState('');
 
   const addProject = e => {
     e.preventDefault();
@@ -28,7 +29,10 @@ const App = () => {
       artistForSorting = artistForSorting.slice(4);
     newProject.artistForSorting = artistForSorting;
 
-    axios.post('/addProject', newProject);
+    setInvalidInput('');
+    axios.post('/addProject', newProject)
+      .then(({ data }) => data === 'duplicate input' && setInvalidInput(data))
+      .catch(console.log);
     setAddingNewProject(true);
   };
 
@@ -44,6 +48,7 @@ const App = () => {
   useEffect(() => setStartingUp(false), []);
 
   return (<>
+    {invalidInput && <div>Error!</div>}
     <AddProjectForm handleSubmit={addProject} />
     <ListButton projects={projects} handleClick={() => setDisplayList(!displayList)} />
     {displayList && <ProjectsList projects={projects} />}

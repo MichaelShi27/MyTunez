@@ -7,7 +7,16 @@ exports.getProjects = (req, res) => {
     .then(projects => res.send(projects));
 };
 
-exports.addProject = (req, res) => new Project(req.body).save();
+exports.addProject = (req, res) => {
+  new Project(req.body)
+    .save()
+    .catch(err => {
+      if (err.code === 11000)
+        res.send('duplicate input');
+      else
+        res.status(400).send(err);
+    });
+};
 
 // exports.addProject = (req, res) => Project.create(
 //   req.body,

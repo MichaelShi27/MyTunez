@@ -10,4 +10,6 @@ const projectSchema = new mongoose.Schema({
   releaseYear: { type: Number }
 });
 
+projectSchema.index({ artist: 1, title: 1 }, { unique: true });
+
 module.exports = mongoose.model('Project', projectSchema);

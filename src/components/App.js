@@ -2,9 +2,11 @@
 import './App.css';
 import React, { useState, useEffect } from 'react';
 
-import ListButton from './ListButton';
 import AddProjectForm from './AddProjectForm';
+import ListButton from './ListButton';
 import ProjectsList from './ProjectsList';
+import RawListButton from './RawListButton';
+import RawList from './RawList';
 import axios from 'axios';
 
 const App = () => {
@@ -12,10 +14,10 @@ const App = () => {
   const [ projects, setProjects ] = useState([]);
   const [ addingNewProject, setAddingNewProject ] = useState(false);
   const [ displayList, setDisplayList ] = useState(false);
+  const [ displayRawList, setDisplayRawList ] = useState(false);
   const [ errorMessage, setErrorMessage ] = useState('');
 
   const validateInput = ({ title, artist, releaseYear }) => {
-    console.log(new Date().getYear())
     if (!title || !artist)
       return 'Please fill in both the title and artist fields!';
     if (isNaN(releaseYear))
@@ -66,7 +68,9 @@ const App = () => {
     {errorMessage && <div>Error: {errorMessage}</div>}
     <AddProjectForm handleSubmit={addProject} />
     <ListButton projects={projects} handleClick={() => setDisplayList(!displayList)} />
-    {displayList && <ProjectsList projects={projects} />}
+    <RawListButton projects={projects} handleClick={() => setDisplayRawList(!displayRawList)} />
+    {displayList && !displayRawList && <ProjectsList projects={projects} />}
+    {displayRawList && !displayList && <RawList projects={projects} />}
   </>);
 };
 

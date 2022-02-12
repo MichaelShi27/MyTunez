@@ -8,7 +8,7 @@ import ListButton from './ListButton';
 import ProjectsList from './ProjectsList';
 import RawListButton from './RawListButton';
 import RawList from './RawList';
-import ErrorMessage from './ErrorMessage';
+import Message from './Message';
 
 const App = () => {
   const [ startingUp, setStartingUp ] = useState(true);
@@ -88,7 +88,7 @@ const App = () => {
   };
 
   return (<>
-    {errorMessage && <ErrorMessage message={errorMessage} />}
+    <Message message={errorMessage} />
     <AddProjectForm handleSubmit={addProject} />
     <ListButton projects={projects} handleClick={toggleListDisplays} />
     <RawListButton projects={projects} handleClick={toggleListDisplays} />

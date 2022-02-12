@@ -1,13 +1,14 @@
 // import logo from './logo.svg';
-import './App.css';
+// import './App.css';
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 
 import AddProjectForm from './AddProjectForm';
 import ListButton from './ListButton';
 import ProjectsList from './ProjectsList';
 import RawListButton from './RawListButton';
 import RawList from './RawList';
-import axios from 'axios';
+import ErrorMessage from './ErrorMessage';
 
 const App = () => {
   const [ startingUp, setStartingUp ] = useState(true);
@@ -87,7 +88,7 @@ const App = () => {
   };
 
   return (<>
-    {errorMessage && <div>Error: {errorMessage}</div>}
+    {errorMessage && <ErrorMessage message={errorMessage} />}
     <AddProjectForm handleSubmit={addProject} />
     <ListButton projects={projects} handleClick={toggleListDisplays} />
     <RawListButton projects={projects} handleClick={toggleListDisplays} />

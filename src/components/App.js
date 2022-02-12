@@ -64,13 +64,35 @@ const App = () => {
 
   useEffect(() => setStartingUp(false), []);
 
+  const toggleListDisplays = e => {
+    let clickedState, setClickedState, otherState, setOtherState;
+    if (e.target.textContent === 'View All Projects') {
+      clickedState = displayList;
+      setClickedState = setDisplayList;
+      otherState = displayRawList;
+      setOtherState = setDisplayRawList;
+    } else {
+      clickedState = displayRawList;
+      setClickedState = setDisplayRawList;
+      otherState = displayList;
+      setOtherState = setDisplayList;
+
+    }
+
+    setClickedState(!clickedState);
+    if (!displayList && !displayRawList)
+      return;
+    if (otherState === true)
+      setOtherState(false);
+  };
+
   return (<>
     {errorMessage && <div>Error: {errorMessage}</div>}
     <AddProjectForm handleSubmit={addProject} />
-    <ListButton projects={projects} handleClick={() => setDisplayList(!displayList)} />
-    <RawListButton projects={projects} handleClick={() => setDisplayRawList(!displayRawList)} />
-    {displayList && !displayRawList && <ProjectsList projects={projects} />}
-    {displayRawList && !displayList && <RawList projects={projects} />}
+    <ListButton projects={projects} handleClick={toggleListDisplays} />
+    <RawListButton projects={projects} handleClick={toggleListDisplays} />
+    {displayList && <ProjectsList projects={projects} />}
+    {displayRawList && <RawList projects={projects} />}
   </>);
 };
 

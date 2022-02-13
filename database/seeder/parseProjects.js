@@ -10,7 +10,7 @@ const { projectTitles } = require('./projectTitles');
 
 const projects = [];
 
-let title, artist, artistForSorting;
+let title, artist;
 let fakeDate = 0;
 for (const projectTitle of projectTitles) {
   const [ text, genreChar ] = projectTitle.split('***');
@@ -27,9 +27,17 @@ for (const projectTitle of projectTitles) {
   } else
     title = text;
 
-  artistForSorting = artist.toLowerCase(); // MongoDB doesn't allow case-insensitive sorting
-  if (artistForSorting.indexOf('the ') === 0)
-    artistForSorting = artistForSorting.slice(4);
+    let str = artist.toLowerCase(); // MongoDB doesn't allow case-insensitive sorting
+    if (str.indexOf('the ') === 0)
+      str = str.slice(4);
+
+    let artistForSorting = [];
+    for (const char of str) {
+      if (char === '.' || char === ',' || char === ' ')
+        continue;
+      artistForSorting.push(char === '$' ? 's' : char);
+    }
+    artistForSorting = artistForSorting.join('');
 
   projects.push({
     artist,

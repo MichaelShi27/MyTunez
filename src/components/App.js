@@ -32,6 +32,24 @@ const App = () => {
     (releaseYear > new Date().getYear() + 1900) ? 'Please enter a valid year!' : ''
   );
 
+  const wrangleInput = newProject => {
+    for (const key in newProject)
+    if (key !== 'dateAdded')
+      newProject[key] = newProject[key].value;
+
+    let str = newProject.artist.toLowerCase(); // MongoDB doesn't allow case-insensitive sorting
+    if (str.indexOf('the ') === 0)
+      str = str.slice(4);
+
+    const artistForSorting = [];
+    for (const char of str) {
+      if (char === '.' || char === ',' || char === ' ')
+        continue;
+      str.push(char === '$' ? 's' : char);
+    }
+    newProject.artistForSorting = artistForSorting.join('');
+  };
+
   const addProject = e => {
     e.preventDefault();
     setSuccessfulSubmit(false);
@@ -39,15 +57,7 @@ const App = () => {
     const { title, artist, genre, releaseYear } = e.target;
     const dateAdded = new Date();
     const newProject = { title, artist, genre, releaseYear, dateAdded };
-
-    for (const key in newProject)
-      if (key !== 'dateAdded')
-        newProject[key] = newProject[key].value;
-
-    let artistForSorting = newProject.artist.toLowerCase(); // MongoDB doesn't allow case-insensitive sorting
-    if (artistForSorting.indexOf('the ') === 0)
-      artistForSorting = artistForSorting.slice(4);
-    newProject.artistForSorting = artistForSorting;
+    wrangleInput(newProject);
 
     const errMsg = validateInput(newProject);
     setErrorMessage(errMsg);

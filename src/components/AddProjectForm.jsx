@@ -38,9 +38,9 @@ const AddProjectForm = ({ handleSubmit }) => {
             onChange={e => setGenre(e.target.value)}
           >
             <option value="rock">Rock</option>
-            <option value="pop">Pop</option>
             <option value="hip-hop">Hip-hop</option>
             <option value="electronic">Electronic</option>
+            <option value="pop">Pop</option>
             <option value="other">Other</option>
           </select>
         </FieldWrapper>

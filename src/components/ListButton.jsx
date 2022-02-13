@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ListButton = ({ projects, handleClick }) => (
+const ListButton = ({ handleClick }) => (
   <Button onClick={handleClick}>
     View All Projects
   </Button>

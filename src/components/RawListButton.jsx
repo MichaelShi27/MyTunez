@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const RawListButton = ({ projects, handleClick }) => (
+const RawListButton = ({ handleClick }) => (
   <Button onClick={handleClick}>
     View Raw List
   </Button>

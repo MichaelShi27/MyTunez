@@ -11,22 +11,18 @@ import RawList from './RawList';
 import Message from './Message';
 
 const App = () => {
-  const [ startingUp, setStartingUp ] = useState(true);
   const [ projects, setProjects ] = useState([]);
-  const [ addingNewProject, setAddingNewProject ] = useState(false);
+  const [ projectsAdded, setProjectsAdded ] = useState(0);
+  const [ displayMessage, setDisplayMessage ] = useState(false);
   const [ displayList, setDisplayList ] = useState(false);
   const [ displayRawList, setDisplayRawList ] = useState(false);
   const [ errorMessage, setErrorMessage ] = useState('');
 
-  const validateInput = ({ title, artist, releaseYear }) => {
-    if (!title || !artist)
-      return 'Please fill in both the title and artist fields!';
-    if (isNaN(releaseYear))
-      return 'Please enter a number in the year field!';
-    if (releaseYear > new Date().getYear() + 1900)
-      return 'Please enter a valid year!';
-    return '';
-  };
+  const validateInput = ({ title, artist, releaseYear }) => (
+    (!title || !artist) ? 'Please fill in both the title and artist fields!' :
+    isNaN(releaseYear) ? 'Please enter a number in the year field!' :
+    (releaseYear > new Date().getYear() + 1900) ? 'Please enter a valid year!' : ''
+  );
 
   const addProject = e => {
     e.preventDefault();
@@ -45,25 +41,25 @@ const App = () => {
 
     const errMsg = validateInput(newProject);
     setErrorMessage(errMsg);
+    if (errMsg) return;
 
-    if (!errMsg) {
-      axios.post('/addProject', newProject)
-        .then(({ data }) => data === 'duplicate input' && setErrorMessage('This project has already been entered!'))
-        .catch(console.log);
-      setAddingNewProject(true);
-    }
+    axios.post('/addProject', newProject)
+      .then(({ data }) => {
+        data === 'success' && setProjectsAdded(projectsAdded + 1);
+        data === 'duplicate input' && setErrorMessage('This project has already been entered!')
+      })
+      .catch(console.log);
   };
 
-  const getProjects = () => {
-    if (addingNewProject || startingUp) {
-      axios('projects')
-        .then(({ data }) => setProjects(data));
-      addingNewProject && setAddingNewProject(false);
-    }
-  };
-  useEffect(getProjects, [ addingNewProject, startingUp ]);
+  const getProjects = () => axios('projects').then(({ data }) => setProjects(data));
+  useEffect(getProjects, [ projectsAdded ]);
 
-  useEffect(() => setStartingUp(false), []);
+  useEffect(() => {
+    if (projectsAdded || errorMessage) {
+      setDisplayMessage(true);
+      setTimeout(() => setDisplayMessage(false), 5000);
+    }
+  }, [ projectsAdded, errorMessage ]);
 
   const toggleListDisplays = e => {
     let clickedState, setClickedState, otherState, setOtherState;
@@ -77,7 +73,6 @@ const App = () => {
       setClickedState = setDisplayRawList;
       otherState = displayList;
       setOtherState = setDisplayList;
-
     }
 
     setClickedState(!clickedState);
@@ -88,7 +83,7 @@ const App = () => {
   };
 
   return (<>
-    <Message message={errorMessage} />
+    {displayMessage && <Message message={errorMessage || 'success'} projectsAdded={projectsAdded} />}
     <AddProjectForm handleSubmit={addProject} />
     <ListButton projects={projects} handleClick={toggleListDisplays} />
     <RawListButton projects={projects} handleClick={toggleListDisplays} />

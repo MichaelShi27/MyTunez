@@ -11,7 +11,7 @@ const ProjectsList = ({ projects }) => (<>
     <Project key={idx} genre={genre}>
       <TextWrapper type={'title'}><em>{title}</em></TextWrapper>
       <TextWrapper type={'artist'}>{artist}</TextWrapper>
-      <TextWrapper type={'genre'} genre={genre}>{genre}</TextWrapper>
+      <TextWrapper type={'genre'} genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
     </Project>
   ))}
 </>);

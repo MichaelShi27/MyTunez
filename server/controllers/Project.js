@@ -10,6 +10,7 @@ exports.getProjects = (req, res) => {
 exports.addProject = (req, res) => {
   new Project(req.body)
     .save()
+    .then(() => res.send('success'))
     .catch(err => {
       if (err.code === 11000)
         res.send('duplicate input');

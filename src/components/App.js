@@ -91,7 +91,7 @@ const App = () => {
     //   { state: displayRawList, func: setDisplayRawList, btnText: 'View Raw List' },
     //   { state: displayArtists, func: setDisplayArtists, btnText: 'View All Projects' },
     // ];
-    if (e.target.textContent === 'View All Projects') {
+    if (e.target.textContent === 'Projects') {
       clickedState = displayList;
       setClickedState = setDisplayList;
       otherState = displayRawList;

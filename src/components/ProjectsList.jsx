@@ -2,11 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ProjectsList = ({ projects }) => (<>
-  <Row>
+  <Header>
     <TextWrapper label={'true'} type={'title'}>Project Title</TextWrapper>
     <TextWrapper label={'true'} type={'artist'}>Artist</TextWrapper>
     <TextWrapper label={'true'} type={'genre'}>Genre</TextWrapper>
-  </Row>
+  </Header>
   {projects.map(({ title, artist, genre }, idx) => (
     <Project key={idx} genre={genre}>
       <TextWrapper type={'title'}><em>{title}</em></TextWrapper>
@@ -15,15 +15,6 @@ const ProjectsList = ({ projects }) => (<>
     </Project>
   ))}
 </>);
-
-const Row = styled.div`
-  margin: 3px;
-  width: 1000px;
-  padding: 3px;
-  background-color: #e0e0e0;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 15px;
-`;
 
 const TextWrapper = styled.div`
   padding: 0 5px;
@@ -44,9 +35,22 @@ const TextWrapper = styled.div`
   )};
 `;
 
-const Project = styled(Row)`
-  background-color: white;
+const Project = styled.div`
+  margin: 3px;
+  width: 1000px;
+  padding: 3px;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 15px;
   border: 1px solid gray;
+  `;
+
+  const Header = styled(Project)`
+  font-family: Palatino, Lucida Console, serif;
+  font-size: 13px;
+  background-color: #e0e0e0;
+  border: none;
+  padding: 8px 8px 5px;
+  width: 990px;
 `;
 
 export default ProjectsList;

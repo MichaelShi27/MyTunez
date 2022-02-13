@@ -11,6 +11,7 @@ import RawList from './RawList';
 import Message from './Message';
 import GenreButton from './GenreButton';
 import GenreData from './GenreData';
+import Header from './Header';
 
 const App = () => {
   const [ projects, setProjects ] = useState([]);
@@ -91,6 +92,7 @@ const App = () => {
   };
 
   return (<>
+    <Header />
     {displayMessage && <Message message={errorMessage} successfulSubmit={successfulSubmit} projectsAdded={projectsAdded} />}
     <AddProjectForm handleSubmit={addProject} />
     <ListButton handleClick={toggleListDisplays} />

@@ -12,6 +12,8 @@ import Message from './Message';
 import GenreButton from './GenreButton';
 import GenreData from './GenreData';
 import Header from './Header';
+import ArtistButton from './ArtistButton';
+import ArtistList from './ArtistList';
 
 const App = () => {
   const [ projects, setProjects ] = useState([]);
@@ -22,6 +24,7 @@ const App = () => {
   const [ displayRawList, setDisplayRawList ] = useState(false);
   const [ errorMessage, setErrorMessage ] = useState('');
   const [ displayGenres, setDisplayGenres ] = useState(false);
+  const [ displayArtists, setDisplayArtists ] = useState(false);
 
   const validateInput = ({ title, artist, releaseYear }) => (
     (!title || !artist) ? 'Please fill in both the title and artist fields!' :
@@ -72,6 +75,12 @@ const App = () => {
 
   const toggleListDisplays = e => {
     let clickedState, setClickedState, otherState, setOtherState;
+
+    // const lists = [
+    //   { state: displayList, func: setDisplayList, btnText: 'View All Projects' },
+    //   { state: displayRawList, func: setDisplayRawList, btnText: 'View Raw List' },
+    //   { state: displayArtists, func: setDisplayArtists, btnText: 'View All Projects' },
+    // ];
     if (e.target.textContent === 'View All Projects') {
       clickedState = displayList;
       setClickedState = setDisplayList;
@@ -98,9 +107,11 @@ const App = () => {
     <ListButton handleClick={toggleListDisplays} />
     <RawListButton handleClick={toggleListDisplays} />
     <GenreButton handleClick={() => setDisplayGenres(!displayGenres)} />
+    <ArtistButton handleClick={() => setDisplayArtists(!displayArtists)} />
     {displayGenres && <GenreData projects={projects} successfulSubmit={successfulSubmit} />}
     {displayList && <ProjectsList projects={projects} />}
     {displayRawList && <RawList projects={projects} />}
+    {displayArtists && <ArtistList projects={projects} />}
   </>);
 };
 

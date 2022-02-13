@@ -3,12 +3,12 @@ import styled from 'styled-components';
 
 const ProjectsList = ({ projects }) => (<>
   <Header>
-    <TextWrapper label={'true'} type={'title'}>Project Title</TextWrapper>
-    <TextWrapper label={'true'} type={'artist'}>Artist</TextWrapper>
-    <TextWrapper label={'true'} type={'genre'}>Genre</TextWrapper>
+    <TextWrapper header={'true'} type={'title'}>Project Title</TextWrapper>
+    <TextWrapper header={'true'} type={'artist'}>Artist</TextWrapper>
+    <TextWrapper header={'true'} type={'genre'}>Genre</TextWrapper>
   </Header>
   {projects.map(({ title, artist, genre }, idx) => (
-    <Project key={idx} genre={genre}>
+    <Project key={idx}>
       <TextWrapper type={'title'}><em>{title}</em></TextWrapper>
       <TextWrapper type={'artist'}>{artist}</TextWrapper>
       <TextWrapper type={'genre'} genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
@@ -26,12 +26,12 @@ const TextWrapper = styled.div`
     type === 'genre' ? '80px' :
     null
   )};
-  background-color: ${({ genre, label }) => (
+  background-color: ${({ genre, header }) => (
     genre === 'rock' ? 'rgb(255, 255, 49)' :
     genre === 'pop' ? 'rgb(255, 158, 242)' :
     genre === 'hip-hop' ? 'rgb(71, 250, 86);)' :
     genre === 'electronic' ? 'aqua' :
-    label ? '#e0e0e0' : 'white'
+    header ? '#e0e0e0' : 'white'
   )};
 `;
 
@@ -42,9 +42,9 @@ const Project = styled.div`
   font-family: Helvetica, Arial, sans-serif;
   font-size: 15px;
   border: 1px solid gray;
-  `;
+`;
 
-  const Header = styled(Project)`
+const Header = styled(Project)`
   font-family: Palatino, Lucida Console, serif;
   font-size: 13px;
   background-color: #e0e0e0;

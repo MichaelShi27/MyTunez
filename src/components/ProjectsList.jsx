@@ -1,20 +1,34 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const ProjectsList = ({ projects }) => (<>
-  <Header>
-    <TextWrapper header={'true'} type={'title'}>Project Title</TextWrapper>
-    <TextWrapper header={'true'} type={'artist'}>Artist</TextWrapper>
-    <TextWrapper header={'true'} type={'genre'}>Genre</TextWrapper>
-  </Header>
-  {projects.map(({ title, artist, genre }, idx) => (
-    <Project key={idx}>
-      <TextWrapper type={'title'}><em>{title}</em></TextWrapper>
-      <TextWrapper type={'artist'}>{artist}</TextWrapper>
-      <TextWrapper type={'genre'} genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
-    </Project>
-  ))}
-</>);
+import GenreButton from './GenreButton';
+import GenreData from './GenreData';
+
+const ProjectsList = ({ projects }) => {
+  const [ displayGenres, setDisplayGenres ] = useState(false);
+  return (<>
+    <Options>
+      <GenreButton handleClick={() => setDisplayGenres(!displayGenres)} />
+    </Options>
+    {displayGenres && <GenreData projects={projects}/>}
+    <Header>
+      <TextWrapper header={'true'} type={'title'}>Project Title</TextWrapper>
+      <TextWrapper header={'true'} type={'artist'}>Artist</TextWrapper>
+      <TextWrapper header={'true'} type={'genre'}>Genre</TextWrapper>
+    </Header>
+    {projects.map(({ title, artist, genre }, idx) => (
+      <Project key={idx}>
+        <TextWrapper type={'title'}><em>{title}</em></TextWrapper>
+        <TextWrapper type={'artist'}>{artist}</TextWrapper>
+        <TextWrapper type={'genre'} genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
+      </Project>
+    ))}
+  </>);
+};
+
+const Options = styled.div`
+  border: 1px solid red;
+`;
 
 const TextWrapper = styled.div`
   padding: 0 5px;

@@ -9,8 +9,6 @@ import ProjectsList from './ProjectsList';
 import RawListButton from './RawListButton';
 import RawList from './RawList';
 import Message from './Message';
-import GenreButton from './GenreButton';
-import GenreData from './GenreData';
 import Header from './Header';
 import ArtistButton from './ArtistButton';
 import ArtistList from './ArtistList';
@@ -23,7 +21,6 @@ const App = () => {
   const [ displayList, setDisplayList ] = useState(false);
   const [ displayRawList, setDisplayRawList ] = useState(false);
   const [ errorMessage, setErrorMessage ] = useState('');
-  const [ displayGenres, setDisplayGenres ] = useState(false);
   const [ displayArtists, setDisplayArtists ] = useState(false);
 
   const validateInput = ({ title, artist, releaseYear }) => (
@@ -45,7 +42,7 @@ const App = () => {
     for (const char of str) {
       if (char === '.' || char === ',' || char === ' ')
         continue;
-      str.push(char === '$' ? 's' : char);
+      artistForSorting.push(char === '$' ? 's' : char);
     }
     newProject.artistForSorting = artistForSorting.join('');
   };
@@ -58,13 +55,14 @@ const App = () => {
     const dateAdded = new Date();
     const newProject = { title, artist, genre, releaseYear, dateAdded };
     wrangleInput(newProject);
-
+    console.log('wtf1')
     const errMsg = validateInput(newProject);
     setErrorMessage(errMsg);
     if (errMsg) return;
 
     axios.post('/addProject', newProject)
       .then(({ data }) => {
+        console.log('wtf2')
         if (data === 'success') {
           setSuccessfulSubmit(true);
           setProjectsAdded(projectsAdded + 1);
@@ -116,9 +114,7 @@ const App = () => {
     <AddProjectForm handleSubmit={addProject} />
     <ListButton handleClick={toggleListDisplays} />
     <RawListButton handleClick={toggleListDisplays} />
-    <GenreButton handleClick={() => setDisplayGenres(!displayGenres)} />
     <ArtistButton handleClick={() => setDisplayArtists(!displayArtists)} />
-    {displayGenres && <GenreData projects={projects} successfulSubmit={successfulSubmit} />}
     {displayList && <ProjectsList projects={projects} />}
     {displayRawList && <RawList projects={projects} />}
     {displayArtists && <ArtistList projects={projects} />}

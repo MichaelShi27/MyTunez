@@ -6,14 +6,19 @@ const RawList = ({ projects }) => {
     const list = [];
     let curArtist;
 
-    for (const project of projects) {
-      const { artist, title } = project;
+    for (const { artist, title, genre } of projects) {
       let newTitle = title;
       if (artist !== curArtist) {
         newTitle += ` - ${artist}`;
         curArtist = artist;
       }
-      list.push({ ...project, title: newTitle });
+      const genreChar = genre === 'rock' ? 'r' :
+        genre === 'hip-hop' ? 'h' :
+        genre === 'electronic' ? 'e' :
+        genre === 'pop' ? 'p' : '';
+      newTitle += '***' + genreChar;
+
+      list.push({ artist, genre, title: newTitle });
     }
     return list;
   };

@@ -34,8 +34,8 @@ const App = () => {
 
   const wrangleInput = newProject => {
     for (const key in newProject)
-    if (key !== 'dateAdded')
-      newProject[key] = newProject[key].value;
+      if (key !== 'dateAdded')
+        newProject[key] = newProject[key].value;
 
     let str = newProject.artist.toLowerCase(); // MongoDB doesn't allow case-insensitive sorting
     if (str.indexOf('the ') === 0)

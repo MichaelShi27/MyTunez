@@ -5,9 +5,7 @@ import axios from 'axios';
 
 import AddProjectForm from './AddProjectForm';
 import ListButton from './ListButton';
-import ProjectsList from './ProjectsList';
-import RawListButton from './RawListButton';
-import RawList from './RawList';
+import ProjectsList from './projectsList/ProjectsList';
 import Message from './Message';
 import Header from './Header';
 import ArtistButton from './ArtistButton';
@@ -18,8 +16,7 @@ const App = () => {
   const [ projectsAdded, setProjectsAdded ] = useState(0);
   const [ successfulSubmit, setSuccessfulSubmit ] = useState(0);
   const [ displayMessage, setDisplayMessage ] = useState(false);
-  const [ displayList, setDisplayList ] = useState(false);
-  const [ displayRawList, setDisplayRawList ] = useState(false);
+  const [ displayProjects, setDisplayProjects ] = useState(true);
   const [ errorMessage, setErrorMessage ] = useState('');
   const [ displayArtists, setDisplayArtists ] = useState(false);
 
@@ -81,42 +78,13 @@ const App = () => {
     return () => clearTimeout(timeout);
   }, [ projectsAdded, errorMessage ]);
 
-  const toggleListDisplays = e => {
-    let clickedState, setClickedState, otherState, setOtherState;
-
-    // const lists = [
-    //   { state: displayList, func: setDisplayList, btnText: 'View All Projects' },
-    //   { state: displayRawList, func: setDisplayRawList, btnText: 'View Raw List' },
-    //   { state: displayArtists, func: setDisplayArtists, btnText: 'View All Projects' },
-    // ];
-    if (e.target.textContent === 'Projects') {
-      clickedState = displayList;
-      setClickedState = setDisplayList;
-      otherState = displayRawList;
-      setOtherState = setDisplayRawList;
-    } else {
-      clickedState = displayRawList;
-      setClickedState = setDisplayRawList;
-      otherState = displayList;
-      setOtherState = setDisplayList;
-    }
-
-    setClickedState(!clickedState);
-    if (!displayList && !displayRawList)
-      return;
-    if (otherState === true)
-      setOtherState(false);
-  };
-
   return (<>
     <Header />
     {displayMessage && <Message message={errorMessage} successfulSubmit={successfulSubmit} projectsAdded={projectsAdded} />}
     <AddProjectForm handleSubmit={addProject} />
-    <ListButton handleClick={toggleListDisplays} />
-    <RawListButton handleClick={toggleListDisplays} />
+    <ListButton handleClick={() => setDisplayProjects(!displayProjects)} />
     <ArtistButton handleClick={() => setDisplayArtists(!displayArtists)} />
-    {displayList && <ProjectsList projects={projects} />}
-    {displayRawList && <RawList projects={projects} />}
+    {displayProjects && <ProjectsList projects={projects} />}
     {displayArtists && <ArtistList projects={projects} />}
   </>);
 };

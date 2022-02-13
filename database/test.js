@@ -17,11 +17,11 @@ mongoose
 // };
 // checkIfCleared();
 
-// // to clear test projects
-// const testArtists = [ '00', 'aa' ];
-// for (const artist of testArtists)
-//   Project.deleteMany({ artist })
-//     .then(console.log);
+// to clear test projects
+const testArtists = [ 'a', 'aa', '1' ];
+for (const artist of testArtists)
+  Project.deleteMany({ artist })
+    .then(console.log);
 
 // // to find by artist
 // const artist = 'Future';

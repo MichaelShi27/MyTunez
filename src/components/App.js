@@ -9,6 +9,8 @@ import ProjectsList from './ProjectsList';
 import RawListButton from './RawListButton';
 import RawList from './RawList';
 import Message from './Message';
+import GenreButton from './GenreButton';
+import GenreData from './GenreData';
 
 const App = () => {
   const [ projects, setProjects ] = useState([]);
@@ -18,6 +20,7 @@ const App = () => {
   const [ displayList, setDisplayList ] = useState(false);
   const [ displayRawList, setDisplayRawList ] = useState(false);
   const [ errorMessage, setErrorMessage ] = useState('');
+  const [ displayGenres, setDisplayGenres ] = useState(false);
 
   const validateInput = ({ title, artist, releaseYear }) => (
     (!title || !artist) ? 'Please fill in both the title and artist fields!' :
@@ -90,8 +93,10 @@ const App = () => {
   return (<>
     {displayMessage && <Message message={errorMessage} successfulSubmit={successfulSubmit} projectsAdded={projectsAdded} />}
     <AddProjectForm handleSubmit={addProject} />
-    <ListButton projects={projects} handleClick={toggleListDisplays} />
-    <RawListButton projects={projects} handleClick={toggleListDisplays} />
+    <ListButton handleClick={toggleListDisplays} />
+    <RawListButton handleClick={toggleListDisplays} />
+    <GenreButton handleClick={() => setDisplayGenres(!displayGenres)} />
+    {displayGenres && <GenreData projects={projects} successfulSubmit={successfulSubmit} />}
     {displayList && <ProjectsList projects={projects} />}
     {displayRawList && <RawList projects={projects} />}
   </>);

@@ -13,6 +13,7 @@ import Message from './Message';
 const App = () => {
   const [ projects, setProjects ] = useState([]);
   const [ projectsAdded, setProjectsAdded ] = useState(0);
+  const [ successfulSubmit, setSuccessfulSubmit ] = useState(0);
   const [ displayMessage, setDisplayMessage ] = useState(false);
   const [ displayList, setDisplayList ] = useState(false);
   const [ displayRawList, setDisplayRawList ] = useState(false);
@@ -26,6 +27,8 @@ const App = () => {
 
   const addProject = e => {
     e.preventDefault();
+    setSuccessfulSubmit(false);
+
     const { title, artist, genre, releaseYear } = e.target;
     const dateAdded = new Date();
     const newProject = { title, artist, genre, releaseYear, dateAdded };
@@ -45,7 +48,10 @@ const App = () => {
 
     axios.post('/addProject', newProject)
       .then(({ data }) => {
-        data === 'success' && setProjectsAdded(projectsAdded + 1);
+        if (data === 'success') {
+          setSuccessfulSubmit(true);
+          setProjectsAdded(projectsAdded + 1);
+        }
         data === 'duplicate input' && setErrorMessage('This project has already been entered!')
       })
       .catch(console.log);
@@ -55,10 +61,9 @@ const App = () => {
   useEffect(getProjects, [ projectsAdded ]);
 
   useEffect(() => {
-    if (projectsAdded || errorMessage) {
-      setDisplayMessage(true);
-      setTimeout(() => setDisplayMessage(false), 5000);
-    }
+    (projectsAdded || errorMessage) && setDisplayMessage(true);
+    const timeout = setTimeout(() => setDisplayMessage(false), 5000);
+    return () => clearTimeout(timeout);
   }, [ projectsAdded, errorMessage ]);
 
   const toggleListDisplays = e => {
@@ -83,7 +88,7 @@ const App = () => {
   };
 
   return (<>
-    {displayMessage && <Message message={errorMessage || 'success'} projectsAdded={projectsAdded} />}
+    {displayMessage && <Message message={errorMessage} successfulSubmit={successfulSubmit} projectsAdded={projectsAdded} />}
     <AddProjectForm handleSubmit={addProject} />
     <ListButton projects={projects} handleClick={toggleListDisplays} />
     <RawListButton projects={projects} handleClick={toggleListDisplays} />

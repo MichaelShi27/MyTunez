@@ -26,7 +26,7 @@ const GenreData = ({ projects, successfulSubmit }) => {
 };
 
 const Wrapper = styled.div`
-  margin: 0 0 15px 30px;
+  margin: 0 0 15px 18px;
   background-color: #f2f2f2;
   display: inline-block;
 `;

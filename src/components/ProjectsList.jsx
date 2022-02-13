@@ -21,11 +21,12 @@ const Row = styled.div`
   width: 1000px;
   padding: 3px;
   background-color: #e0e0e0;
+  font-family: Helvetica, Arial, sans-serif;
+  font-size: 15px;
 `;
 
 const TextWrapper = styled.div`
   padding: 0 5px;
-  // border: 1px solid red;
   display: inline-block;
   text-align: ${({ type }) => type === 'genre' && 'center'};
   width: ${({ type }) => (

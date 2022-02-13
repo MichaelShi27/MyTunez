@@ -65,6 +65,8 @@ const AddProjectForm = ({ handleSubmit }) => {
 const FormWrapper = styled.div`
   background-color: #f2f2f2;
   padding: 10px;
+  font-family: Verdana, Helvetica, sans-serif;
+  font-size: 12px;
 `;
 
 const FieldWrapper = styled.span`

@@ -37,7 +37,7 @@ const Project = styled.span`
     genre === 'pop' ? 'rgb(255, 158, 242)' :
     genre === 'hip-hop' ? 'rgb(71, 250, 86);)' :
     genre === 'electronic' ? 'aqua' :
-    'white'
+    '#ff9700'
   )};
 `;
 

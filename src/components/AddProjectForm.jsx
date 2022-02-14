@@ -32,11 +32,7 @@ const AddProjectForm = ({ handleSubmit }) => {
         </FieldWrapper>
         <FieldWrapper>
           <label htmlFor="genre">Genre: </label>
-          <select
-            id="genre"
-            value={genre}
-            onChange={e => setGenre(e.target.value)}
-          >
+          <select id="genre" value={genre} onChange={e => setGenre(e.target.value)}>
             <option value="rock">Rock</option>
             <option value="hip-hop">Hip-hop</option>
             <option value="electronic">Electronic</option>

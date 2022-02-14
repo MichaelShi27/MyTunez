@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import AddProjectForm from './AddProjectForm';
-import ListButton from './ListButton';
+import ProjectsButton from './ProjectsButton';
 import ProjectsList from './projectsList/ProjectsList';
 import Message from './Message';
 import Header from './Header';
@@ -52,14 +52,13 @@ const App = () => {
     const dateAdded = new Date();
     const newProject = { title, artist, genre, releaseYear, dateAdded };
     wrangleInput(newProject);
-    console.log('wtf1')
+
     const errMsg = validateInput(newProject);
     setErrorMessage(errMsg);
     if (errMsg) return;
 
     axios.post('/addProject', newProject)
       .then(({ data }) => {
-        console.log('wtf2')
         if (data === 'success') {
           setSuccessfulSubmit(true);
           setProjectsAdded(projectsAdded + 1);
@@ -82,7 +81,7 @@ const App = () => {
     <Header />
     {displayMessage && <Message message={errorMessage} successfulSubmit={successfulSubmit} projectsAdded={projectsAdded} />}
     <AddProjectForm handleSubmit={addProject} />
-    <ListButton handleClick={() => setDisplayProjects(!displayProjects)} />
+    <ProjectsButton handleClick={() => setDisplayProjects(!displayProjects)} />
     <ArtistButton handleClick={() => setDisplayArtists(!displayArtists)} />
     {displayProjects && <ProjectsList projects={projects} />}
     {displayArtists && <ArtistList projects={projects} />}

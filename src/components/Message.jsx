@@ -1,26 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
-const Message = ({ message, projectsAdded, successfulSubmit }) => {
-  // const [ display, setDisplay ] = useState(true);
-  // useEffect(() => {
-  //   const timeout = setTimeout(() => setDisplay(false), 10000);
-  //   return () => clearTimeout(timeout);
-  // }, [ message, projectsAdded ]);
-
-  // if (!display)
-  //   return null;
-  if (successfulSubmit)
-    return <Wrapper successfulSubmit={successfulSubmit}>Project added! You have added {projectsAdded} project{projectsAdded === 1 ? '' : 's'}.</Wrapper>;
-  else if (message)
-    return <Wrapper message={message}>Error: {message}</Wrapper>;
-  else
-    return null;
-};
+const Message = ({ message, projectsAdded, successfulSubmit }) => (
+  successfulSubmit
+    ? <Wrapper successfulSubmit={successfulSubmit}>Project added! You have added {projectsAdded} project{projectsAdded === 1 ? '' : 's'}.</Wrapper>
+    : message
+      ? <Wrapper message={message}>Error: {message}</Wrapper>
+      : null
+);
 
 const Wrapper = styled.div`
-  color: ${({ successfulSubmit }) => successfulSubmit ? 'green' : 'red'};
+  color: ${({ successfulSubmit }) => successfulSubmit ? '#0aca01' : 'red'};
   margin: 10px;
+  font-family: Helvetica, Arial, sans-serif;
 `;
 
 export default Message;

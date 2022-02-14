@@ -3,36 +3,65 @@ import styled from 'styled-components';
 
 const ArtistList = ({ projects }) => {
   const [ artists, setArtists ] = useState([]);
+  const [ sortBy, setSortBy ] = useState('name');
 
   const getArtists = () => {
     const artists = [];
     let curArtist = projects[0].artist;
-    let count = 0;
-    for (const { artist } of projects) {
+    let projectCount = 0;
+    const now = new Date();
+    let firstAdded = now;
+
+    for (const { artist, dateAdded } of projects) {
       if (artist !== curArtist) {
-        artists.push({ name: curArtist, count });
+        artists.push({ name: curArtist, projectCount, firstAdded });
         curArtist = artist;
-        count = 0;
+        projectCount = 0;
+        firstAdded = now;
       }
-      count++;
+      projectCount++;
+      const projectDate = new Date(dateAdded);
+      if (projectDate < firstAdded)
+        firstAdded = projectDate;
     }
     setArtists(artists);
   };
-  useEffect(getArtists, [ projects ]);
+  useEffect(getArtists, [ projects, sortBy ]);
+
+  if (sortBy === 'number')
+    artists.sort((a, b) => b.projectCount - a.projectCount);
+  else if (sortBy === 'recency')
+    artists.sort((a, b) => b.firstAdded - a.firstAdded);
 
   return (<>
+    <Options>
+      <TextWrapper>Total # of artists: {artists.length}</TextWrapper>
+      <div style={{ margin: '0 20px', display: 'inline-block' }}>
+        <label htmlFor="sortBy">Sort by: </label>
+        <select id="sortBy" value={sortBy} onChange={e => setSortBy(e.target.value)}>
+          <option value="artist">Name</option>
+          <option value="number"># of Projects</option>
+          <option value="recency">Recently Added</option>
+        </select>
+      </div>
+    </Options>
     <Header>
       <TextWrapper header={'true'} type={'name'}>Name</TextWrapper>
       <TextWrapper header={'true'} type={'number'}># of Projects</TextWrapper>
     </Header>
-    {artists.map(({ name, count }, idx) => (
+    {artists.map(({ name, projectCount }, idx) => (
       <Artist key={idx}>
         <TextWrapper type={'name'}>{name}</TextWrapper>
-        <TextWrapper type={'number'}>{count}</TextWrapper>
+        <TextWrapper type={'number'}>{projectCount}</TextWrapper>
       </Artist>
     ))}
   </>);
 };
+
+const Options = styled.div`
+  padding: 0 0 0 10px;
+  margin: 10px 0;
+`;
 
 const TextWrapper = styled.div`
   padding: 0 5px;

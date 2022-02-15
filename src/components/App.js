@@ -5,7 +5,7 @@ import axios from 'axios';
 
 import AddProjectForm from './AddProjectForm';
 import ProjectsButton from './ProjectsButton';
-import ProjectsList from './projectsList/ProjectsList';
+import ProjectList from './projectList/ProjectList';
 import Message from './Message';
 import Header from './Header';
 import ArtistButton from './ArtistButton';
@@ -86,7 +86,7 @@ const App = () => {
     <AddProjectForm handleSubmit={addProject} />
     <ProjectsButton handleClick={() => setDisplayProjects(!displayProjects)} />
     <ArtistButton handleClick={() => setDisplayArtists(!displayArtists)} />
-    {displayProjects && <ProjectsList projects={projects} />}
+    {displayProjects && <ProjectList projects={projects} />}
     {displayArtists && <ArtistList projects={projects} />}
   </>);
 };

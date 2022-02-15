@@ -7,7 +7,7 @@ import ListFormatButton from './ListFormatButton';
 import NormalList from './NormalList';
 import RawList from './RawList';
 
-const ProjectsList = ({ projects }) => {
+const ProjectList = ({ projects }) => {
   const [ displayGenres, setDisplayGenres ] = useState(false);
   const [ listFormat, setListFormat ] = useState('normal');
   const [ sortBy, setSortBy ] = useState('artist');
@@ -44,7 +44,7 @@ const TextWrapper = styled.div`
   margin: 0 10px;
 `;
 
-export default ProjectsList;
+export default ProjectList;
 
 
 // old toggleListFormat

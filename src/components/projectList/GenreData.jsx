@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 const GenreData = ({ projects, successfulSubmit }) => {
   const [ genreCounts, setGenreCounts ] = useState({});
+
   const getCounts = () => {
     const counts = { rock: 0, 'hip-hop': 0, electronic: 0, pop: 0, other: 0 };
     for (const { genre } of projects)
@@ -10,9 +11,11 @@ const GenreData = ({ projects, successfulSubmit }) => {
     setGenreCounts(counts);
   };
   useEffect(getCounts, [ successfulSubmit, projects ]);
+
+  const getPercentage = count => Math.round(count / projects.length * 100 * 100) / 100;
   const { rock, electronic, pop, other } = genreCounts;
   const hipHop = genreCounts['hip-hop'];
-  const getPercentage = count => Math.round(count / projects.length * 100 * 100) / 100;
+
   return (
     <Wrapper>
       <TextWrapper>Rock: {rock} projects ({getPercentage(rock)} %)</TextWrapper>

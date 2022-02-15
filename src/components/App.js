@@ -6,10 +6,9 @@ import axios from 'axios';
 import AddProjectForm from './AddProjectForm';
 import ProjectList from './projectList/ProjectList';
 import Message from './Message';
-import Header from './Header';
 import ArtistList from './ArtistList';
 
-import { Button } from './styles.js';
+import { Header, Button } from './styles.js';
 
 const App = () => {
   const [ projects, setProjects ] = useState([]);
@@ -81,7 +80,7 @@ const App = () => {
   }, [ projectsAdded, errorMessage ]);
 
   return (<>
-    <Header />
+    <Header>myTunez</Header>
     {displayMessage && (
     <Message
       message={errorMessage}

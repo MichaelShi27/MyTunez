@@ -4,12 +4,12 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
 import AddProjectForm from './AddProjectForm';
-import ProjectsButton from './ProjectsButton';
 import ProjectList from './projectList/ProjectList';
 import Message from './Message';
 import Header from './Header';
-import ArtistButton from './ArtistButton';
 import ArtistList from './ArtistList';
+
+import { Button } from './styles.js';
 
 const App = () => {
   const [ projects, setProjects ] = useState([]);
@@ -82,10 +82,19 @@ const App = () => {
 
   return (<>
     <Header />
-    {displayMessage && <Message message={errorMessage} successfulSubmit={successfulSubmit} projectsAdded={projectsAdded} />}
+    {displayMessage && (
+    <Message
+      message={errorMessage}
+      successfulSubmit={successfulSubmit}
+      projectsAdded={projectsAdded}
+    />)}
     <AddProjectForm handleSubmit={addProject} />
-    <ProjectsButton handleClick={() => setDisplayProjects(!displayProjects)} />
-    <ArtistButton handleClick={() => setDisplayArtists(!displayArtists)} />
+    <Button onClick={() => setDisplayProjects(!displayProjects)}>
+      Projects
+    </Button>
+    <Button onClick={() => setDisplayArtists(!displayArtists)}>
+      Artists
+    </Button>
     {displayProjects && <ProjectList projects={projects} />}
     {displayArtists && <ArtistList projects={projects} />}
   </>);

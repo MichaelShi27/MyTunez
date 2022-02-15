@@ -46,13 +46,13 @@ const ArtistList = ({ projects }) => {
       </div>
     </Options>
     <Header>
-      <TextWrapper header={'true'} type={'name'}>Name</TextWrapper>
-      <TextWrapper header={'true'} type={'number'}># of Projects</TextWrapper>
+      <TextWrapper $header={'true'} $type={'name'}>Name</TextWrapper>
+      <TextWrapper $header={'true'} $type={'number'}># of Projects</TextWrapper>
     </Header>
     {artists.map(({ name, projectCount }, idx) => (
       <Artist key={idx}>
-        <TextWrapper type={'name'}>{name}</TextWrapper>
-        <TextWrapper type={'number'}>{projectCount}</TextWrapper>
+        <TextWrapper $type={'name'}>{name}</TextWrapper>
+        <TextWrapper $type={'number'}>{projectCount}</TextWrapper>
       </Artist>
     ))}
   </>);
@@ -66,13 +66,13 @@ const Options = styled.div`
 const TextWrapper = styled.div`
   padding: 0 5px;
   display: inline-block;
-  text-align: ${({ type }) => type === 'number' && 'center'};
-  width: ${({ type }) => (
-    type === 'name' ? '350px' :
-    type === 'number' ? '80px' :
+  text-align: ${({ $type }) => $type === 'number' && 'center'};
+  width: ${({ $type }) => (
+    $type === 'name' ? '350px' :
+    $type === 'number' ? '80px' :
     null
   )};
-  background-color: ${({ header }) => header && '#e0e0e0'};
+  background-color: ${({ $header }) => $header && '#e0e0e0'};
 `;
 
 const Artist = styled.div`

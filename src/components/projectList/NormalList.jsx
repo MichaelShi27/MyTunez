@@ -6,15 +6,15 @@ const NormalList = ({ projects, sortBy }) => {
   const sortedProjects = sortBy === 'artist' ? projects : projectsCopy.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
   return (<>
     <Header>
-      <TextWrapper header={'true'} type={'title'}>Project Title</TextWrapper>
-      <TextWrapper header={'true'} type={'artist'}>Artist</TextWrapper>
-      <TextWrapper header={'true'} type={'genre'}>Genre</TextWrapper>
+      <TextWrapper $header={'true'} $type={'title'}>Project Title</TextWrapper>
+      <TextWrapper $header={'true'} $type={'artist'}>Artist</TextWrapper>
+      <TextWrapper $header={'true'} $type={'genre'}>Genre</TextWrapper>
     </Header>
     {sortedProjects.map(({ title, artist, genre }, idx) => (
       <Project key={idx}>
-        <TextWrapper type={'title'}><em>{title}</em></TextWrapper>
-        <TextWrapper type={'artist'}>{artist}</TextWrapper>
-        <TextWrapper type={'genre'} genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
+        <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
+        <TextWrapper $type={'artist'}>{artist}</TextWrapper>
+        <TextWrapper $type={'genre'} $genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
       </Project>
     ))}
   </>);
@@ -23,20 +23,20 @@ const NormalList = ({ projects, sortBy }) => {
 const TextWrapper = styled.div`
   padding: 0 5px;
   display: inline-block;
-  text-align: ${({ type }) => type === 'genre' && 'center'};
-  width: ${({ type }) => (
-    type === 'title' ? '600px' :
-    type === 'artist' ? '280px' :
-    type === 'genre' ? '80px' :
+  text-align: ${({ $type }) => $type === 'genre' && 'center'};
+  width: ${({ $type }) => (
+    $type === 'title' ? '600px' :
+    $type === 'artist' ? '280px' :
+    $type === 'genre' ? '80px' :
     null
   )};
-  background-color: ${({ genre, header }) => (
-    genre === 'rock' ? 'rgb(255, 255, 49)' :
-    genre === 'pop' ? 'rgb(255, 158, 242)' :
-    genre === 'hip-hop' ? 'rgb(71, 250, 86);)' :
-    genre === 'electronic' ? 'aqua' :
-    genre === 'other' ? '#ff9700' :
-    header ? '#e0e0e0' : 'white'
+  background-color: ${({ $genre, $header }) => (
+    $genre === 'rock' ? 'rgb(255, 255, 49)' :
+    $genre === 'pop' ? 'rgb(255, 158, 242)' :
+    $genre === 'hip-hop' ? 'rgb(71, 250, 86);)' :
+    $genre === 'electronic' ? 'aqua' :
+    $genre === 'other' ? '#ff9700' :
+    $header ? '#e0e0e0' : 'white'
   )};
 `;
 

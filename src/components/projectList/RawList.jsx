@@ -26,17 +26,17 @@ const RawList = ({ projects }) => {
 
   return list.map(({ title, genre }, idx) => (
     <div key={idx}>
-      <Project genre={genre}>{title}</Project>
+      <Project $genre={genre}>{title}</Project>
     </div>
   ));
 };
 
 const Project = styled.span`
-  background-color: ${({ genre }) => (
-    genre === 'rock' ? 'rgb(255, 255, 49)' :
-    genre === 'pop' ? 'rgb(255, 158, 242)' :
-    genre === 'hip-hop' ? 'rgb(71, 250, 86);)' :
-    genre === 'electronic' ? 'aqua' :
+  background-color: ${({ $genre }) => (
+    $genre === 'rock' ? 'rgb(255, 255, 49)' :
+    $genre === 'pop' ? 'rgb(255, 158, 242)' :
+    $genre === 'hip-hop' ? 'rgb(71, 250, 86);)' :
+    $genre === 'electronic' ? 'aqua' :
     '#ff9700'
   )};
 `;

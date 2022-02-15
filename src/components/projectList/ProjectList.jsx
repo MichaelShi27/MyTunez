@@ -1,9 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-import GenreButton from './GenreButton';
 import GenreData from './GenreData';
-import ListFormatButton from './ListFormatButton';
 import NormalList from './NormalList';
 import RawList from './RawList';
 
@@ -17,9 +15,13 @@ const ProjectList = ({ projects }) => {
   return (<>
     <Options>
       <TextWrapper>Total # of projects: {projects.length}</TextWrapper>
-      <GenreButton handleClick={() => setDisplayGenres(!displayGenres)} />
+      <Button handleClick={() => setDisplayGenres(!displayGenres)}>
+        Genre Data
+      </Button>
       <TextWrapper>
-        <ListFormatButton handleClick={toggleListFormat} format={listFormat === 'normal' ? 'normal' : 'raw'} />
+        <Button handleClick={toggleListFormat}>
+          {listFormat === 'raw' ? 'Back' : 'Raw Data'}
+        </Button>
       </TextWrapper>
       {listFormat === 'normal' && (<>
         <label htmlFor="sortBy">Sort by: </label>
@@ -42,6 +44,10 @@ const Options = styled.div`
 const TextWrapper = styled.div`
   display: inline-block;
   margin: 0 10px;
+`;
+
+const Button = styled.button`
+  margin: 15px;
 `;
 
 export default ProjectList;

@@ -73,7 +73,10 @@ const App = () => {
 
   useEffect(() => {
     (projectsAdded || errorMessage) && setDisplayMessage(true);
-    const timeout = setTimeout(() => setDisplayMessage(false), 5000);
+    const timeout = setTimeout(() => {
+      setDisplayMessage(false);
+      setErrorMessage('');
+    }, 5000);
     return () => clearTimeout(timeout);
   }, [ projectsAdded, errorMessage ]);
 

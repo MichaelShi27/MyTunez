@@ -8,7 +8,6 @@ const GenreData = ({ projects, successfulSubmit }) => {
     for (const { genre } of projects)
       counts[genre]++;
     setGenreCounts(counts);
-    console.log('ho')
   };
   useEffect(getCounts, [ successfulSubmit, projects ]);
   const { rock, electronic, pop, other } = genreCounts;

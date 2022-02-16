@@ -10,16 +10,14 @@ const ProjectList = ({ projects }) => {
   const [ listFormat, setListFormat ] = useState('normal');
   const [ sortBy, setSortBy ] = useState('artist');
 
-  const toggleListFormat = () => setListFormat(listFormat === 'normal' ? 'raw' : 'normal');
-
   return (<>
     <Options>
       <TextWrapper>Total # of projects: {projects.length}</TextWrapper>
-      <Button handleClick={() => setDisplayGenres(!displayGenres)}>
+      <Button onClick={() => setDisplayGenres(!displayGenres)}>
         Genre Data
       </Button>
       <TextWrapper>
-        <Button handleClick={toggleListFormat}>
+        <Button onClick={() => setListFormat(listFormat === 'normal' ? 'raw' : 'normal')}>
           {listFormat === 'raw' ? 'Back' : 'Raw Data'}
         </Button>
       </TextWrapper>

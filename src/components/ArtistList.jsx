@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
 const ArtistList = ({ projects }) => {
   const [ artists, setArtists ] = useState([]);
   const [ sortBy, setSortBy ] = useState('name');
 
-  const getArtists = () => {
+  const getArtists = useCallback(() => {
     const artists = [];
     let curArtist = projects[0].artist;
     let projectCount = 0;
@@ -25,8 +25,8 @@ const ArtistList = ({ projects }) => {
         firstAdded = projectDate;
     }
     setArtists(artists);
-  };
-  useEffect(getArtists, [ projects, sortBy ]);
+  }, [ projects ]);
+  useEffect(() => projects.length && getArtists(), [ projects, sortBy, getArtists ]);
 
   if (sortBy === 'number')
     artists.sort((a, b) => b.projectCount - a.projectCount);

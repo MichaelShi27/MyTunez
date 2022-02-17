@@ -1,4 +1,4 @@
-const Project = require('../../database/models/Project');
+const Project = require('../database/models/Project');
 
 exports.getProjects = (req, res) => {
   Project
@@ -17,6 +17,13 @@ exports.addProject = (req, res) => {
       else
         res.status(400).send(err);
     });
+};
+
+exports.getArtist = (req, res) => {
+  const { name } = req.params;
+  Project.find({ artist: name })
+    .sort({ dateAdded: 1 })
+    .then(projects => res.send(projects));
 };
 
 // exports.addProject = (req, res) => Project.create(

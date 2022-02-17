@@ -3,7 +3,7 @@ const path = require('path');
 // const bodyParser = require('body-parser');
 // const controller = require('./controller.js');
 const db = require('../database');
-const { getProjects, addProject } = require('./controllers/Project');
+const { getProjects, addProject, getArtist } = require('./controller');
 const PORT = 8080;
 
 const app = express();
@@ -18,5 +18,6 @@ app.use( express.static(buildDir) );
 
 app.get('/projects', getProjects);
 app.post('/addProject', addProject);
+app.get('/artists/:name', getArtist);
 
 app.listen(PORT, () => console.log(`listening on port ${PORT}!`));

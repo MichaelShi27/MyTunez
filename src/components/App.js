@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 // import './App.css';
 import React, { useState, useEffect } from 'react';
-import { Routes, Route, Link } from 'react-router-dom';
+import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
 import AddProjectForm from './AddProjectForm';
@@ -17,6 +17,10 @@ const App = () => {
   const [ successfulSubmit, setSuccessfulSubmit ] = useState(0);
   const [ displayMessage, setDisplayMessage ] = useState(false);
   const [ errorMessage, setErrorMessage ] = useState('');
+  const [ currentList, setCurrentList ] = useState('');
+
+  const { pathname: path } = useLocation();
+  useEffect(() => setCurrentList(path === '/' ? 'projects' : 'artists'), [ path ]);
 
   const validateInput = ({ title, artist, releaseYear }) => (
     (!title || !artist) ? 'Please fill in both the title and artist fields!' :
@@ -81,17 +85,18 @@ const App = () => {
   return (<>
     <Header>myTunez</Header>
     {displayMessage && (
-    <Message
-      message={errorMessage}
-      successfulSubmit={successfulSubmit}
-      projectsAdded={projectsAdded}
-    />)}
+      <Message
+        message={errorMessage}
+        successfulSubmit={successfulSubmit}
+        projectsAdded={projectsAdded}
+      />
+    )}
     <AddProjectForm handleSubmit={addProject} />
     <Link to="/">
-      <Button>Projects</Button>
+      <Button $selected={currentList === 'projects'}>Projects</Button>
     </Link>
     <Link to="/artists">
-      <Button>Artists</Button>
+      <Button $selected={currentList === 'artists'}>Artists</Button>
     </Link>
     <Routes>
       <Route path="/" element={<ProjectList projects={projects} />} />

@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 const NormalList = ({ projects, sortBy }) => {
@@ -13,7 +14,9 @@ const NormalList = ({ projects, sortBy }) => {
     {sortedProjects.map(({ title, artist, genre }, idx) => (
       <Project key={idx}>
         <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
-        <TextWrapper $type={'artist'}>{artist}</TextWrapper>
+        <Link to={`/artists/${artist}`}>
+          <TextWrapper $type={'artist'}>{artist}</TextWrapper>
+        </Link>
         <TextWrapper $type={'genre'} $genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
       </Project>
     ))}

@@ -8,6 +8,7 @@ import AddProjectForm from './AddProjectForm';
 import ProjectList from './projectList/ProjectList';
 import Message from './Message';
 import ArtistList from './ArtistList';
+import Artist from './Artist';
 
 import { Header, Button } from './styles.js';
 
@@ -20,7 +21,14 @@ const App = () => {
   const [ currentList, setCurrentList ] = useState('');
 
   const { pathname: path } = useLocation();
-  useEffect(() => setCurrentList(path === '/' ? 'projects' : 'artists'), [ path ]);
+  useEffect(() => {
+    if (path === '/')
+      setCurrentList('projects');
+    else if (path === '/artists')
+      setCurrentList('artists');
+    else
+      setCurrentList('');
+  }, [ path ]);
 
   const validateInput = ({ title, artist, releaseYear }) => (
     (!title || !artist) ? 'Please fill in both the title and artist fields!' :
@@ -101,6 +109,7 @@ const App = () => {
     <Routes>
       <Route path="/" element={<ProjectList projects={projects} />} />
       <Route path="/artists" element={<ArtistList projects={projects} />} />
+      <Route path="/artists/:name" element={<Artist allProjects={projects} />} />
     </Routes>
   </>);
 };

@@ -9,6 +9,7 @@ import ProjectList from './projectList/ProjectList';
 import Message from './Message';
 import ArtistList from './ArtistList';
 import Artist from './Artist';
+import Project from './Project';
 
 import { Header, Button } from './styles.js';
 
@@ -78,7 +79,7 @@ const App = () => {
       .catch(console.log);
   };
 
-  const getProjects = () => axios('projects').then(({ data }) => setProjects(data));
+  const getProjects = () => axios('/projects').then(({ data }) => setProjects(data));
   useEffect(getProjects, [ projectsAdded ]);
 
   useEffect(() => {
@@ -110,6 +111,7 @@ const App = () => {
       <Route path="/" element={<ProjectList projects={projects} />} />
       <Route path="/artists" element={<ArtistList projects={projects} />} />
       <Route path="/artists/:name" element={<Artist allProjects={projects} />} />
+      <Route path="/projects/:id" element={<Project />} />
     </Routes>
   </>);
 };

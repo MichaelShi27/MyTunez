@@ -11,9 +11,11 @@ const NormalList = ({ projects, sortBy }) => {
       <TextWrapper $header={'true'} $type={'artist'}>Artist</TextWrapper>
       <TextWrapper $header={'true'} $type={'genre'}>Genre</TextWrapper>
     </Header>
-    {sortedProjects.map(({ title, artist, genre }, idx) => (
+    {sortedProjects.map(({ title, artist, genre, _id }, idx) => (
       <Project key={idx}>
-        <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
+        <Link to={`/projects/${_id}`}>
+          <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
+        </Link>
         <Link to={`/artists/${artist}`}>
           <TextWrapper $type={'artist'}>{artist}</TextWrapper>
         </Link>

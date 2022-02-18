@@ -1,6 +1,6 @@
 const Project = require('../database/models/Project');
 
-exports.getProjects = (req, res) => {
+exports.getAllProjects = (req, res) => {
   Project
     .find({})
     .sort({ artistForSorting: 1, dateAdded: 1 })
@@ -24,6 +24,12 @@ exports.getArtist = (req, res) => {
   Project.find({ artist: name })
     .sort({ dateAdded: 1 })
     .then(projects => res.send(projects));
+};
+
+exports.getProject = (req, res) => {
+  const { id } = req.params;
+  Project.find({ _id: id })
+    .then(project => res.send(project));
 };
 
 // exports.addProject = (req, res) => Project.create(

@@ -3,7 +3,7 @@ const path = require('path');
 // const bodyParser = require('body-parser');
 // const controller = require('./controller.js');
 const db = require('../database');
-const { getProjects, addProject, getArtist } = require('./controller');
+const { getAllProjects, addProject, getArtist, getProject } = require('./controller');
 const PORT = 8080;
 
 const app = express();
@@ -16,8 +16,9 @@ app.use( express.static(buildDir) );
 
 // app.get('/', (req, res) => res.sendFile(buildIndexFile)); // we don't appear to actually need this line
 
-app.get('/projects', getProjects);
+app.get('/projects', getAllProjects);
 app.post('/addProject', addProject);
 app.get('/artists/:name', getArtist);
+app.get('/projects/:id', getProject);
 
 app.listen(PORT, () => console.log(`listening on port ${PORT}!`));

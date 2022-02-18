@@ -20,9 +20,12 @@ const App = () => {
   const [ displayMessage, setDisplayMessage ] = useState(false);
   const [ errorMessage, setErrorMessage ] = useState('');
   const [ currentList, setCurrentList ] = useState('');
+  const [ displayForm, setDisplayForm ] = useState(true);
 
   const { pathname: path } = useLocation();
   useEffect(() => {
+    setDisplayForm(!(path.indexOf('/projects') === 0));
+
     if (path === '/')
       setCurrentList('projects');
     else if (path === '/artists')
@@ -100,7 +103,7 @@ const App = () => {
         projectsAdded={projectsAdded}
       />
     )}
-    <AddProjectForm handleSubmit={addProject} />
+    {displayForm && <AddProjectForm handleSubmit={addProject} />}
     <Link to="/">
       <Button $selected={currentList === 'projects'}>Projects</Button>
     </Link>

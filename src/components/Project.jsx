@@ -18,6 +18,8 @@ const Project = () => {
     const date = new Date(dateAdded);
     return `${1 + date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
   };
+
+  if (!artist) return null;
   return (
     <Container>
       <Name><em>{title}</em></Name>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
+import { StyledLink } from './styles.js';
 
 const Project = () => {
   const [ project, setProject ] = useState({});
@@ -29,9 +30,9 @@ const Project = () => {
         <TextWrapper $header={'true'} $type={'date'}>Date Added</TextWrapper>
       </Header>
       <Wrapper>
-        <Link to={`/artists/${artist}`}>
+        <StyledLink to={`/artists/${artist}`}>
           <TextWrapper $type={'artist'}>{artist}</TextWrapper>
-        </Link>
+        </StyledLink>
         <TextWrapper $type={'genre'} $genre={genre}>{genre && (genre[0].toUpperCase() + genre.slice(1))}</TextWrapper>
         <TextWrapper $type={'date'}>{formatDate(dateAdded)}</TextWrapper>
       </Wrapper>

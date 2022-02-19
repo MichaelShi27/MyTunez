@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { StyledLink } from '../styles.js';
 
 const NormalList = ({ projects, sortBy }) => {
   const projectsCopy = projects.slice();
@@ -13,12 +13,12 @@ const NormalList = ({ projects, sortBy }) => {
     </Header>
     {sortedProjects.map(({ title, artist, genre, _id }, idx) => (
       <Project key={idx}>
-        <Link to={`/projects/${_id}`}>
+        <StyledLink to={`/projects/${_id}`}>
           <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
-        </Link>
-        <Link to={`/artists/${artist}`}>
+        </StyledLink>
+        <StyledLink to={`/artists/${artist}`}>
           <TextWrapper $type={'artist'}>{artist}</TextWrapper>
-        </Link>
+        </StyledLink>
         <TextWrapper $type={'genre'} $genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
       </Project>
     ))}

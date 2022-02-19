@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { StyledLink } from './styles.js';
 
 const ArtistList = ({ projects }) => {
   const [ artists, setArtists ] = useState([]);
@@ -52,9 +52,9 @@ const ArtistList = ({ projects }) => {
     </Header>
     {artists.map(({ name, projectCount }, idx) => (
       <Artist key={idx}>
-        <Link to={`/artists/${name}`}>
+        <StyledLink to={`/artists/${name}`}>
           <TextWrapper $type={'name'}>{name}</TextWrapper>
-        </Link>
+        </StyledLink>
         <TextWrapper $type={'number'}>{projectCount}</TextWrapper>
       </Artist>
     ))}

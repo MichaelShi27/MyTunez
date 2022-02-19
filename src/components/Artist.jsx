@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
+import { StyledLink } from './styles.js';
 
 const Artist = ({ allProjects }) => {
   const [ projects, setProjects ] = useState([]);
@@ -22,9 +23,9 @@ const Artist = ({ allProjects }) => {
       </Header>
       {projects.map(({ title, genre, _id }, idx) => (
         <Project key={idx}>
-          <Link to={`/projects/${_id}`}>
+          <StyledLink to={`/projects/${_id}`}>
             <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
-          </Link>
+          </StyledLink>
           <TextWrapper $type={'genre'} $genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
         </Project>
       ))}

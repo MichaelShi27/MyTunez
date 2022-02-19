@@ -4,7 +4,8 @@ exports.getAllProjects = (req, res) => {
   Project
     .find({})
     .sort({ artistForSorting: 1, dateAdded: 1 })
-    .then(projects => res.send(projects));
+    .then(projects => res.send(projects))
+    .catch(console.log);
 };
 
 exports.addProject = (req, res) => {
@@ -20,16 +21,23 @@ exports.addProject = (req, res) => {
 };
 
 exports.getArtist = (req, res) => {
-  const { name } = req.params;
-  Project.find({ artist: name })
+  Project.find({ artist: req.params.name })
     .sort({ dateAdded: 1 })
-    .then(projects => res.send(projects));
+    .then(projects => res.send(projects))
+    .catch(console.log);
 };
 
 exports.getProject = (req, res) => {
-  const { id } = req.params;
-  Project.find({ _id: id })
-    .then(project => res.send(project));
+  Project.find({ _id: req.params.id })
+    .then(project => res.send(project))
+    .catch(console.log);
+};
+
+exports.editProject = (req, res) => {
+  const { params: { id }, body } = req;
+  Project.updateOne({ _id: id }, { ...body })
+    .then(({ modifiedCount }) => res.send(modifiedCount ? 'success' : 'duplicate input'))
+    .catch(console.log);
 };
 
 // exports.addProject = (req, res) => Project.create(

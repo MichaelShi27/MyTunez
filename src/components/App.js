@@ -60,7 +60,7 @@ const App = () => {
   };
 
   const getProjects = () => axios('/projects').then(({ data }) => setProjects(data));
-  useEffect(getProjects, [ projectsAdded ]);
+  useEffect(getProjects, [ projectsAdded, currentList ]);
 
   useEffect(() => {
     (projectsAdded || errorMessage) && setDisplayMessage(true);

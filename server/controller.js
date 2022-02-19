@@ -1,8 +1,7 @@
 const Project = require('../database/models/Project');
 
 exports.getAllProjects = (req, res) => {
-  Project
-    .find({})
+  Project.find({})
     .sort({ artistForSorting: 1, dateAdded: 1 })
     .then(projects => res.send(projects))
     .catch(console.log);

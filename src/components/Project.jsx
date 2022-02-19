@@ -99,7 +99,7 @@ const Project = () => {
     </Button>
     {displayMessage && displayForm && (
       <MessageWrapper>
-        <Message message={errorMessage} edit={successfulEdit} />
+        <Message message={errorMessage} edited={successfulEdit} />
       </MessageWrapper>
     )}
     {displayForm && <EditProjectForm handleSubmit={editProject} project={project} />}

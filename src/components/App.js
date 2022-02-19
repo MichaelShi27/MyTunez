@@ -63,7 +63,7 @@ const App = () => {
   useEffect(getProjects, [ projectsAdded, currentList ]);
 
   useEffect(() => {
-    (projectsAdded || errorMessage) && setDisplayMessage(true);
+    setDisplayMessage(projectsAdded || errorMessage);
     const timeout = setTimeout(() => {
       setDisplayMessage(false);
       setErrorMessage('');
@@ -76,7 +76,7 @@ const App = () => {
     {displayMessage && (
       <Message
         message={errorMessage}
-        submit={successfulSubmit}
+        added={successfulSubmit}
         projectsAdded={projectsAdded}
       />
     )}

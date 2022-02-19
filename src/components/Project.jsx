@@ -49,13 +49,14 @@ const Project = () => {
   };
 
   useEffect(() => {
+    displayForm && setDisplayForm(!successfulEdit);
     setDisplayMessage(errorMessage || successfulEdit);
     const timeout = setTimeout(() => {
       setDisplayMessage(false);
       setErrorMessage('');
     }, 5000);
     return () => clearTimeout(timeout);
-  }, [ errorMessage, successfulEdit ]);
+  }, [ errorMessage, successfulEdit, displayForm ]);
 
   const deleteProject = () => {
     axios.delete(`/deleteProject/${id}`)
@@ -97,7 +98,7 @@ const Project = () => {
     <Button style={buttonStyle} onClick={() => setDisplayForm(!displayForm)}>
       {displayForm ? 'Close' : 'Edit Project'}
     </Button>
-    {displayMessage && displayForm && (
+    {displayMessage && (
       <MessageWrapper>
         <Message message={errorMessage} edited={successfulEdit} />
       </MessageWrapper>
@@ -161,6 +162,7 @@ const Header = styled(Wrapper)`
 
 const MessageWrapper = styled.div`
   margin-top: 20px;
+  margin-bottom: 20px;
   text-align: center;
 `;
 

@@ -12,6 +12,7 @@ import Artist from './Artist';
 import Project from './Project';
 
 import { Header, Button } from './styles.js';
+import { validateInput, wrangleInput } from '../helpers.js';
 
 const App = () => {
   const [ projects, setProjects ] = useState([]);
@@ -33,30 +34,6 @@ const App = () => {
     else
       setCurrentList('');
   }, [ path ]);
-
-  const validateInput = ({ title, artist, releaseYear }) => (
-    (!title || !artist) ? 'Please fill in both the title and artist fields!' :
-    isNaN(releaseYear) ? 'Please enter a number in the year field!' :
-    (releaseYear > new Date().getYear() + 1900) ? 'Please enter a valid year!' : ''
-  );
-
-  const wrangleInput = newProject => {
-    for (const key in newProject)
-      if (key !== 'dateAdded')
-        newProject[key] = newProject[key].value;
-
-    let str = newProject.artist.toLowerCase(); // MongoDB doesn't allow case-insensitive sorting
-    if (str.indexOf('the ') === 0)
-      str = str.slice(4);
-
-    const artistForSorting = [];
-    for (const char of str) {
-      if (char === '.' || char === ',' || char === ' ')
-        continue;
-      artistForSorting.push(char === '$' ? 's' : char);
-    }
-    newProject.artistForSorting = artistForSorting.join('');
-  };
 
   const addProject = e => {
     e.preventDefault();

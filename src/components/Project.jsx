@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
-import { StyledLink } from './styles.js';
+import { Button, StyledLink } from './styles.js';
 
 const Project = () => {
   const [ project, setProject ] = useState({});
+  const [ displayForm, setDisplayForm ] = useState(false);
   const { id } = useParams();
 
   const getProject = () => {
@@ -21,7 +22,14 @@ const Project = () => {
   };
 
   if (!artist) return null;
-  return (
+
+  const buttonStyle = {
+    margin: 'auto',
+    width: displayForm ? '50px' : '80px',
+    display: 'block',
+    'font-size': '10px'
+  };
+  return (<>
     <Container>
       <Name><em>{title}</em></Name>
       <Header>
@@ -37,11 +45,15 @@ const Project = () => {
         <TextWrapper $type={'date'}>{formatDate(dateAdded)}</TextWrapper>
       </Wrapper>
     </Container>
-  );
+    <Button style={buttonStyle} onClick={() => setDisplayForm(!displayForm)}>
+      {displayForm ? 'Cancel' : 'Edit Project'}
+    </Button>
+  </>);
 };
 
 const Container = styled.div`
   margin: auto;
+  margin-bottom: 20px;
   width: 520px;
 `;
 

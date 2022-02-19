@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Navigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -16,6 +16,7 @@ const Project = () => {
   const [ successfulEdit, setSuccessfulEdit ] = useState(false);
   const [ displayMessage, setDisplayMessage ] = useState(false);
   const [ errorMessage, setErrorMessage ] = useState('');
+  const [ deleted, setDeleted ] = useState(false);
   const { id } = useParams();
 
   const getProject = () => axios(`/projects/${id}`).then(({ data }) => setProject(data[0]));
@@ -41,14 +42,14 @@ const Project = () => {
 
     axios.patch(`/editProject/${id}`, newData)
       .then(({ data }) => {
-        data === 'success' && setSuccessfulEdit(true);
+        setSuccessfulEdit(data === 'success');
         data === 'duplicate input' && setErrorMessage('This information has already been entered!');
       })
       .catch(console.log);
   };
 
   useEffect(() => {
-    (errorMessage || successfulEdit) && setDisplayMessage(true);
+    setDisplayMessage(errorMessage || successfulEdit);
     const timeout = setTimeout(() => {
       setDisplayMessage(false);
       setErrorMessage('');
@@ -56,10 +57,23 @@ const Project = () => {
     return () => clearTimeout(timeout);
   }, [ errorMessage, successfulEdit ]);
 
+  const deleteProject = () => {
+    axios.delete(`/deleteProject/${id}`)
+      .then(({ data }) => setDeleted(data === 'success'))
+      .catch(console.log);
+  };
+
   if (!artist) return null;
+  if (deleted) return (
+    <MessageWrapper>
+      <Message deleted={deleted} />
+    </MessageWrapper>
+  );
 
   const buttonStyle = {
     margin: 'auto',
+    marginTop: '10px',
+    marginBottom: '10px',
     width: displayForm ? '50px' : '80px',
     display: 'block',
     fontSize: '10px'
@@ -89,12 +103,14 @@ const Project = () => {
       </MessageWrapper>
     )}
     {displayForm && <EditProjectForm handleSubmit={editProject} project={project} />}
+    <Button style={{ ...buttonStyle, width: '80px' }} onClick={deleteProject}>
+      Delete Project
+    </Button>
   </>);
 };
 
 const Container = styled.div`
   margin: auto;
-  margin-bottom: 20px;
   width: 520px;
 `;
 

@@ -39,6 +39,12 @@ exports.editProject = (req, res) => {
     .catch(console.log);
 };
 
+exports.deleteProject = (req, res) => {
+  Project.deleteOne({ _id: req.params.id })
+    .then(({ deletedCount }) => deletedCount === 1 && res.send('success'))
+    .catch(console.log);
+};
+
 // exports.addProject = (req, res) => Project.create(
 //   req.body,
 //   (err, data) => err ? console.log(err) : res.send(data)

@@ -14,11 +14,10 @@ const wrangleInput = projectData => {
     str = str.slice(4);
 
   const artistForSorting = [];
-  for (const char of str) {
-    if (char === '.' || char === ',' || char === ' ')
-      continue;
-    artistForSorting.push(char === '$' ? 's' : char);
-  }
+  for (const char of str)
+    if (char !== '.' && char !== ',' && char !== ' ')
+      artistForSorting.push(char === '$' ? 's' : char);
+
   projectData.artistForSorting = artistForSorting.join('');
 };
 

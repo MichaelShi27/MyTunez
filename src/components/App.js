@@ -12,12 +12,12 @@ import Artist from './Artist';
 import Project from './Project';
 
 import { Header, Button } from './styles.js';
-import { validateInput, wrangleInput } from '../helpers.js';
+import { wrangleInput, validateInput } from '../helpers.js';
 
 const App = () => {
   const [ projects, setProjects ] = useState([]);
   const [ projectsAdded, setProjectsAdded ] = useState(0);
-  const [ successfulSubmit, setSuccessfulSubmit ] = useState(0);
+  const [ successfulSubmit, setSuccessfulSubmit ] = useState(false);
   const [ displayMessage, setDisplayMessage ] = useState(false);
   const [ errorMessage, setErrorMessage ] = useState('');
   const [ currentList, setCurrentList ] = useState('');
@@ -76,7 +76,7 @@ const App = () => {
     {displayMessage && (
       <Message
         message={errorMessage}
-        successfulSubmit={successfulSubmit}
+        submit={successfulSubmit}
         projectsAdded={projectsAdded}
       />
     )}

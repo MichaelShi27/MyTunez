@@ -1,9 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Message = ({ message, projectsAdded, successfulSubmit }) => {
-  if (successfulSubmit)
-    return <Wrapper $success={successfulSubmit}>Project added! You have added {projectsAdded} project{projectsAdded === 1 ? '' : 's'}.</Wrapper>;
+const Message = ({ message, projectsAdded, submit, edit }) => {
+  if (submit)
+    return <Wrapper $success={submit}>Project added! You have added {projectsAdded} project{projectsAdded === 1 ? '' : 's'}.</Wrapper>;
+  if (edit)
+    return <Wrapper $success={edit}>Project successfully edited!</Wrapper>;
   if (message)
     return <Wrapper message={message}>Error: {message}</Wrapper>;
   return null;

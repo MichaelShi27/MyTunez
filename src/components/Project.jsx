@@ -2,18 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
+
+import EditProjectForm from './EditProjectForm';
+import Message from './Message';
+
 import { Button, StyledLink } from './styles.js';
+import { wrangleInput, validateInput } from '../helpers.js';
+
 
 const Project = () => {
   const [ project, setProject ] = useState({});
   const [ displayForm, setDisplayForm ] = useState(false);
+  const [ successfulEdit, setSuccessfulEdit ] = useState(false);
+  const [ displayMessage, setDisplayMessage ] = useState(false);
+  const [ errorMessage, setErrorMessage ] = useState('');
   const { id } = useParams();
 
-  const getProject = () => {
-    axios(`/projects/${id}`)
-      .then(({ data }) => setProject(data[0]));
-  };
-  useEffect(getProject, [ id ]);
+  const getProject = () => axios(`/projects/${id}`).then(({ data }) => setProject(data[0]));
+  useEffect(getProject, [ id, successfulEdit ]);
 
   const { artist, dateAdded, genre, title } = project;
   const formatDate = dateStr => {
@@ -21,13 +27,42 @@ const Project = () => {
     return `${1 + date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
   };
 
+  const editProject = e => {
+    e.preventDefault();
+    setSuccessfulEdit(false);
+
+    const { title, artist, genre, releaseYear } = e.target;
+    const newData = { title, artist, genre, releaseYear };
+    wrangleInput(newData);
+
+    const errMsg = validateInput(newData);
+    setErrorMessage(errMsg);
+    if (errMsg) return;
+
+    axios.patch(`/editProject/${id}`, newData)
+      .then(({ data }) => {
+        data === 'success' && setSuccessfulEdit(true);
+        data === 'duplicate input' && setErrorMessage('This information has already been entered!');
+      })
+      .catch(console.log);
+  };
+
+  useEffect(() => {
+    (errorMessage || successfulEdit) && setDisplayMessage(true);
+    const timeout = setTimeout(() => {
+      setDisplayMessage(false);
+      setErrorMessage('');
+    }, 5000);
+    return () => clearTimeout(timeout);
+  }, [ errorMessage, successfulEdit ]);
+
   if (!artist) return null;
 
   const buttonStyle = {
     margin: 'auto',
     width: displayForm ? '50px' : '80px',
     display: 'block',
-    'font-size': '10px'
+    fontSize: '10px'
   };
   return (<>
     <Container>
@@ -46,8 +81,14 @@ const Project = () => {
       </Wrapper>
     </Container>
     <Button style={buttonStyle} onClick={() => setDisplayForm(!displayForm)}>
-      {displayForm ? 'Cancel' : 'Edit Project'}
+      {displayForm ? 'Close' : 'Edit Project'}
     </Button>
+    {displayMessage && displayForm && (
+      <MessageWrapper>
+        <Message message={errorMessage} edit={successfulEdit} />
+      </MessageWrapper>
+    )}
+    {displayForm && <EditProjectForm handleSubmit={editProject} project={project} />}
   </>);
 };
 
@@ -100,6 +141,11 @@ const Header = styled(Wrapper)`
   border: none;
   padding: 8px 2px 5px;
   width: 500x;
+`;
+
+const MessageWrapper = styled.div`
+  margin-top: 20px;
+  text-align: center;
 `;
 
 export default Project;

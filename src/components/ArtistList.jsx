@@ -45,8 +45,8 @@ const ArtistList = ({ projects, query }) => {
 
   return (<>
     <Options>
-      <TextWrapper>Total # of artists: {artists.length}</TextWrapper>
-      <Button onClick={() => setDisplayAll(!displayAll)}>{displayAll ? 'Hide' : 'Show'} All</Button>
+      <TextWrapper># of artists: {sortedArtists.length}</TextWrapper>
+      {!query && <Button onClick={() => setDisplayAll(!displayAll)}>{displayAll ? 'Hide' : 'Show'} All</Button>}
       <div style={{ margin: '0 20px', display: 'inline-block' }}>
         {displayAll && (<>
           <label htmlFor="sortBy">Sort by: </label>
@@ -58,7 +58,7 @@ const ArtistList = ({ projects, query }) => {
         </>)}
       </div>
     </Options>
-    {displayAll && (<>
+    {(displayAll || query) && (<>
       <Header>
         <TextWrapper $header={'true'} $type={'name'}>Name</TextWrapper>
         <TextWrapper $header={'true'} $type={'number'}># of Projects</TextWrapper>

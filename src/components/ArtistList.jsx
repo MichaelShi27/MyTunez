@@ -63,14 +63,16 @@ const ArtistList = ({ projects, query }) => {
         <TextWrapper $header={'true'} $type={'name'}>Name</TextWrapper>
         <TextWrapper $header={'true'} $type={'number'}># of Projects</TextWrapper>
       </Header>
-      {sortedArtists.map(({ name, projectCount }, idx) => (
-        <Artist key={idx}>
-          <StyledLink to={`/artists/${name}`}>
-            <TextWrapper $type={'name'}>{name}</TextWrapper>
-          </StyledLink>
-          <TextWrapper $type={'number'}>{projectCount}</TextWrapper>
-        </Artist>
-      ))}
+      <ListContainer>
+        {sortedArtists.map(({ name, projectCount }, idx) => (
+          <Artist key={idx}>
+            <StyledLink to={`/artists/${name}`}>
+              <TextWrapper $type={'name'}>{name}</TextWrapper>
+            </StyledLink>
+            <TextWrapper $type={'number'}>{projectCount}</TextWrapper>
+          </Artist>
+        ))}
+      </ListContainer>
     </>)}
   </>);
 };
@@ -94,6 +96,14 @@ const TextWrapper = styled.div`
 
 const Button = styled.button`
   margin-left: 20px;
+`;
+
+const ListContainer = styled.div`
+  border: 1px solid gray;
+  width: 510px;
+  height: 600px;
+  overflow: auto;
+  margin-top: 5px;
 `;
 
 const Artist = styled.div`

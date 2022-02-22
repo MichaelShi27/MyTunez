@@ -12,6 +12,9 @@ const DeletionModal = ({ deleteProject, hideModal }) => (<>
 
 const Button = styled.button`
   margin: 20px 30px 0;
+  background-color: #CBCBCB;
+  border-radius: 3px;
+  border: 1px solid black;
 `;
 
 const slideUp = keyframes`
@@ -27,8 +30,9 @@ const Modal = styled.div`
   padding: 20px;
   text-align: center;
   border: 1px solid black;
-  width: 300px;
+  width: 320px;
   animation: ${slideUp} 0.5s;
+  font-family: Helvetica, Arial, sans-serif;
 `;
 
 const ModalBackground = styled.div`
@@ -37,7 +41,7 @@ const ModalBackground = styled.div`
   top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0,0,0,0.6);
+  background-color: rgba(0,0,0,0.4);
 `;
 
 export default DeletionModal;

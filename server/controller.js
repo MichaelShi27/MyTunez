@@ -36,7 +36,12 @@ exports.editProject = (req, res) => {
   const { params: { id }, body } = req;
   Project.updateOne({ _id: id }, { ...body })
     .then(({ modifiedCount }) => res.send(modifiedCount ? 'success' : 'duplicate input'))
-    .catch(console.log);
+    .catch(err => {
+      if (err.code === 11000)
+        res.send('duplicate input');
+      else
+        res.status(400).send(err);
+    });
 };
 
 exports.deleteProject = (req, res) => {

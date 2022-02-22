@@ -16,9 +16,11 @@ const ProjectList = ({ projects }) => {
       <TextWrapper>Total # of projects: {projects.length}</TextWrapper>
       {listFormat === 'normal' && (<>
         <Button onClick={() => setDisplayAllProjects(!displayAllProjects)}>
-          {displayAllProjects ? 'Hide' : 'Show'} All
+          {displayAllProjects ? 'Hide' : 'View'} All Projects
         </Button>
-        <Button onClick={() => setDisplayGenres(!displayGenres)}>Genre Data</Button>
+        <Button onClick={() => setDisplayGenres(!displayGenres)}>
+          {displayGenres ? 'Hide' : 'View'} Genre Data
+        </Button>
       </>)}
       {displayAllProjects && (<>
         <Button onClick={() => setListFormat(listFormat === 'normal' ? 'raw' : 'normal')}>

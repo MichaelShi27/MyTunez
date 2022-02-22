@@ -48,7 +48,7 @@ const ArtistList = ({ projects, query }) => {
       <TextWrapper># of artists: {sortedArtists.length}</TextWrapper>
       {!query && (
         <Button onClick={() => setDisplayAllArtists(!displayAllArtists)}>
-          {displayAllArtists ? 'Hide' : 'Show'} All
+          {displayAllArtists ? 'Hide' : 'View'} All Artists
         </Button>
       )}
       <div style={{ margin: '0 20px', display: 'inline-block' }}>

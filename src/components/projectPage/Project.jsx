@@ -83,7 +83,6 @@ const Project = () => {
   };
   return (<>
     <Container>
-      {displayModal && <DeleteModal />}
       <Name><em>{title}</em></Name>
       <Header>
         <TextWrapper $header={'true'} $type={'artist'}>Artist</TextWrapper>
@@ -110,6 +109,7 @@ const Project = () => {
     <Button style={{ ...buttonStyle, width: '80px' }} onClick={() => setDisplayModal(true)}>
       Delete Project
     </Button>
+    {displayModal && <DeleteModal deleteProject={deleteProject} hideModal={() => setDisplayModal(false)} />}
   </>);
 };
 

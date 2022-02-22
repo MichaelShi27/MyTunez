@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
 const DeleteModal = ({ deleteProject, hideModal }) => {
   return (<>
@@ -8,12 +8,17 @@ const DeleteModal = ({ deleteProject, hideModal }) => {
       <Button onClick={hideModal}>Cancel</Button>
       <Button onClick={deleteProject}>Delete Project</Button>
     </Modal>
-    <ModalBackground />
+    <ModalBackground onClick={hideModal} />
   </>);
 };
 
 const Button = styled.button`
   margin: 20px 30px 0;
+`;
+
+const slideUp = keyframes`
+  from { top: 300px; opacity: 0 }
+  to { top: 0; opacity: 1 }
 `;
 
 const Modal = styled.div`
@@ -22,8 +27,10 @@ const Modal = styled.div`
   position: relative;
   margin: 20px auto;
   padding: 20px;
+  text-align: center;
   border: 1px solid black;
   width: 300px;
+  animation: ${slideUp} 0.5s;
 `;
 
 const ModalBackground = styled.div`

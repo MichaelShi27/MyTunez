@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { StyledLink } from '../styles.js';
 
 const NormalList = ({ projects, sortBy }) => {
-  const projectsCopy = projects.slice();
-  const sortedProjects = sortBy === 'artist' ? projects : projectsCopy.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded));
+  const [ sortedProjects, setSortedProjects ] = useState([]);
+
+  useEffect(() => {
+    const projectsCopy = projects.slice();
+    setSortedProjects(
+      sortBy === 'artist'
+        ? projects
+        : projectsCopy.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
+    );
+  }, [ projects, sortBy ]);
+
   return (<>
     <Header>
       <TextWrapper $header={'true'} $type={'title'}>Project Title</TextWrapper>

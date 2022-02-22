@@ -10,6 +10,7 @@ import Message from './Message';
 import ArtistList from './ArtistList';
 import Artist from './Artist';
 import Project from './projectPage/Project';
+import SearchBar from './SearchBar';
 
 import { Header, Button } from './styles.js';
 import { wrangleInput, validateInput } from '../helpers.js';
@@ -20,12 +21,15 @@ const App = () => {
   const [ successfulSubmit, setSuccessfulSubmit ] = useState(false);
   const [ displayMessage, setDisplayMessage ] = useState(false);
   const [ errorMessage, setErrorMessage ] = useState('');
-  const [ currentList, setCurrentList ] = useState('');
+  const [ currentList, setCurrentList ] = useState('projects');
   const [ displayForm, setDisplayForm ] = useState(true);
+  const [ displaySearch, setDisplaySearch ] = useState(true);
+  const [ searchQuery, setSearchQuery ] = useState('');
 
   const { pathname: path } = useLocation();
   useEffect(() => {
     setDisplayForm(!(path.indexOf('/projects') === 0));
+    setDisplaySearch(path === '/' || path === '/artists');
 
     if (path === '/')
       setCurrentList('projects');
@@ -87,6 +91,13 @@ const App = () => {
     <Link to="/artists">
       <Button $selected={currentList === 'artists'}>Artists</Button>
     </Link>
+    {displaySearch && (
+      <SearchBar
+        list={currentList}
+        searchQuery={searchQuery}
+        handleChange={e => setSearchQuery(e.target.value)}
+      />
+    )}
     <Routes>
       <Route path="/" element={<ProjectList projects={projects} />} />
       <Route path="/artists" element={<ArtistList projects={projects} />} />

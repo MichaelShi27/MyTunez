@@ -27,23 +27,32 @@ for (const projectTitle of projectTitles) {
   } else
     title = text;
 
-    let str = artist.toLowerCase(); // MongoDB doesn't allow case-insensitive sorting
-    if (str.indexOf('the ') === 0)
-      str = str.slice(4);
+  let str = artist.toLowerCase(); // MongoDB doesn't allow case-insensitive sorting
+  if (str.indexOf('the ') === 0)
+    str = str.slice(4);
 
-    let artistForSorting = [];
-    for (const char of str) {
-      if (char === '.' || char === ',' || char === ' ')
-        continue;
-      artistForSorting.push(char === '$' ? 's' : char);
+  let artistForSorting = [];
+  for (const char of str) {
+    if (char === '.' || char === ',' || char === ' ')
+      continue;
+    artistForSorting.push(char === '$' ? 's' : char);
+  }
+  artistForSorting = artistForSorting.join('');
+
+  // replace smart apostrophes w/ straight ones
+  const obj = { artist, title, genre, artistForSorting };
+  for (const key in obj) {
+    const val = obj[key];
+    const idx = val.indexOf('’');
+    if (idx >= 0) {
+      const split = val.split('');
+      split.splice(idx, 1, "'");
+      obj[key] = split.join('');
     }
-    artistForSorting = artistForSorting.join('');
+  }
 
   projects.push({
-    artist,
-    title,
-    genre,
-    artistForSorting,
+    ...obj,
     dateAdded: `1900-01-${fakeDate}`,
     subgenre: '',
     releaseYear: 0

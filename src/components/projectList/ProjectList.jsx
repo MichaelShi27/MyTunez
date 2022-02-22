@@ -9,16 +9,18 @@ const ProjectList = ({ projects }) => {
   const [ displayGenres, setDisplayGenres ] = useState(false);
   const [ listFormat, setListFormat ] = useState('normal');
   const [ sortBy, setSortBy ] = useState('artist');
-  const [ displayAll, setDisplayAll ] = useState(false);
+  const [ displayAllProjects, setDisplayAllProjects ] = useState(false);
 
   return (<>
     <Options>
       <TextWrapper>Total # of projects: {projects.length}</TextWrapper>
       {listFormat === 'normal' && (<>
-        <Button onClick={() => setDisplayAll(!displayAll)}>{displayAll ? 'Hide' : 'Show'} All</Button>
+        <Button onClick={() => setDisplayAllProjects(!displayAllProjects)}>
+          {displayAllProjects ? 'Hide' : 'Show'} All
+        </Button>
         <Button onClick={() => setDisplayGenres(!displayGenres)}>Genre Data</Button>
       </>)}
-      {displayAll && (<>
+      {displayAllProjects && (<>
         <Button onClick={() => setListFormat(listFormat === 'normal' ? 'raw' : 'normal')}>
           {listFormat === 'raw' ? 'Back' : 'Raw Data'}
         </Button>
@@ -32,7 +34,7 @@ const ProjectList = ({ projects }) => {
       </>)}
     </Options>
     {displayGenres && <GenreData projects={projects}/>}
-    {displayAll && (<>
+    {displayAllProjects && (<>
       {listFormat === 'normal' && <NormalList projects={projects} sortBy={sortBy} />}
       {listFormat === 'raw' && <RawList projects={projects} />}
     </>)}

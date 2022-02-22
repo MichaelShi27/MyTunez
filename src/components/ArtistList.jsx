@@ -6,7 +6,7 @@ const ArtistList = ({ projects, query }) => {
   const [ artists, setArtists ] = useState([]);
   const [ sortBy, setSortBy ] = useState('name');
   const [ sortedArtists, setSortedArtists ] = useState([]);
-  const [ displayAll, setDisplayAll ] = useState(false);
+  const [ displayAllArtists, setDisplayAllArtists ] = useState(false);
 
   const getArtists = useCallback(() => {
     const artists = [];
@@ -46,9 +46,13 @@ const ArtistList = ({ projects, query }) => {
   return (<>
     <Options>
       <TextWrapper># of artists: {sortedArtists.length}</TextWrapper>
-      {!query && <Button onClick={() => setDisplayAll(!displayAll)}>{displayAll ? 'Hide' : 'Show'} All</Button>}
+      {!query && (
+        <Button onClick={() => setDisplayAllArtists(!displayAllArtists)}>
+          {displayAllArtists ? 'Hide' : 'Show'} All
+        </Button>
+      )}
       <div style={{ margin: '0 20px', display: 'inline-block' }}>
-        {displayAll && (<>
+        {displayAllArtists && (<>
           <label htmlFor="sortBy">Sort by: </label>
           <select id="sortBy" value={sortBy} onChange={e => setSortBy(e.target.value)}>
             <option value="artist">Name</option>
@@ -58,7 +62,7 @@ const ArtistList = ({ projects, query }) => {
         </>)}
       </div>
     </Options>
-    {(displayAll || query) && (<>
+    {(displayAllArtists || query) && (<>
       <Header>
         <TextWrapper $header={'true'} $type={'name'}>Name</TextWrapper>
         <TextWrapper $header={'true'} $type={'number'}># of Projects</TextWrapper>

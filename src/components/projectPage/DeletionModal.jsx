@@ -1,16 +1,14 @@
 import React from 'react';
 import styled, { keyframes } from 'styled-components';
 
-const DeleteModal = ({ deleteProject, hideModal }) => {
-  return (<>
-    <Modal>
-      <div>Are you sure you want to delete this project?</div>
-      <Button onClick={hideModal}>Cancel</Button>
-      <Button onClick={deleteProject}>Delete Project</Button>
-    </Modal>
-    <ModalBackground onClick={hideModal} />
-  </>);
-};
+const DeletionModal = ({ deleteProject, hideModal }) => (<>
+  <Modal>
+    <div>Are you sure you want to delete this project?</div>
+    <Button onClick={hideModal}>Cancel</Button>
+    <Button onClick={deleteProject}>Delete Project</Button>
+  </Modal>
+  <ModalBackground onClick={hideModal} />
+</>);
 
 const Button = styled.button`
   margin: 20px 30px 0;
@@ -42,4 +40,4 @@ const ModalBackground = styled.div`
   background-color: rgba(0,0,0,0.6);
 `;
 
-export default DeleteModal;
+export default DeletionModal;

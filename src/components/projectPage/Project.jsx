@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import Message from '../Message';
 import EditProjectForm from './EditProjectForm';
-import DeleteModal from './Modal';
+import DeletionModal from './DeletionModal';
 
 import { Button, StyledLink } from '../styles.js';
 import { wrangleInput, validateInput } from '../../helpers.js';
@@ -109,7 +109,7 @@ const Project = () => {
     <Button style={{ ...buttonStyle, width: '80px' }} onClick={() => setDisplayModal(true)}>
       Delete Project
     </Button>
-    {displayModal && <DeleteModal deleteProject={deleteProject} hideModal={() => setDisplayModal(false)} />}
+    {displayModal && <DeletionModal deleteProject={deleteProject} hideModal={() => setDisplayModal(false)} />}
   </>);
 };
 

@@ -9,29 +9,33 @@ const ProjectList = ({ projects }) => {
   const [ displayGenres, setDisplayGenres ] = useState(false);
   const [ listFormat, setListFormat ] = useState('normal');
   const [ sortBy, setSortBy ] = useState('artist');
+  const [ displayAll, setDisplayAll ] = useState(false);
 
   return (<>
     <Options>
       <TextWrapper>Total # of projects: {projects.length}</TextWrapper>
-      <Button onClick={() => setDisplayGenres(!displayGenres)}>
-        Genre Data
-      </Button>
-      <TextWrapper>
+      {listFormat === 'normal' && (<>
+        <Button onClick={() => setDisplayAll(!displayAll)}>{displayAll ? 'Hide' : 'Show'} All</Button>
+        <Button onClick={() => setDisplayGenres(!displayGenres)}>Genre Data</Button>
+      </>)}
+      {displayAll && (<>
         <Button onClick={() => setListFormat(listFormat === 'normal' ? 'raw' : 'normal')}>
           {listFormat === 'raw' ? 'Back' : 'Raw Data'}
         </Button>
-      </TextWrapper>
-      {listFormat === 'normal' && (<>
-        <label htmlFor="sortBy">Sort by: </label>
-        <select id="sortBy" value={sortBy} onChange={e => setSortBy(e.target.value)}>
-          <option value="artist">Artist</option>
-          <option value="recency">Recently Added</option>
-        </select>
+        {listFormat === 'normal' && (<>
+          <label htmlFor="sortBy">Sort by: </label>
+          <select id="sortBy" value={sortBy} onChange={e => setSortBy(e.target.value)}>
+            <option value="artist">Artist</option>
+            <option value="recency">Recently Added</option>
+          </select>
+        </>)}
       </>)}
     </Options>
     {displayGenres && <GenreData projects={projects}/>}
-    {listFormat === 'normal' && <NormalList projects={projects} sortBy={sortBy} />}
-    {listFormat === 'raw' && <RawList projects={projects} />}
+    {displayAll && (<>
+      {listFormat === 'normal' && <NormalList projects={projects} sortBy={sortBy} />}
+      {listFormat === 'raw' && <RawList projects={projects} />}
+    </>)}
   </>);
 };
 

@@ -20,17 +20,19 @@ const NormalList = ({ projects, sortBy }) => {
       <TextWrapper $header={'true'} $type={'artist'}>Artist</TextWrapper>
       <TextWrapper $header={'true'} $type={'genre'}>Genre</TextWrapper>
     </Header>
-    {sortedProjects.map(({ title, artist, genre, _id }, idx) => (
-      <Project key={idx}>
-        <StyledLink to={`/projects/${_id}`}>
-          <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
-        </StyledLink>
-        <StyledLink to={`/artists/${artist}`}>
-          <TextWrapper $type={'artist'}>{artist}</TextWrapper>
-        </StyledLink>
-        <TextWrapper $type={'genre'} $genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
-      </Project>
-    ))}
+    <ListContainer>
+      {sortedProjects.map(({ title, artist, genre, _id }, idx) => (
+        <Project key={idx}>
+          <StyledLink to={`/projects/${_id}`}>
+            <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
+          </StyledLink>
+          <StyledLink to={`/artists/${artist}`}>
+            <TextWrapper $type={'artist'}>{artist}</TextWrapper>
+          </StyledLink>
+          <TextWrapper $type={'genre'} $genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
+        </Project>
+      ))}
+    </ListContainer>
   </>);
 };
 
@@ -70,6 +72,14 @@ const Header = styled(Project)`
   border: none;
   padding: 8px 8px 5px;
   width: 990px;
+`;
+
+const ListContainer = styled.div`
+  border: 1px solid gray;
+  width: 1030px;
+  height: 590px;
+  overflow: auto;
+  margin-top: 5px;
 `;
 
 export default NormalList;

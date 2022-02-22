@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, Navigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
+import Message from '../Message';
 import EditProjectForm from './EditProjectForm';
-import Message from './Message';
+import DeleteModal from './Modal';
 
-import { Button, StyledLink } from './styles.js';
-import { wrangleInput, validateInput } from '../helpers.js';
+import { Button, StyledLink } from '../styles.js';
+import { wrangleInput, validateInput } from '../../helpers.js';
 
 
 const Project = () => {
@@ -17,6 +18,7 @@ const Project = () => {
   const [ displayMessage, setDisplayMessage ] = useState(false);
   const [ errorMessage, setErrorMessage ] = useState('');
   const [ deleted, setDeleted ] = useState(false);
+  const [ displayModal, setDisplayModal ] = useState(false);
   const { id } = useParams();
 
   const getProject = () => axios(`/projects/${id}`).then(({ data }) => setProject(data[0]));
@@ -81,6 +83,7 @@ const Project = () => {
   };
   return (<>
     <Container>
+      {displayModal && <DeleteModal />}
       <Name><em>{title}</em></Name>
       <Header>
         <TextWrapper $header={'true'} $type={'artist'}>Artist</TextWrapper>
@@ -104,7 +107,7 @@ const Project = () => {
       </MessageWrapper>
     )}
     {displayForm && <EditProjectForm handleSubmit={editProject} project={project} />}
-    <Button style={{ ...buttonStyle, width: '80px' }} onClick={deleteProject}>
+    <Button style={{ ...buttonStyle, width: '80px' }} onClick={() => setDisplayModal(true)}>
       Delete Project
     </Button>
   </>);

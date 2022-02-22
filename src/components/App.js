@@ -9,7 +9,7 @@ import ProjectList from './projectList/ProjectList';
 import Message from './Message';
 import ArtistList from './ArtistList';
 import Artist from './Artist';
-import Project from './Project';
+import Project from './projectPage/Project';
 
 import { Header, Button } from './styles.js';
 import { wrangleInput, validateInput } from '../helpers.js';

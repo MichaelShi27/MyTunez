@@ -37,6 +37,12 @@ const ArtistList = ({ projects, query }) => {
     setSortedArtists(sorted);
   }, [ artists, sortBy ]);
 
+  useEffect(() => {
+    const lowerCaseQuery = query.toLowerCase();
+    const filtered = artists.filter(({ name }) => name.toLowerCase().includes(lowerCaseQuery));
+    setSortedArtists(filtered);
+  }, [ query, artists ]);
+
   return (<>
     <Options>
       <TextWrapper>Total # of artists: {artists.length}</TextWrapper>

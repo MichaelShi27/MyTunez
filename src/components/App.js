@@ -100,7 +100,7 @@ const App = () => {
     )}
     <Routes>
       <Route path="/" element={<ProjectList projects={projects} />} />
-      <Route path="/artists" element={<ArtistList projects={projects} />} />
+      <Route path="/artists" element={<ArtistList projects={projects} query={searchQuery} />} />
       <Route path="/artists/:name" element={<Artist allProjects={projects} />} />
       <Route path="/projects/:id" element={<Project />} />
     </Routes>

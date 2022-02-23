@@ -5,11 +5,16 @@ import GenreData from './GenreData';
 import NormalList from './NormalList';
 import RawList from './RawList';
 
-const ProjectList = ({ projects }) => {
+const ProjectList = ({ projects, setDisplaySearch }) => {
   const [ displayGenres, setDisplayGenres ] = useState(false);
   const [ listFormat, setListFormat ] = useState('normal');
   const [ sortBy, setSortBy ] = useState('artist');
   const [ displayAllProjects, setDisplayAllProjects ] = useState(false);
+
+  const handleRawDataClick = () => {
+    setDisplaySearch(listFormat !== 'normal');
+    setListFormat(listFormat === 'normal' ? 'raw' : 'normal');
+  };
 
   return (<>
     <Options>
@@ -23,7 +28,7 @@ const ProjectList = ({ projects }) => {
         </Button>
       </>)}
       {displayAllProjects && (<>
-        <Button onClick={() => setListFormat(listFormat === 'normal' ? 'raw' : 'normal')}>
+        <Button onClick={handleRawDataClick}>
           {listFormat === 'raw' ? 'Back' : 'Raw Data'}
         </Button>
         {listFormat === 'normal' && (<>
@@ -37,7 +42,7 @@ const ProjectList = ({ projects }) => {
     </Options>
     {displayGenres && <GenreData projects={projects}/>}
     {displayAllProjects && (<>
-      {listFormat === 'normal' && <NormalList projects={projects} sortBy={sortBy} />}
+      {listFormat === 'normal' && <NormalList {...{ projects, sortBy }}/>}
       {listFormat === 'raw' && <RawList projects={projects} />}
     </>)}
   </>);

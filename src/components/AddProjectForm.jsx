@@ -48,6 +48,7 @@ const AddProjectForm = ({ handleSubmit }) => {
             name="releaseYear"
             value={releaseYear}
             onChange={e => setReleaseYear(e.target.value)}
+            style={{ width: '40px '}}
           />
         </FieldWrapper>
         <FieldWrapper>

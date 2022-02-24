@@ -1,12 +1,14 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { StyledLink } from './styles.js';
+import Message from './Message';
 
 const ArtistList = ({ projects, searchQuery }) => {
   const [ artists, setArtists ] = useState([]);
   const [ sortBy, setSortBy ] = useState('name');
   const [ sortedArtists, setSortedArtists ] = useState([]);
   const [ displayAllArtists, setDisplayAllArtists ] = useState(false);
+  const [ emptyList, setEmptyList ] = useState(false);
 
   const getArtists = useCallback(() => {
     const artists = [];
@@ -41,11 +43,18 @@ const ArtistList = ({ projects, searchQuery }) => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filtered = artists.filter(({ name }) => name.toLowerCase().includes(lowerCaseQuery));
     setSortedArtists(filtered);
+    setEmptyList(filtered.length === 0);
   }, [ searchQuery, artists ]);
 
   return (<>
     <Options>
-      <TextWrapper style={{ margin: '15px 10px' }}># of artists: {sortedArtists.length}</TextWrapper>
+      {emptyList ? (
+        <div style={{ margin: '20px 90px', color: 'red' }}>No artists found!</div>
+      ) : (
+        <TextWrapper style={{ margin: '15px 10px' }}>
+          # of artists: {sortedArtists.length}
+        </TextWrapper>
+      )}
       {!searchQuery && (
         <Button onClick={() => setDisplayAllArtists(!displayAllArtists)}>
           {displayAllArtists ? 'Hide' : 'View'} All Artists
@@ -62,7 +71,7 @@ const ArtistList = ({ projects, searchQuery }) => {
         </>)}
       </div>
     </Options>
-    {(displayAllArtists || searchQuery) && (<>
+    {(displayAllArtists || searchQuery) && !emptyList && (<>
       <Header>
         <TextWrapper $header={'true'} $type={'name'}>Name</TextWrapper>
         <TextWrapper $header={'true'} $type={'number'}># of Projects</TextWrapper>
@@ -104,7 +113,7 @@ const Button = styled.button`
 const ListContainer = styled.div`
   border: 1px solid gray;
   width: 510px;
-  height: 600px;
+  max-height: 600px;
   overflow: auto;
   margin-top: 5px;
 `;

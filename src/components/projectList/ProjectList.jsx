@@ -25,14 +25,14 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch }) => {
         <TextWrapper># of projects: {quantity}</TextWrapper>
       )}
       {listFormat === 'normal' && (<>
-        {!searchQuery && (
+        {!searchQuery && (<>
           <Button onClick={() => setDisplayAllProjects(!displayAllProjects)}>
             {displayAllProjects ? 'Hide' : 'View'} All Projects
           </Button>
-        )}
-        <Button onClick={() => setDisplayGenres(!displayGenres)}>
-          {displayGenres ? 'Hide' : 'View'} Genre Data
-        </Button>
+          <Button onClick={() => setDisplayGenres(!displayGenres)}>
+            {displayGenres ? 'Hide' : 'View'} Genre Data
+          </Button>
+        </>)}
       </>)}
       {displayAllProjects && (<>
         <Button onClick={handleRawDataClick}>
@@ -47,7 +47,7 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch }) => {
         </>)}
       </>)}
     </Options>
-    {displayGenres && <GenreData projects={projects}/>}
+    {displayGenres && !searchQuery && <GenreData projects={projects}/>}
     {(displayAllProjects || searchQuery) && (<>
       {listFormat === 'normal' && <NormalList {...{ projects, sortBy, searchQuery, setQuantity }}/>}
       {listFormat === 'raw' && <RawList projects={projects} />}
@@ -61,7 +61,7 @@ const Options = styled.div`
 
 const TextWrapper = styled.div`
   display: inline-block;
-  margin: 0 10px;
+  margin: 15px 10px;
 `;
 
 const Button = styled.button`

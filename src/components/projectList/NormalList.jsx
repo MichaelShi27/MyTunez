@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { StyledLink } from '../styles.js';
 
-const NormalList = ({ projects, sortBy }) => {
+const NormalList = ({ projects, sortBy, searchQuery, setQuantity }) => {
   const [ sortedProjects, setSortedProjects ] = useState([]);
 
   useEffect(() => {
@@ -13,6 +13,13 @@ const NormalList = ({ projects, sortBy }) => {
         : projectsCopy.sort((a, b) => new Date(b.dateAdded) - new Date(a.dateAdded))
     );
   }, [ projects, sortBy ]);
+
+  useEffect(() => {
+    const lowerCaseQuery = searchQuery.toLowerCase();
+    const filtered = projects.filter(({ title }) => title.toLowerCase().includes(lowerCaseQuery));
+    setSortedProjects(filtered);
+    setQuantity(filtered.length);
+  }, [ searchQuery, projects, setQuantity ]);
 
   return (<>
     <Header>

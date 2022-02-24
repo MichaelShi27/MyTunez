@@ -99,8 +99,8 @@ const App = () => {
       />
     )}
     <Routes>
-      <Route path="/" element={<ProjectList {...{ projects, setDisplaySearch }} />} />
-      <Route path="/artists" element={<ArtistList projects={projects} query={searchQuery} />} />
+      <Route path="/" element={<ProjectList {...{ projects, searchQuery, setDisplaySearch }} />} />
+      <Route path="/artists" element={<ArtistList {...{ projects, searchQuery }} />} />
       <Route path="/artists/:name" element={<Artist allProjects={projects} />} />
       <Route path="/projects/:id" element={<Project />} />
     </Routes>

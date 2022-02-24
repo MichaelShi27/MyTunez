@@ -1,28 +1,33 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import GenreData from './GenreData';
 import NormalList from './NormalList';
 import RawList from './RawList';
 
-const ProjectList = ({ projects, setDisplaySearch }) => {
+const ProjectList = ({ projects, searchQuery, setDisplaySearch }) => {
   const [ displayGenres, setDisplayGenres ] = useState(false);
   const [ listFormat, setListFormat ] = useState('normal');
   const [ sortBy, setSortBy ] = useState('artist');
   const [ displayAllProjects, setDisplayAllProjects ] = useState(false);
+  const [ quantity, setQuantity ] = useState(projects.length);
 
   const handleRawDataClick = () => {
     setDisplaySearch(listFormat !== 'normal');
     setListFormat(listFormat === 'normal' ? 'raw' : 'normal');
   };
 
+  useEffect(() => !searchQuery && setQuantity(projects.length), [ searchQuery, projects ]);
+
   return (<>
     <Options>
-      <TextWrapper>Total # of projects: {projects.length}</TextWrapper>
+      <TextWrapper># of projects: {quantity}</TextWrapper>
       {listFormat === 'normal' && (<>
-        <Button onClick={() => setDisplayAllProjects(!displayAllProjects)}>
-          {displayAllProjects ? 'Hide' : 'View'} All Projects
-        </Button>
+        {!searchQuery && (
+          <Button onClick={() => setDisplayAllProjects(!displayAllProjects)}>
+            {displayAllProjects ? 'Hide' : 'View'} All Projects
+          </Button>
+        )}
         <Button onClick={() => setDisplayGenres(!displayGenres)}>
           {displayGenres ? 'Hide' : 'View'} Genre Data
         </Button>
@@ -41,8 +46,8 @@ const ProjectList = ({ projects, setDisplaySearch }) => {
       </>)}
     </Options>
     {displayGenres && <GenreData projects={projects}/>}
-    {displayAllProjects && (<>
-      {listFormat === 'normal' && <NormalList {...{ projects, sortBy }}/>}
+    {(displayAllProjects || searchQuery) && (<>
+      {listFormat === 'normal' && <NormalList {...{ projects, sortBy, searchQuery, setQuantity }}/>}
       {listFormat === 'raw' && <RawList projects={projects} />}
     </>)}
   </>);

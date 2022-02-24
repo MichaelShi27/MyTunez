@@ -21,7 +21,9 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch }) => {
 
   return (<>
     <Options>
-      {projects.length !== 0 && <TextWrapper># of projects: {quantity}</TextWrapper>}
+      {projects.length !== 0 && listFormat === 'normal' && (
+        <TextWrapper># of projects: {quantity}</TextWrapper>
+      )}
       {listFormat === 'normal' && (<>
         {!searchQuery && (
           <Button onClick={() => setDisplayAllProjects(!displayAllProjects)}>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { StyledLink } from '../styles.js';
 
-const NormalList = ({ projects, sortBy, searchQuery, setQuantity }) => {
+const NormalList = ({ projects, sortBy, searchQuery, setQuantity, noSearchResults, setNoSearchResults }) => {
   const [ sortedProjects, setSortedProjects ] = useState([]);
 
   useEffect(() => {
@@ -19,8 +19,10 @@ const NormalList = ({ projects, sortBy, searchQuery, setQuantity }) => {
     const filtered = projects.filter(({ title }) => title.toLowerCase().includes(lowerCaseQuery));
     setSortedProjects(filtered);
     setQuantity(filtered.length);
-  }, [ searchQuery, projects, setQuantity ]);
+    setNoSearchResults(filtered.length === 0);
+  }, [ searchQuery, projects, setQuantity, setNoSearchResults ]);
 
+  if (noSearchResults) return null;
   return (<>
     <Header>
       <TextWrapper $header={'true'} $type={'title'}>Project Title</TextWrapper>
@@ -84,7 +86,7 @@ const Header = styled(Project)`
 const ListContainer = styled.div`
   border: 1px solid gray;
   width: 1030px;
-  height: 590px;
+  max-height: 590px;
   overflow: auto;
   margin-top: 5px;
 `;

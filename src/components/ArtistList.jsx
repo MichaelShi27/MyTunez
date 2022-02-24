@@ -1,14 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { StyledLink } from './styles.js';
-import Message from './Message';
 
 const ArtistList = ({ projects, searchQuery }) => {
   const [ artists, setArtists ] = useState([]);
   const [ sortBy, setSortBy ] = useState('name');
   const [ sortedArtists, setSortedArtists ] = useState([]);
   const [ displayAllArtists, setDisplayAllArtists ] = useState(false);
-  const [ emptyList, setEmptyList ] = useState(false);
+  const [ noSearchResults, setNoSearchResults ] = useState(false);
 
   const getArtists = useCallback(() => {
     const artists = [];
@@ -43,12 +42,12 @@ const ArtistList = ({ projects, searchQuery }) => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filtered = artists.filter(({ name }) => name.toLowerCase().includes(lowerCaseQuery));
     setSortedArtists(filtered);
-    setEmptyList(filtered.length === 0);
+    setNoSearchResults(filtered.length === 0);
   }, [ searchQuery, artists ]);
 
   return (<>
     <Options>
-      {emptyList ? (
+      {noSearchResults ? (
         <div style={{ margin: '20px 90px', color: 'red' }}>No artists found!</div>
       ) : (
         <TextWrapper style={{ margin: '15px 10px' }}>
@@ -71,7 +70,7 @@ const ArtistList = ({ projects, searchQuery }) => {
         </>)}
       </div>
     </Options>
-    {(displayAllArtists || searchQuery) && !emptyList && (<>
+    {(displayAllArtists || searchQuery) && !noSearchResults && (<>
       <Header>
         <TextWrapper $header={'true'} $type={'name'}>Name</TextWrapper>
         <TextWrapper $header={'true'} $type={'number'}># of Projects</TextWrapper>

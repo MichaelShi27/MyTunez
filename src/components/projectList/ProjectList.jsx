@@ -11,6 +11,7 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch }) => {
   const [ sortBy, setSortBy ] = useState('artist');
   const [ displayAllProjects, setDisplayAllProjects ] = useState(false);
   const [ quantity, setQuantity ] = useState(projects.length);
+  const [ noSearchResults, setNoSearchResults ] = useState(false);
 
   const handleRawDataClick = () => {
     setDisplaySearch(listFormat !== 'normal');
@@ -19,11 +20,23 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch }) => {
 
   useEffect(() => !searchQuery && setQuantity(projects.length), [ searchQuery, projects ]);
 
+  const normalListProps = {
+    projects,
+    sortBy,
+    searchQuery,
+    setQuantity,
+    noSearchResults,
+    setNoSearchResults
+  };
   return (<>
     <Options>
-      {projects.length !== 0 && listFormat === 'normal' && (
-        <TextWrapper># of projects: {quantity}</TextWrapper>
-      )}
+      {noSearchResults ? (
+        <div style={{ margin: '20px 90px', color: 'red' }}>No projects found!</div>
+      ) : (<>
+        {quantity !== 0 && listFormat === 'normal' && (
+          <TextWrapper># of projects: {quantity}</TextWrapper>
+        )}
+      </>)}
       {listFormat === 'normal' && (<>
         {!searchQuery && (<>
           <Button onClick={() => setDisplayAllProjects(!displayAllProjects)}>
@@ -49,7 +62,7 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch }) => {
     </Options>
     {displayGenres && !searchQuery && <GenreData projects={projects}/>}
     {(displayAllProjects || searchQuery) && (<>
-      {listFormat === 'normal' && <NormalList {...{ projects, sortBy, searchQuery, setQuantity }}/>}
+      {listFormat === 'normal' && <NormalList {...normalListProps} />}
       {listFormat === 'raw' && <RawList projects={projects} />}
     </>)}
   </>);

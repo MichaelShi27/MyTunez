@@ -45,7 +45,7 @@ const ArtistList = ({ projects, searchQuery }) => {
 
   return (<>
     <Options>
-      <TextWrapper># of artists: {sortedArtists.length}</TextWrapper>
+      <TextWrapper style={{ margin: '15px 10px' }}># of artists: {sortedArtists.length}</TextWrapper>
       {!searchQuery && (
         <Button onClick={() => setDisplayAllArtists(!displayAllArtists)}>
           {displayAllArtists ? 'Hide' : 'View'} All Artists
@@ -83,7 +83,6 @@ const ArtistList = ({ projects, searchQuery }) => {
 
 const Options = styled.div`
   padding: 0 0 0 10px;
-  margin: 10px 0;
 `;
 
 const TextWrapper = styled.div`
@@ -99,7 +98,7 @@ const TextWrapper = styled.div`
 `;
 
 const Button = styled.button`
-  margin-left: 20px;
+  margin: 15px;
 `;
 
 const ListContainer = styled.div`

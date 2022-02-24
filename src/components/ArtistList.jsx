@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 import { StyledLink } from './styles.js';
 
-const ArtistList = ({ projects, query }) => {
+const ArtistList = ({ projects, searchQuery }) => {
   const [ artists, setArtists ] = useState([]);
   const [ sortBy, setSortBy ] = useState('name');
   const [ sortedArtists, setSortedArtists ] = useState([]);
@@ -38,15 +38,15 @@ const ArtistList = ({ projects, query }) => {
   }, [ artists, sortBy ]);
 
   useEffect(() => {
-    const lowerCaseQuery = query.toLowerCase();
+    const lowerCaseQuery = searchQuery.toLowerCase();
     const filtered = artists.filter(({ name }) => name.toLowerCase().includes(lowerCaseQuery));
     setSortedArtists(filtered);
-  }, [ query, artists ]);
+  }, [ searchQuery, artists ]);
 
   return (<>
     <Options>
       <TextWrapper># of artists: {sortedArtists.length}</TextWrapper>
-      {!query && (
+      {!searchQuery && (
         <Button onClick={() => setDisplayAllArtists(!displayAllArtists)}>
           {displayAllArtists ? 'Hide' : 'View'} All Artists
         </Button>
@@ -62,7 +62,7 @@ const ArtistList = ({ projects, query }) => {
         </>)}
       </div>
     </Options>
-    {(displayAllArtists || query) && (<>
+    {(displayAllArtists || searchQuery) && (<>
       <Header>
         <TextWrapper $header={'true'} $type={'name'}>Name</TextWrapper>
         <TextWrapper $header={'true'} $type={'number'}># of Projects</TextWrapper>

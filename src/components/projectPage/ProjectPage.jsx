@@ -11,7 +11,7 @@ import { Button, StyledLink } from '../styles.js';
 import { wrangleInput, validateInput } from '../../helpers.js';
 
 
-const Project = () => {
+const ProjectPage = () => {
   const [ project, setProject ] = useState({});
   const [ displayForm, setDisplayForm ] = useState(false);
   const [ successfulEdit, setSuccessfulEdit ] = useState(false);
@@ -25,7 +25,7 @@ const Project = () => {
   useEffect(getProject, [ id, successfulEdit ]);
 
   const { artist, dateAdded, genre, title } = project;
-  const formatDate = dateStr => {
+  const formatDate = () => {
     const date = new Date(dateAdded);
     return `${1 + date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
   };
@@ -94,7 +94,7 @@ const Project = () => {
           <TextWrapper $type={'artist'}>{artist}</TextWrapper>
         </StyledLink>
         <TextWrapper $type={'genre'} $genre={genre}>{genre && (genre[0].toUpperCase() + genre.slice(1))}</TextWrapper>
-        <TextWrapper $type={'date'}>{formatDate(dateAdded)}</TextWrapper>
+        <TextWrapper $type={'date'}>{formatDate()}</TextWrapper>
       </Wrapper>
     </Container>
     <Button style={buttonStyle} onClick={() => setDisplayForm(!displayForm)}>
@@ -169,4 +169,4 @@ const MessageWrapper = styled.div`
   text-align: center;
 `;
 
-export default Project;
+export default ProjectPage;

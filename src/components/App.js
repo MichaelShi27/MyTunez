@@ -8,8 +8,8 @@ import AddProjectForm from './AddProjectForm';
 import ProjectList from './projectList/ProjectList';
 import Message from './Message';
 import ArtistList from './ArtistList';
-import Artist from './Artist';
-import Project from './projectPage/Project';
+import ArtistPage from './ArtistPage';
+import ProjectPage from './projectPage/ProjectPage';
 import SearchBar from './SearchBar';
 
 import { Header, Button } from './styles.js';
@@ -101,8 +101,8 @@ const App = () => {
     <Routes>
       <Route path="/" element={<ProjectList {...{ projects, searchQuery, setDisplaySearch }} />} />
       <Route path="/artists" element={<ArtistList {...{ projects, searchQuery }} />} />
-      <Route path="/artists/:name" element={<Artist allProjects={projects} />} />
-      <Route path="/projects/:id" element={<Project />} />
+      <Route path="/artists/:name" element={<ArtistPage allProjects={projects} />} />
+      <Route path="/projects/:id" element={<ProjectPage />} />
     </Routes>
   </>);
 };

@@ -4,7 +4,7 @@ import axios from 'axios';
 import styled from 'styled-components';
 import { StyledLink } from './styles.js';
 
-const Artist = ({ allProjects }) => {
+const ArtistPage = ({ allProjects }) => {
   const [ projects, setProjects ] = useState([]);
   const { name } = useParams();
 
@@ -26,7 +26,9 @@ const Artist = ({ allProjects }) => {
           <StyledLink to={`/projects/${_id}`}>
             <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
           </StyledLink>
-          <TextWrapper $type={'genre'} $genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
+          <TextWrapper $type={'genre'} $genre={genre}>
+            {genre[0].toUpperCase() + genre.slice(1)}
+          </TextWrapper>
         </Project>
       ))}
     </Container>
@@ -81,4 +83,4 @@ const Header = styled(Project)`
   width: 700x;
 `;
 
-export default Artist;
+export default ArtistPage;

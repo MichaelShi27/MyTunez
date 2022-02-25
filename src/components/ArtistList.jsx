@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-import { StyledLink } from './styles.js';
+// import { StyledLink } from './styles.js';
+import Artists from './Artists';
 
 const ArtistList = ({ projects, searchQuery }) => {
   const [ artists, setArtists ] = useState([]);
@@ -70,22 +71,9 @@ const ArtistList = ({ projects, searchQuery }) => {
         </>)}
       </div>
     </Options>
-    {(displayAllArtists || searchQuery) && !noSearchResults && (<>
-      <Header>
-        <TextWrapper $header={'true'} $type={'name'}>Name</TextWrapper>
-        <TextWrapper $header={'true'} $type={'number'}># of Projects</TextWrapper>
-      </Header>
-      <ListContainer>
-        {sortedArtists.map(({ name, projectCount }, idx) => (
-          <Artist key={idx}>
-            <StyledLink to={`/artists/${name}`}>
-              <TextWrapper $type={'name'}>{name}</TextWrapper>
-            </StyledLink>
-            <TextWrapper $type={'number'}>{projectCount}</TextWrapper>
-          </Artist>
-        ))}
-      </ListContainer>
-    </>)}
+    {(displayAllArtists || searchQuery) && !noSearchResults && (
+      <Artists sortedArtists={sortedArtists} />
+    )}
   </>);
 };
 
@@ -109,14 +97,6 @@ const Button = styled.button`
   margin: 15px;
 `;
 
-const ListContainer = styled.div`
-  border: 1px solid gray;
-  width: 510px;
-  max-height: 600px;
-  overflow: auto;
-  margin-top: 5px;
-`;
-
 const Artist = styled.div`
   margin: 3px;
   width: 480px;
@@ -124,15 +104,6 @@ const Artist = styled.div`
   font-family: Helvetica, Arial, sans-serif;
   font-size: 15px;
   border: 1px solid gray;
-`;
-
-const Header = styled(Artist)`
-  font-family: Palatino, Lucida Console, serif;
-  font-size: 13px;
-  background-color: #e0e0e0;
-  border: none;
-  padding: 8px 8px 5px;
-  width: 470px;
 `;
 
 export default ArtistList;

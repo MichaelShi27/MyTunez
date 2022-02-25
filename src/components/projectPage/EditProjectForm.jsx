@@ -5,7 +5,7 @@ const EditProjectForm = ({ handleSubmit, project }) => {
   const [ title, setTitle ] = useState(project.title);
   const [ artist, setArtist ] = useState(project.artist);
   const [ genre, setGenre ] = useState(project.genre);
-  const [ releaseYear, setReleaseYear] = useState('');
+  const [ releaseYear, setReleaseYear] = useState(project.releaseYear || '');
 
   return (
     <FormWrapper>

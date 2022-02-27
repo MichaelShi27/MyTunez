@@ -34,8 +34,6 @@ const ProjectPage = () => {
 
   const editProject = e => {
     e.preventDefault();
-    setSuccessfulEdit(false);
-
     const { title, artist, genre, releaseYear } = e.target;
     const newData = { title, artist, genre, releaseYear };
     wrangleInput(newData);
@@ -52,16 +50,22 @@ const ProjectPage = () => {
       .catch(console.log);
   };
 
+  const editButtonClick = ({ target: { textContent } }) => {
+    setSuccessfulEdit(false);
+    setDisplayMessage(false);
+    setDisplayForm(textContent === 'Edit Project');
+  };
+
   // handles form & success/error message rendering after edit
   useEffect(() => {
-    displayForm && setDisplayForm(!successfulEdit);
+    setDisplayForm(!successfulEdit);
     setDisplayMessage(errorMessage || successfulEdit);
     const timeout = setTimeout(() => {
       setDisplayMessage(false);
       setErrorMessage('');
     }, 5000);
     return () => clearTimeout(timeout);
-  }, [ errorMessage, successfulEdit, displayForm ]);
+  }, [ errorMessage, successfulEdit ]);
 
   const deleteProject = () => {
     axios.delete(`/deleteProject/${id}`)
@@ -100,7 +104,7 @@ const ProjectPage = () => {
         <TextWrapper $type={'date'}>{formatDate()}</TextWrapper>
       </Wrapper>
     </Container>
-    <Button style={buttonStyle} onClick={() => setDisplayForm(!displayForm)}>
+    <Button style={buttonStyle} onClick={editButtonClick}>
       {displayForm ? 'Close' : 'Edit Project'}
     </Button>
     {displayMessage && (

@@ -4,6 +4,9 @@ import { StyledLink } from '../styles.js';
 
 const NormalList = ({ projects, sortBy, searchQuery, setQuantity, noSearchResults, setNoSearchResults }) => {
   const [ sortedProjects, setSortedProjects ] = useState([]);
+  const [ loading, setLoading ] = useState(true);
+
+  useEffect(() => setLoading(false), []);
 
   // sorts list based on 'sortBy' prop
   useEffect(() => {
@@ -24,28 +27,36 @@ const NormalList = ({ projects, sortBy, searchQuery, setQuantity, noSearchResult
     setNoSearchResults(filtered.length === 0);
   }, [ searchQuery, projects, setQuantity, setNoSearchResults ]);
 
-  if (noSearchResults) return null;
-  return (<>
-    <Header>
-      <TextWrapper $header={'true'} $type={'title'}>Project Title</TextWrapper>
-      <TextWrapper $header={'true'} $type={'artist'}>Artist</TextWrapper>
-      <TextWrapper $header={'true'} $type={'genre'}>Genre</TextWrapper>
-    </Header>
-    <ListContainer>
-      {sortedProjects.map(({ title, artist, genre, _id }, idx) => (
-        <Project key={idx}>
-          <StyledLink to={`/projects/${_id}`}>
-            <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
-          </StyledLink>
-          <StyledLink to={`/artists/${artist}`}>
-            <TextWrapper $type={'artist'}>{artist}</TextWrapper>
-          </StyledLink>
-          <TextWrapper $type={'genre'} $genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
-        </Project>
-      ))}
-    </ListContainer>
-  </>);
+  return (
+    loading ? <Loading>LOADING...</Loading> :
+    noSearchResults ?  null : (<>
+      <Header>
+        <TextWrapper $header={'true'} $type={'title'}>Project Title</TextWrapper>
+        <TextWrapper $header={'true'} $type={'artist'}>Artist</TextWrapper>
+        <TextWrapper $header={'true'} $type={'genre'}>Genre</TextWrapper>
+      </Header>
+      <ListContainer>
+        {sortedProjects.map(({ title, artist, genre, _id }, idx) => (
+          <Project key={idx}>
+            <StyledLink to={`/projects/${_id}`}>
+              <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
+            </StyledLink>
+            <StyledLink to={`/artists/${artist}`}>
+              <TextWrapper $type={'artist'}>{artist}</TextWrapper>
+            </StyledLink>
+            <TextWrapper $type={'genre'} $genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
+          </Project>
+        ))}
+      </ListContainer>
+    </>)
+  );
 };
+
+const Loading = styled.div`
+  margin: 100px 270px;
+  color: blue;
+  font-size: 30px;
+`;
 
 const TextWrapper = styled.div`
   padding: 0 5px;

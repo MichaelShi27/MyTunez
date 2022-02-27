@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 const RawList = ({ projects }) => {
+  const [ loading, setLoading ] = useState(true);
+  useEffect(() => setLoading(false), []);
+
   const convertToList = projects => {
     const list = [];
     let curArtist;
@@ -24,12 +27,20 @@ const RawList = ({ projects }) => {
   };
   const list = convertToList(projects);
 
-  return list.map(({ title, genre }, idx) => (
-    <div key={idx}>
-      <Project $genre={genre}>{title}</Project>
-    </div>
-  ));
+  return loading ? <Loading>LOADING...</Loading> : (
+    list.map(({ title, genre }, idx) => (
+      <div key={idx}>
+        <Project $genre={genre}>{title}</Project>
+      </div>
+    ))
+  );
 };
+
+const Loading = styled.div`
+  margin: 100px 270px;
+  color: blue;
+  font-size: 30px;
+`;
 
 const Project = styled.span`
   background-color: ${({ $genre }) => (

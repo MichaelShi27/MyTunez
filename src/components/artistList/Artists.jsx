@@ -6,8 +6,7 @@ const Artists = ({ sortedArtists }) => {
   const [ loading, setLoading ] = useState(true);
   useEffect(() => setLoading(false), []);
 
-  if (loading) return <Loading>LOADING...</Loading>;
-  return (<>
+  return loading ? <Loading>LOADING...</Loading> : (<>
     <Header>
       <TextWrapper $header={'true'} $type={'name'}>Name</TextWrapper>
       <TextWrapper $header={'true'} $type={'number'}># of Projects</TextWrapper>
@@ -28,6 +27,7 @@ const Artists = ({ sortedArtists }) => {
 const Loading = styled.div`
   margin: 50px 160px;
   color: blue;
+  font-size: 25px;
 `;
 
 const TextWrapper = styled.div`

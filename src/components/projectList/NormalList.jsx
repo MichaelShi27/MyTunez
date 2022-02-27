@@ -5,6 +5,7 @@ import { StyledLink } from '../styles.js';
 const NormalList = ({ projects, sortBy, searchQuery, setQuantity, noSearchResults, setNoSearchResults }) => {
   const [ sortedProjects, setSortedProjects ] = useState([]);
 
+  // sorts list based on 'sortBy' prop
   useEffect(() => {
     const projectsCopy = projects.slice();
     setSortedProjects(
@@ -14,6 +15,7 @@ const NormalList = ({ projects, sortBy, searchQuery, setQuantity, noSearchResult
     );
   }, [ projects, sortBy ]);
 
+  // filters list based on 'searchQuery' prop
   useEffect(() => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filtered = projects.filter(({ title }) => title.toLowerCase().includes(lowerCaseQuery));

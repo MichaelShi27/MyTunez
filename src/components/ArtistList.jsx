@@ -31,14 +31,18 @@ const ArtistList = ({ projects, searchQuery }) => {
     }
     setArtists(artists);
   }, [ projects ]);
+
+  // extracts artists from 'projects' prop
   useEffect(() => projects.length && getArtists(), [ projects, getArtists ]);
 
+  // sorts list according to 'sortBy' state
   useEffect(() => {
     const key = sortBy === 'number' ? 'projectCount' : 'firstAdded';
     const sorted = artists.slice().sort((a, b) => b[key] - a[key]);
     setSortedArtists(sorted);
   }, [ artists, sortBy ]);
 
+  // filters list based on 'searchQuery' prop
   useEffect(() => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filtered = artists.filter(({ name }) => name.toLowerCase().includes(lowerCaseQuery));
@@ -95,15 +99,6 @@ const TextWrapper = styled.div`
 
 const Button = styled.button`
   margin: 15px;
-`;
-
-const Artist = styled.div`
-  margin: 3px;
-  width: 480px;
-  padding: 3px;
-  font-family: Helvetica, Arial, sans-serif;
-  font-size: 15px;
-  border: 1px solid gray;
 `;
 
 export default ArtistList;

@@ -18,6 +18,7 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch }) => {
     setListFormat(listFormat === 'normal' ? 'raw' : 'normal');
   };
 
+  // displays # of projects upon initial render
   useEffect(() => !searchQuery && setQuantity(projects.length), [ searchQuery, projects ]);
 
   const normalListProps = {
@@ -82,31 +83,3 @@ const Button = styled.button`
 `;
 
 export default ProjectList;
-
-
-// old toggleListFormat
-
-    // let clickedState, setClickedState, otherState, setOtherState;
-
-    // const lists = [
-    //   { state: displayProjects, func: setDisplayProjects, btnText: 'View All Projects' },
-    //   { state: displayRawList, func: setDisplayRawList, btnText: 'View Raw List' },
-    //   { state: displayArtists, func: setDisplayArtists, btnText: 'View All Projects' },
-    // ];
-    // if (e.target.textContent === 'Back') {
-    //   clickedState = listFormat;
-    //   setClickedState = setDisplayNormalList;
-    //   otherState = displayRawList;
-    //   setOtherState = setDisplayRawList;
-    // } else {
-    //   clickedState = displayRawList;
-    //   setClickedState = setDisplayRawList;
-    //   otherState = displayNormalList;
-    //   setOtherState = setDisplayNormalList;
-    // }
-
-    // setClickedState(!clickedState);
-    // if (!displayNormalList && !displayRawList)
-    //   return;
-    // if (otherState === true)
-    //   setOtherState(false);

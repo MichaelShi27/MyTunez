@@ -52,7 +52,7 @@ const ArtistList = ({ projects, searchQuery }) => {
 
   return (<>
     <Options>
-      {noSearchResults ? (
+      {artists.length && noSearchResults ? (
         <div style={{ margin: '20px 90px', color: 'red' }}>No artists found!</div>
       ) : (
         <TextWrapper style={{ margin: '15px 10px' }}>

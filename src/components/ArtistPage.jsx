@@ -12,6 +12,8 @@ const ArtistPage = ({ allProjects }) => {
     axios(`/artists/${name}`)
       .then(({ data }) => setProjects(data));
   };
+
+  // retrieves the artist's projects upon first render, & also after a new project is added
   useEffect(getProjects, [ allProjects, name ]);
 
   return (

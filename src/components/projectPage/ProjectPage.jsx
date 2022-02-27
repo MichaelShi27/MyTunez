@@ -22,6 +22,8 @@ const ProjectPage = () => {
   const { id } = useParams();
 
   const getProject = () => axios(`/projects/${id}`).then(({ data }) => setProject(data[0]));
+
+  // retrieves project info after clicking project name & re-renders page after edit
   useEffect(getProject, [ id, successfulEdit ]);
 
   const { artist, dateAdded, genre, title } = project;
@@ -50,6 +52,7 @@ const ProjectPage = () => {
       .catch(console.log);
   };
 
+  // handles form & success/error message renders after edit
   useEffect(() => {
     displayForm && setDisplayForm(!successfulEdit);
     setDisplayMessage(errorMessage || successfulEdit);

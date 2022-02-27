@@ -27,6 +27,8 @@ const App = () => {
   const [ searchQuery, setSearchQuery ] = useState('');
 
   const { pathname: path } = useLocation();
+
+  // determines what to render based on current URL
   useEffect(() => {
     setDisplayForm(!(path.indexOf('/projects') === 0));
     setDisplaySearch(path === '/' || path === '/artists');
@@ -64,8 +66,11 @@ const App = () => {
   };
 
   const getProjects = () => axios('/projects').then(({ data }) => setProjects(data));
-  useEffect(getProjects, [ projectsAdded, currentList ]);
 
+  // updates list when a project is added
+  useEffect(getProjects, [ projectsAdded ]);
+
+  // displays success/error message
   useEffect(() => {
     setDisplayMessage(projectsAdded || errorMessage);
     const timeout = setTimeout(() => {

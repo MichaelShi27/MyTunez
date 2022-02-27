@@ -65,7 +65,7 @@ const ArtistList = ({ projects, searchQuery }) => {
         </Button>
       )}
       <div style={{ margin: '0 20px', display: 'inline-block' }}>
-        {displayAllArtists && (<>
+        {displayAllArtists && !searchQuery && (<>
           <label htmlFor="sortBy">Sort by: </label>
           <select id="sortBy" value={sortBy} onChange={e => setSortBy(e.target.value)}>
             <option value="artist">Name</option>

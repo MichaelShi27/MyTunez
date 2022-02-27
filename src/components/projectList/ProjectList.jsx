@@ -38,8 +38,8 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch }) => {
           <TextWrapper># of projects: {quantity}</TextWrapper>
         )}
       </>)}
-      {listFormat === 'normal' && (<>
-        {!searchQuery && (<>
+      {!searchQuery && (<>
+        {listFormat === 'normal' && (<>
           <Button onClick={() => setDisplayAllProjects(!displayAllProjects)}>
             {displayAllProjects ? 'Hide' : 'View'} All Projects
           </Button>
@@ -47,17 +47,17 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch }) => {
             {displayGenres ? 'Hide' : 'View'} Genre Data
           </Button>
         </>)}
-      </>)}
-      {displayAllProjects && (<>
-        <Button onClick={handleRawDataClick}>
-          {listFormat === 'raw' ? 'Back' : 'Raw Data'}
-        </Button>
-        {listFormat === 'normal' && (<>
-          <label htmlFor="sortBy">Sort by: </label>
-          <select id="sortBy" value={sortBy} onChange={e => setSortBy(e.target.value)}>
-            <option value="artist">Artist</option>
-            <option value="recency">Recently Added</option>
-          </select>
+        {displayAllProjects && (<>
+          <Button onClick={handleRawDataClick}>
+            {listFormat === 'raw' ? 'Back' : 'Raw Data'}
+          </Button>
+          {listFormat === 'normal' && (<>
+            <label htmlFor="sortBy">Sort by: </label>
+            <select id="sortBy" value={sortBy} onChange={e => setSortBy(e.target.value)}>
+              <option value="artist">Artist</option>
+              <option value="recency">Recently Added</option>
+            </select>
+          </>)}
         </>)}
       </>)}
     </Options>

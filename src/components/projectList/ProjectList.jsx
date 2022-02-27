@@ -18,8 +18,12 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch }) => {
     setListFormat(listFormat === 'normal' ? 'raw' : 'normal');
   };
 
-  // displays # of projects upon initial render
+  // displays # of projects upon initial render,
+  // & prevents overriding of # of projects when query changes
   useEffect(() => !searchQuery && setQuantity(projects.length), [ searchQuery, projects ]);
+
+  // ensures no-results message disappears after deleting text in search bar
+  useEffect(() => !searchQuery && setNoSearchResults(false), [ searchQuery ]);
 
   const normalListProps = {
     projects,

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { StyledLink } from './styles.js';
+import { StyledLink } from '../styles.js';
 
 const Artists = ({ sortedArtists }) => {
   const [ loading, setLoading ] = useState(true);

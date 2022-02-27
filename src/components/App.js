@@ -7,7 +7,7 @@ import axios from 'axios';
 import AddProjectForm from './AddProjectForm';
 import ProjectList from './projectList/ProjectList';
 import Message from './Message';
-import ArtistList from './ArtistList';
+import ArtistList from './artistList/ArtistList';
 import ArtistPage from './ArtistPage';
 import ProjectPage from './projectPage/ProjectPage';
 import SearchBar from './SearchBar';

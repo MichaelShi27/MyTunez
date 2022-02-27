@@ -52,7 +52,7 @@ const ProjectPage = () => {
       .catch(console.log);
   };
 
-  // handles form & success/error message renders after edit
+  // handles form & success/error message rendering after edit
   useEffect(() => {
     displayForm && setDisplayForm(!successfulEdit);
     setDisplayMessage(errorMessage || successfulEdit);

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { Loading } from '../styles.js';
 
 const RawList = ({ projects }) => {
   const [ loading, setLoading ] = useState(true);
@@ -35,12 +36,6 @@ const RawList = ({ projects }) => {
     ))
   );
 };
-
-const Loading = styled.div`
-  margin: 100px 270px;
-  color: blue;
-  font-size: 30px;
-`;
 
 const Project = styled.span`
   background-color: ${({ $genre }) => (

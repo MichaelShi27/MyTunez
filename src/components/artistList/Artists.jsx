@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { StyledLink } from '../styles.js';
+import { StyledLink, Loading } from '../styles.js';
 
 const Artists = ({ sortedArtists }) => {
   const [ loading, setLoading ] = useState(true);
   useEffect(() => setLoading(false), []);
 
-  return loading ? <Loading>LOADING...</Loading> : (<>
+  return loading ? <LoadingText>LOADING...</LoadingText> : (<>
     <Header>
       <TextWrapper $header={'true'} $type={'name'}>Name</TextWrapper>
       <TextWrapper $header={'true'} $type={'number'}># of Projects</TextWrapper>
@@ -24,9 +24,8 @@ const Artists = ({ sortedArtists }) => {
   </>);
 };
 
-const Loading = styled.div`
+const LoadingText = styled(Loading)`
   margin: 50px 160px;
-  color: blue;
   font-size: 25px;
 `;
 

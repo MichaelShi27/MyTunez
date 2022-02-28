@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
-// import { StyledLink } from './styles.js';
 import Artists from './Artists';
 
 const ArtistList = ({ projects, searchQuery }) => {

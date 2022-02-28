@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { StyledLink } from '../styles.js';
+import { StyledLink, Loading } from '../styles.js';
 
 const NormalList = ({ projects, sortBy, searchQuery, setQuantity, noSearchResults, setNoSearchResults }) => {
   const [ sortedProjects, setSortedProjects ] = useState([]);
@@ -51,12 +51,6 @@ const NormalList = ({ projects, sortBy, searchQuery, setQuantity, noSearchResult
     </>)
   );
 };
-
-const Loading = styled.div`
-  margin: 100px 270px;
-  color: blue;
-  font-size: 30px;
-`;
 
 const TextWrapper = styled.div`
   padding: 0 5px;

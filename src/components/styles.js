@@ -21,7 +21,7 @@ export const StyledLink = styled(Link)`
 `;
 
 export const Loading = styled.div`
-  margin: 20px 320px;
+  margin: 100px 270px;
   color: blue;
-  font-size: 15px;
+  font-size: 30px;
 `;

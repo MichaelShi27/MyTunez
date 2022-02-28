@@ -20,7 +20,7 @@ const GenreData = ({ projects, successfulSubmit }) => {
   const { rock, electronic, pop, other } = genreCounts;
   const hipHop = genreCounts['hip-hop'];
 
-  return loading ? <Loading>LOADING...</Loading> : (
+  return loading ? <LoadingText>LOADING...</LoadingText> : (
     <Wrapper>
       <TextWrapper>Rock: {rock} projects ({getPercentage(rock)} %)</TextWrapper>
       <TextWrapper>Hip-hop: {hipHop} projects ({getPercentage(hipHop)} %)</TextWrapper>
@@ -31,6 +31,10 @@ const GenreData = ({ projects, successfulSubmit }) => {
   );
 };
 
+const LoadingText = styled(Loading)`
+  margin: 20px 320px;
+  font-size: 15px;
+`;
 const Wrapper = styled.div`
   margin: 0 0 15px 18px;
   background-color: #f2f2f2;

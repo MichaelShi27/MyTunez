@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { Loading } from '../styles.js';
 
 const GenreData = ({ projects, successfulSubmit }) => {
+  const [ loading, setLoading ] = useState(true);
   const [ genreCounts, setGenreCounts ] = useState({});
 
   const getCounts = () => {
@@ -10,13 +12,15 @@ const GenreData = ({ projects, successfulSubmit }) => {
       counts[genre]++;
     setGenreCounts(counts);
   };
+
+  useEffect(() => setLoading(false), []);
   useEffect(getCounts, [ successfulSubmit, projects ]);
 
   const getPercentage = count => Math.round(count / projects.length * 100 * 100) / 100;
   const { rock, electronic, pop, other } = genreCounts;
   const hipHop = genreCounts['hip-hop'];
 
-  return (
+  return loading ? <Loading>LOADING...</Loading> : (
     <Wrapper>
       <TextWrapper>Rock: {rock} projects ({getPercentage(rock)} %)</TextWrapper>
       <TextWrapper>Hip-hop: {hipHop} projects ({getPercentage(hipHop)} %)</TextWrapper>

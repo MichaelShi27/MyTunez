@@ -19,3 +19,9 @@ export const StyledLink = styled(Link)`
   textDecoration: none;
   &:hover { color: purple };
 `;
+
+export const Loading = styled.div`
+  margin: 20px 320px;
+  color: blue;
+  font-size: 15px;
+`;

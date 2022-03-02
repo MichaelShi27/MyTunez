@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { StyledLink, Loading } from '../styles.js';
+import { FixedSizeList as List } from 'react-window';
 
 const NormalList = ({ projects, sortBy, searchQuery, setQuantity, noSearchResults, setNoSearchResults }) => {
   const [ sortedProjects, setSortedProjects ] = useState([]);
@@ -35,19 +36,33 @@ const NormalList = ({ projects, sortBy, searchQuery, setQuantity, noSearchResult
         <TextWrapper $header={'true'} $type={'artist'}>Artist</TextWrapper>
         <TextWrapper $header={'true'} $type={'genre'}>Genre</TextWrapper>
       </Header>
-      <ListContainer>
-        {sortedProjects.map(({ title, artist, genre, _id }, idx) => (
-          <Project key={idx}>
-            <StyledLink to={`/projects/${_id}`}>
-              <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
-            </StyledLink>
-            <StyledLink to={`/artists/${artist}`}>
-              <TextWrapper $type={'artist'}>{artist}</TextWrapper>
-            </StyledLink>
-            <TextWrapper $type={'genre'} $genre={genre}>{genre[0].toUpperCase() + genre.slice(1)}</TextWrapper>
-          </Project>
-        ))}
-      </ListContainer>
+      <List
+        itemData={sortedProjects}
+        width={1030}
+        itemCount={sortedProjects.length}
+        itemSize={30}
+        height={Math.min(590, 30 * sortedProjects.length)}
+        style={{ border: '1px solid gray', marginTop: '5px' }}
+      >
+        {({ data, index, style }) => { // following react-window rules
+          const { title, artist, genre, _id } = data[index];
+          return (
+            <div style={style}>
+              <Project key={index}>
+                <StyledLink to={`/projects/${_id}`}>
+                  <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
+                </StyledLink>
+                <StyledLink to={`/artists/${artist}`}>
+                  <TextWrapper $type={'artist'}>{artist}</TextWrapper>
+                </StyledLink>
+                <TextWrapper $type={'genre'} $genre={genre}>
+                  {genre[0].toUpperCase() + genre.slice(1)}
+                </TextWrapper>
+              </Project>
+            </div>
+          );
+        }}
+      </List>
     </>)
   );
 };
@@ -88,14 +103,6 @@ const Header = styled(Project)`
   border: none;
   padding: 8px 8px 5px;
   width: 990px;
-`;
-
-const ListContainer = styled.div`
-  border: 1px solid gray;
-  width: 1030px;
-  max-height: 590px;
-  overflow: auto;
-  margin-top: 5px;
 `;
 
 export default NormalList;

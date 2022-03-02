@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { StyledLink, Loading } from '../styles.js';
+import { FixedSizeList as List } from 'react-window';
 
 const Artists = ({ sortedArtists }) => {
   const [ loading, setLoading ] = useState(true);
@@ -11,16 +12,28 @@ const Artists = ({ sortedArtists }) => {
       <TextWrapper $header={'true'} $type={'name'}>Name</TextWrapper>
       <TextWrapper $header={'true'} $type={'number'}># of Projects</TextWrapper>
     </Header>
-    <ListContainer>
-      {sortedArtists.map(({ name, projectCount }, idx) => (
-        <Artist key={idx}>
-          <StyledLink to={`/artists/${name}`}>
-            <TextWrapper $type={'name'}>{name}</TextWrapper>
-          </StyledLink>
-          <TextWrapper $type={'number'}>{projectCount}</TextWrapper>
-        </Artist>
-      ))}
-    </ListContainer>
+    <List
+      itemData={sortedArtists}
+      height={600}
+      width={510}
+      itemCount={sortedArtists.length}
+      itemSize={30}
+      style={{ border: '1px solid gray', marginTop: '5px' }}
+    >
+      {({ data, index, style }) => { // following react-window rules
+        const { name, projectCount } = data[index];
+        return (
+          <div style={style}>
+            <Artist key={index}>
+              <StyledLink to={`/artists/${name}`}>
+                <TextWrapper $type={'name'}>{name}</TextWrapper>
+              </StyledLink>
+              <TextWrapper $type={'number'}>{projectCount}</TextWrapper>
+            </Artist>
+          </div>
+        );
+      }}
+    </List>
   </>);
 };
 
@@ -39,14 +52,6 @@ const TextWrapper = styled.div`
     null
   )};
   background-color: ${({ $header }) => $header && '#e0e0e0'};
-`;
-
-const ListContainer = styled.div`
-  border: 1px solid gray;
-  width: 510px;
-  max-height: 600px;
-  overflow: auto;
-  margin-top: 5px;
 `;
 
 const Artist = styled.div`

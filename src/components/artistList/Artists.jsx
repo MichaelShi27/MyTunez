@@ -14,10 +14,10 @@ const Artists = ({ sortedArtists }) => {
     </Header>
     <List
       itemData={sortedArtists}
-      height={600}
       width={510}
       itemCount={sortedArtists.length}
       itemSize={30}
+      height={Math.min(600, 30 * sortedArtists.length)}
       style={{ border: '1px solid gray', marginTop: '5px' }}
     >
       {({ data, index, style }) => { // following react-window rules

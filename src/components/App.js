@@ -26,6 +26,7 @@ const App = () => {
   const [ displayForm, setDisplayForm ] = useState(true);
   const [ displaySearch, setDisplaySearch ] = useState(true);
   const [ searchQuery, setSearchQuery ] = useState('');
+  const [ includeArtists, setIncludeArtists ] = useState(true);
 
   const { pathname: path } = useLocation();
 
@@ -61,7 +62,7 @@ const App = () => {
           setSuccessfulSubmit(true);
           setProjectsAdded(projectsAdded + 1);
         }
-        data === 'duplicate input' && setErrorMessage('This project has already been entered!')
+        data === 'duplicate input' && setErrorMessage('This project has already been entered!');
       })
       .catch(console.log);
   };
@@ -80,6 +81,8 @@ const App = () => {
     }, 5000);
     return () => clearTimeout(timeout);
   }, [ projectsAdded, errorMessage ]);
+
+  const checkboxClick = () => setIncludeArtists(!includeArtists);
 
   return (<>
     <Header>myTunez</Header>
@@ -105,10 +108,12 @@ const App = () => {
           handleChange={e => setSearchQuery(e.target.value)}
         />
       )}
-      {currentList === 'projects' && <ArtistCheckbox />}
+      {currentList === 'projects' && <ArtistCheckbox {...{ includeArtists, checkboxClick }}/>}
     </div>
     <Routes>
-      <Route path="/" element={<ProjectList {...{ projects, searchQuery, setDisplaySearch }} />} />
+      <Route path="/" element={
+        <ProjectList {...{ projects, searchQuery, setDisplaySearch, includeArtists }} />
+      }/>
       <Route path="/artists" element={<ArtistList {...{ projects, searchQuery }} />} />
       <Route path="/artists/:name" element={<ArtistPage allProjects={projects} />} />
       <Route path="/projects/:id" element={<ProjectPage />} />

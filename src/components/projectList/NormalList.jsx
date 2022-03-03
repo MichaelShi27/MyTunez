@@ -3,7 +3,9 @@ import styled from 'styled-components';
 import { StyledLink, Loading } from '../styles.js';
 import { Virtuoso } from 'react-virtuoso';
 
-const NormalList = ({ projects, sortBy, searchQuery, setQuantity, noSearchResults, setNoSearchResults }) => {
+const NormalList = ({
+  projects, sortBy, searchQuery, setQuantity, noSearchResults, setNoSearchResults, includeArtists
+}) => {
   const [ sortedProjects, setSortedProjects ] = useState([]);
   const [ loading, setLoading ] = useState(true);
 
@@ -19,16 +21,16 @@ const NormalList = ({ projects, sortBy, searchQuery, setQuantity, noSearchResult
     );
   }, [ projects, sortBy ]);
 
-  // filters list based on 'searchQuery' prop
+  // filters list based on 'searchQuery' && 'includeArtists' props
   useEffect(() => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filtered = projects.filter(({ title, artist }) => (
-      title.toLowerCase().includes(lowerCaseQuery) || artist.toLowerCase().includes(lowerCaseQuery)
+      title.toLowerCase().includes(lowerCaseQuery) || (includeArtists && artist.toLowerCase().includes(lowerCaseQuery))
     ));
     setSortedProjects(filtered);
     setQuantity(filtered.length);
     setNoSearchResults(filtered.length === 0);
-  }, [ searchQuery, projects, setQuantity, setNoSearchResults ]);
+  }, [ searchQuery, projects, setQuantity, setNoSearchResults, includeArtists ]);
 
   return (
     loading ? <Loading>LOADING...</Loading> :

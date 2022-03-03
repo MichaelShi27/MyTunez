@@ -1,10 +1,15 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ArtistCheckbox = () => (
+const ArtistCheckbox = ({ includeArtists, checkboxClick }) => (
   <Wrapper>
-    <input type="checkbox" style={{ verticalAlign: 'middle', accentColor: 'blue' }} />
-    <label>Include artists</label>
+    <input
+      type="checkbox"
+      checked={includeArtists}
+      style={{ verticalAlign: 'middle', accentColor: 'blue' }}
+      onClick={checkboxClick}
+    />
+    <label style={{ verticalAlign: 'middle' }}>Include artists</label>
   </Wrapper>
 );
 

@@ -22,7 +22,9 @@ const NormalList = ({ projects, sortBy, searchQuery, setQuantity, noSearchResult
   // filters list based on 'searchQuery' prop
   useEffect(() => {
     const lowerCaseQuery = searchQuery.toLowerCase();
-    const filtered = projects.filter(({ title }) => title.toLowerCase().includes(lowerCaseQuery));
+    const filtered = projects.filter(({ title, artist }) => (
+      title.toLowerCase().includes(lowerCaseQuery) || artist.toLowerCase().includes(lowerCaseQuery)
+    ));
     setSortedProjects(filtered);
     setQuantity(filtered.length);
     setNoSearchResults(filtered.length === 0);

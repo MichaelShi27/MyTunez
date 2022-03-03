@@ -20,7 +20,7 @@ const SearchBar = ({ list, searchQuery, handleChange }) => (
 
 const FormWrapper = styled.div`
   background-color: #f2f2f2;
-  width: 270px;
+  width: 260px;
   margin-left: 15px;
   padding: 10px;
   font-family: Verdana, Helvetica, sans-serif;
@@ -28,7 +28,7 @@ const FormWrapper = styled.div`
 `;
 
 const FieldWrapper = styled.span`
-  margin: 10px;
+  margin: 10px 0 10px 10px;
 `;
 
 export default SearchBar;

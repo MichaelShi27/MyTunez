@@ -11,6 +11,7 @@ import ArtistList from './artistList/ArtistList';
 import ArtistPage from './ArtistPage';
 import ProjectPage from './projectPage/ProjectPage';
 import SearchBar from './SearchBar';
+import ArtistCheckbox from './ArtistCheckbox';
 
 import { Header, Button } from './styles.js';
 import { wrangleInput, validateInput } from '../helpers.js';
@@ -96,13 +97,16 @@ const App = () => {
     <Link to="/artists">
       <Button $selected={currentList === 'artists'}>Artists</Button>
     </Link>
-    {displaySearch && (
-      <SearchBar
-        list={currentList}
-        searchQuery={searchQuery}
-        handleChange={e => setSearchQuery(e.target.value)}
-      />
-    )}
+    <div style={{ display: 'flex' }}>
+      {displaySearch && (
+        <SearchBar
+          list={currentList}
+          searchQuery={searchQuery}
+          handleChange={e => setSearchQuery(e.target.value)}
+        />
+      )}
+      {currentList === 'projects' && <ArtistCheckbox />}
+    </div>
     <Routes>
       <Route path="/" element={<ProjectList {...{ projects, searchQuery, setDisplaySearch }} />} />
       <Route path="/artists" element={<ArtistList {...{ projects, searchQuery }} />} />

@@ -31,11 +31,31 @@ for (const projectTitle of projectTitles) {
   if (str.indexOf('the ') === 0)
     str = str.slice(4);
 
+  const specialChars = {
+    ' ': '',
+    '.': '',
+    ',': '',
+    '!': '',
+    ':': '',
+    '$': 's',
+    'ñ': 'n',
+    'ä': 'a',
+    'á': 'a',
+    'å': 'a',
+    'ë': 'e',
+    'é': 'e',
+    'ï': 'i',
+    'í': 'i',
+    'ö': 'o',
+    'ó': 'o',
+    'ø': 'o',
+    'ü': 'u',
+    'ú': 'u'
+  };
   let artistForSorting = [];
   for (const char of str) {
-    if (char === '.' || char === ',' || char === ' ')
-      continue;
-    artistForSorting.push(char === '$' ? 's' : char);
+    const charForSorting = specialChars[char];
+    artistForSorting.push(charForSorting === undefined ? char : charForSorting);
   }
   artistForSorting = artistForSorting.join('');
 
@@ -61,10 +81,6 @@ for (const projectTitle of projectTitles) {
   fakeDate++;
 }
 
-// const genreCounts = { rock: 0, hipHop: 0, pop: 0, electronic: 0, other: 0 };
-// for (const project of project)
-//   genreCounts[project.genre]++;
-// console.log(genreCounts);
 
 // // to find artists w/ most projects
 // const seen = {};

@@ -13,10 +13,32 @@ const wrangleInput = projectData => {
   if (str.indexOf('the ') === 0)
     str = str.slice(4);
 
+  const specialChars = {
+    ' ': '',
+    '.': '',
+    ',': '',
+    '!': '',
+    ':': '',
+    '$': 's',
+    'ñ': 'n',
+    'ä': 'a',
+    'á': 'a',
+    'å': 'a',
+    'ë': 'e',
+    'é': 'e',
+    'ï': 'i',
+    'í': 'i',
+    'ö': 'o',
+    'ó': 'o',
+    'ø': 'o',
+    'ü': 'u',
+    'ú': 'u'
+  };
   const artistForSorting = [];
-  for (const char of str)
-    if (char !== '.' && char !== ',' && char !== ' ')
-      artistForSorting.push(char === '$' ? 's' : char);
+  for (const char of str) {
+    const charForSorting = specialChars[char];
+    artistForSorting.push(charForSorting === undefined ? char : charForSorting);
+  }
 
   projectData.artistForSorting = artistForSorting.join('');
 };

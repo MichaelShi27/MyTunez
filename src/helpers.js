@@ -24,7 +24,7 @@ const convertSpecialChars = (str, charMap = specialChars) => {
   const arr = [];
   for (const char of str)
     arr.push(charMap[char] ?? char);
-  return arr.join('');
+  return arr.join('').toLowerCase();
 };
 
 const moreSpecialChars = {

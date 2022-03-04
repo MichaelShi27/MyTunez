@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+
 import { StyledLink, Loading } from '../styles.js';
 import { Virtuoso } from 'react-virtuoso';
+import { convertSpecialChars } from '../../helpers';
 
 const NormalList = ({
   projects, sortBy, searchQuery, setQuantity, noSearchResults, setNoSearchResults, includeArtists
@@ -25,7 +27,8 @@ const NormalList = ({
   useEffect(() => {
     const lowerCaseQuery = searchQuery.toLowerCase();
     const filtered = projects.filter(({ title, artist }) => (
-      title.toLowerCase().includes(lowerCaseQuery) || (includeArtists && artist.toLowerCase().includes(lowerCaseQuery))
+      convertSpecialChars(title).includes(lowerCaseQuery) ||
+      (includeArtists && convertSpecialChars(artist).includes(lowerCaseQuery))
     ));
     setSortedProjects(filtered);
     setQuantity(filtered.length);

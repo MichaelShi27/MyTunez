@@ -1,15 +1,22 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
-const AddProjectForm = ({ handleSubmit }) => {
+const AddProjectForm = ({ addProject }) => {
   const [ title, setTitle ] = useState('');
   const [ artist, setArtist ] = useState('');
   const [ genre, setGenre ] = useState('');
   const [ releaseYear, setReleaseYear] = useState('');
 
+  const clearForm = () => {
+    setTitle('');
+    setArtist('');
+    setGenre('');
+    setReleaseYear('');
+  };
+
   return (
     <FormWrapper>
-      <form className="form" onSubmit={handleSubmit}>
+      <form className="form" onSubmit={e => addProject(e) || clearForm()}>
         <FieldWrapper>
           <label htmlFor="title">Project Title: </label>
           <input

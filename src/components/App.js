@@ -93,7 +93,7 @@ const App = () => {
         projectsAdded={projectsAdded}
       />
     )}
-    {displayForm && <AddProjectForm handleSubmit={addProject} />}
+    {displayForm && <AddProjectForm addProject={addProject} />}
     <Link to="/">
       <Button $selected={currentList === 'projects'}>Projects</Button>
     </Link>

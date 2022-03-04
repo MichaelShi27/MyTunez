@@ -82,8 +82,6 @@ const App = () => {
     return () => clearTimeout(timeout);
   }, [ projectsAdded, errorMessage ]);
 
-  const checkboxClick = () => setIncludeArtists(!includeArtists);
-
   return (<>
     <Header>myTunez</Header>
     {displayMessage && (
@@ -108,7 +106,7 @@ const App = () => {
           handleChange={e => setSearchQuery(e.target.value)}
         />
       )}
-      {currentList === 'projects' && <ArtistCheckbox {...{ includeArtists, checkboxClick }}/>}
+      {currentList === 'projects' && <ArtistCheckbox {...{ includeArtists, setIncludeArtists }}/>}
     </div>
     <Routes>
       <Route path="/" element={

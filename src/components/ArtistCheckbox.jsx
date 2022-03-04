@@ -1,13 +1,13 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const ArtistCheckbox = ({ includeArtists, checkboxClick }) => (
+const ArtistCheckbox = ({ includeArtists, setIncludeArtists }) => (
   <Wrapper>
     <input
       type="checkbox"
       checked={includeArtists}
+      onChange={() => setIncludeArtists(!includeArtists)}
       style={{ verticalAlign: 'middle', accentColor: 'blue' }}
-      onClick={checkboxClick}
     />
     <label style={{ verticalAlign: 'middle' }}>Include artists</label>
   </Wrapper>

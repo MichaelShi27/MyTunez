@@ -4,6 +4,41 @@ const validateInput = ({ title, artist, releaseYear }) => (
   (releaseYear > new Date().getYear() + 1900) ? 'Please enter a valid year!' : ''
 );
 
+const specialChars = {
+  'ñ': 'n',
+  'ä': 'a',
+  'á': 'a',
+  'å': 'a',
+  'ë': 'e',
+  'é': 'e',
+  'ï': 'i',
+  'í': 'i',
+  'ö': 'o',
+  'ó': 'o',
+  'ø': 'o',
+  'ü': 'u',
+  'ú': 'u'
+};
+
+const convertSpecialChars = (str, charMap = specialChars) => {
+  const arr = [];
+  for (const char of str)
+    arr.push(charMap[char] ?? char);
+  return arr.join('');
+};
+
+const moreSpecialChars = {
+  ...specialChars,
+  ' ': '',
+  '.': '',
+  ',': '',
+  '!': '',
+  ':': '',
+  '$': 's'
+};
+
+const convertMoreSpecialChars = str => convertSpecialChars(str, moreSpecialChars);
+
 const wrangleInput = projectData => {
   for (const key in projectData)
     if (key !== 'dateAdded')
@@ -13,34 +48,7 @@ const wrangleInput = projectData => {
   if (str.indexOf('the ') === 0)
     str = str.slice(4);
 
-  const specialChars = {
-    ' ': '',
-    '.': '',
-    ',': '',
-    '!': '',
-    ':': '',
-    '$': 's',
-    'ñ': 'n',
-    'ä': 'a',
-    'á': 'a',
-    'å': 'a',
-    'ë': 'e',
-    'é': 'e',
-    'ï': 'i',
-    'í': 'i',
-    'ö': 'o',
-    'ó': 'o',
-    'ø': 'o',
-    'ü': 'u',
-    'ú': 'u'
-  };
-  const artistForSorting = [];
-  for (const char of str) {
-    const charForSorting = specialChars[char];
-    artistForSorting.push(charForSorting === undefined ? char : charForSorting);
-  }
-
-  projectData.artistForSorting = artistForSorting.join('');
+  projectData.artistForSorting = convertMoreSpecialChars(str);
 };
 
-export { validateInput, wrangleInput };
+export { validateInput, wrangleInput, convertSpecialChars, convertMoreSpecialChars };

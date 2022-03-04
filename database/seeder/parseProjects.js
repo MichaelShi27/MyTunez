@@ -1,3 +1,4 @@
+import { convertMoreSpecialChars } from '../../src/helpers';
 const { projectTitles } = require('./projectTitles');
 
 // const subgenres = {
@@ -31,33 +32,7 @@ for (const projectTitle of projectTitles) {
   if (str.indexOf('the ') === 0)
     str = str.slice(4);
 
-  const specialChars = {
-    ' ': '',
-    '.': '',
-    ',': '',
-    '!': '',
-    ':': '',
-    '$': 's',
-    'ñ': 'n',
-    'ä': 'a',
-    'á': 'a',
-    'å': 'a',
-    'ë': 'e',
-    'é': 'e',
-    'ï': 'i',
-    'í': 'i',
-    'ö': 'o',
-    'ó': 'o',
-    'ø': 'o',
-    'ü': 'u',
-    'ú': 'u'
-  };
-  let artistForSorting = [];
-  for (const char of str) {
-    const charForSorting = specialChars[char];
-    artistForSorting.push(charForSorting === undefined ? char : charForSorting);
-  }
-  artistForSorting = artistForSorting.join('');
+  const artistForSorting = convertMoreSpecialChars(str);
 
   // replace smart apostrophes w/ straight ones
   const obj = { artist, title, genre, artistForSorting };

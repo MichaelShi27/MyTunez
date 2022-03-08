@@ -9,7 +9,6 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, 
   const [ displayGenres, setDisplayGenres ] = useState(false);
   const [ listFormat, setListFormat ] = useState('normal');
   const [ sortBy, setSortBy ] = useState('artist');
-  const [ displayAllProjects, setDisplayAllProjects ] = useState(false);
   const [ quantity, setQuantity ] = useState(projects.length);
   const [ noSearchResults, setNoSearchResults ] = useState(false);
 
@@ -45,33 +44,26 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, 
         )}
       </>)}
       {!searchQuery && (<>
-        {listFormat === 'normal' && (<>
-          <Button onClick={() => setDisplayAllProjects(!displayAllProjects)}>
-            {displayAllProjects ? 'Hide' : 'View'} All Projects
-          </Button>
+        {listFormat === 'normal' && (
           <Button onClick={() => setDisplayGenres(!displayGenres)}>
             {displayGenres ? 'Hide' : 'View'} Genre Data
           </Button>
-        </>)}
-        {displayAllProjects && (<>
-          <Button onClick={rawDataClick}>
-            {listFormat === 'raw' ? 'Back' : 'Raw Data'}
-          </Button>
-          {listFormat === 'normal' && (<>
-            <label htmlFor="sortBy">Sort by: </label>
-            <select id="sortBy" value={sortBy} onChange={e => setSortBy(e.target.value)}>
-              <option value="artist">Artist</option>
-              <option value="recency">Recently Added</option>
-            </select>
-          </>)}
+        )}
+        <Button onClick={rawDataClick}>
+          {listFormat === 'raw' ? 'Back' : 'Raw Data'}
+        </Button>
+        {listFormat === 'normal' && (<>
+          <label htmlFor="sortBy">Sort by: </label>
+          <select id="sortBy" value={sortBy} onChange={e => setSortBy(e.target.value)}>
+            <option value="artist">Artist</option>
+            <option value="recency">Recently Added</option>
+          </select>
         </>)}
       </>)}
     </Options>
     {displayGenres && !searchQuery && <GenreData projects={projects}/>}
-    {(displayAllProjects || searchQuery) && (<>
-      {listFormat === 'normal' && <NormalList {...normalListProps} />}
-      {listFormat === 'raw' && <RawList projects={projects} />}
-    </>)}
+    {listFormat === 'normal' && <NormalList {...normalListProps} />}
+    {listFormat === 'raw' && <RawList projects={projects} />}
   </>);
 };
 

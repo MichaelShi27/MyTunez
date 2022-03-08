@@ -18,7 +18,10 @@ const ArtistPage = ({ allProjects }) => {
 
   return (
     <Container>
-      <Name>{name}</Name>
+      <NameContainer>
+        <Name>{name}</Name>
+        <EditTooltip>Click to edit name</EditTooltip>
+      </NameContainer>
       <Header>
         <TextWrapper $header={'true'} $type={'title'}>Project Title</TextWrapper>
         <TextWrapper $header={'true'} $type={'genre'}>Genre</TextWrapper>
@@ -42,10 +45,45 @@ const Container = styled.div`
   width: 720px;
 `;
 
-const Name = styled.div`
-  margin: 20px;
+const Name = styled.span`
+  display: table;
+  margin: 15px auto;
   font-size: 25px;
   text-align: center;
+`;
+
+const EditTooltip = styled.div`
+  visibility: hidden;
+  position: absolute;
+  left: 310px;
+  font-size: 12px;
+  color: transparent;
+  background-color: transparent;
+  transition: visibility 0.5s, color 0.5s, background-color 0.5s, width 0.5s,
+    padding 0.5s ease-in-out;
+  &:before {
+    content: "";
+    left: 45px;
+    top: -4px;
+    position: absolute;
+    border: 4px solid transparent;
+    transform: rotate(135deg);
+    transition: border 0.3s ease-in-out;
+  }
+`;
+
+const NameContainer = styled.div`
+  position: relative;
+  & ${Name}:hover + ${EditTooltip} {
+    visibility: visible;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 6px;
+    border-radius: 4px;
+    &:before {
+      border-color: transparent transparent rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5);
+    }
+  }
 `;
 
 const TextWrapper = styled.div`
@@ -83,6 +121,7 @@ const Header = styled(Project)`
   border: none;
   padding: 8px 2px 5px;
   width: 700x;
+  margin: 25px 0 0;
 `;
 
 export default ArtistPage;

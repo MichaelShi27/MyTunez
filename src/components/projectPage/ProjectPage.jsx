@@ -58,7 +58,7 @@ const ProjectPage = () => {
 
   // handles form & success/error message rendering after edit
   useEffect(() => {
-    setDisplayForm(!successfulEdit);
+    successfulEdit && setDisplayForm(false);
     setDisplayMessage(errorMessage || successfulEdit);
     const timeout = setTimeout(() => {
       setDisplayMessage(false);

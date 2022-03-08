@@ -8,7 +8,6 @@ const ArtistList = ({ projects, searchQuery }) => {
   const [ artists, setArtists ] = useState([]);
   const [ sortBy, setSortBy ] = useState('name');
   const [ sortedArtists, setSortedArtists ] = useState([]);
-  const [ displayAllArtists, setDisplayAllArtists ] = useState(false);
   const [ noSearchResults, setNoSearchResults ] = useState(false);
 
   const getArtists = useCallback(() => {
@@ -60,13 +59,8 @@ const ArtistList = ({ projects, searchQuery }) => {
           # of artists: {sortedArtists.length}
         </TextWrapper>
       )}
-      {!searchQuery && (
-        <Button onClick={() => setDisplayAllArtists(!displayAllArtists)}>
-          {displayAllArtists ? 'Hide' : 'View'} All Artists
-        </Button>
-      )}
       <div style={{ margin: '0 20px', display: 'inline-block' }}>
-        {displayAllArtists && !searchQuery && (<>
+        {!searchQuery && (<>
           <label htmlFor="sortBy">Sort by: </label>
           <select id="sortBy" value={sortBy} onChange={e => setSortBy(e.target.value)}>
             <option value="artist">Name</option>
@@ -76,9 +70,7 @@ const ArtistList = ({ projects, searchQuery }) => {
         </>)}
       </div>
     </Options>
-    {(displayAllArtists || searchQuery) && !noSearchResults && (
-      <Artists sortedArtists={sortedArtists} />
-    )}
+    {!noSearchResults && <Artists sortedArtists={sortedArtists} />}
   </>);
 };
 
@@ -96,10 +88,6 @@ const TextWrapper = styled.div`
     null
   )};
   background-color: ${({ $header }) => $header && '#e0e0e0'};
-`;
-
-const Button = styled.button`
-  margin: 15px;
 `;
 
 export default ArtistList;

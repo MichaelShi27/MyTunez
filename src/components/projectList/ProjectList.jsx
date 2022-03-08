@@ -5,7 +5,7 @@ import GenreData from './GenreData';
 import NormalList from './NormalList';
 import RawList from './RawList';
 
-const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists }) => {
+const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, setDisplayCheckbox }) => {
   const [ displayGenres, setDisplayGenres ] = useState(false);
   const [ listFormat, setListFormat ] = useState('normal');
   const [ sortBy, setSortBy ] = useState('artist');
@@ -14,7 +14,8 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists }
   const [ noSearchResults, setNoSearchResults ] = useState(false);
 
   const rawDataClick = () => {
-    setDisplaySearch(listFormat !== 'normal');
+    setDisplaySearch(listFormat === 'raw');
+    setDisplayCheckbox(listFormat === 'raw');
     setListFormat(listFormat === 'normal' ? 'raw' : 'normal');
   };
 

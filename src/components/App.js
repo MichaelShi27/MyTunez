@@ -27,6 +27,7 @@ const App = () => {
   const [ displaySearch, setDisplaySearch ] = useState(true);
   const [ searchQuery, setSearchQuery ] = useState('');
   const [ includeArtists, setIncludeArtists ] = useState(true);
+  const [ displayCheckbox, setDisplayCheckbox ] = useState(true);
 
   const { pathname: path } = useLocation();
 
@@ -34,6 +35,7 @@ const App = () => {
   useEffect(() => {
     setDisplayForm(!(path.indexOf('/projects') === 0));
     setDisplaySearch(path === '/' || path === '/artists');
+    setDisplayCheckbox(path === '/');
 
     if (path === '/')
       setCurrentList('projects');
@@ -106,11 +108,17 @@ const App = () => {
           handleChange={e => setSearchQuery(e.target.value)}
         />
       )}
-      {currentList === 'projects' && <ArtistCheckbox {...{ includeArtists, setIncludeArtists }}/>}
+      {displayCheckbox && <ArtistCheckbox {...{ includeArtists, setIncludeArtists }}/>}
     </div>
     <Routes>
       <Route path="/" element={
-        <ProjectList {...{ projects, searchQuery, setDisplaySearch, includeArtists }} />
+        <ProjectList {...{
+          projects,
+          searchQuery,
+          setDisplaySearch,
+          includeArtists,
+          setDisplayCheckbox
+        }}/>
       }/>
       <Route path="/artists" element={<ArtistList {...{ projects, searchQuery }} />} />
       <Route path="/artists/:name" element={<ArtistPage allProjects={projects} />} />

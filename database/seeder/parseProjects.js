@@ -1,5 +1,5 @@
-import { convertMoreSpecialChars } from '../../src/helpers';
 const { projectTitles } = require('./projectTitles');
+const { convertMoreSpecialChars, replaceApostrophes } = require('../helpers');
 
 // const subgenres = {
 //   rock: [ 'punk', 'singer-songwriter', 'other' ],
@@ -34,17 +34,7 @@ for (const projectTitle of projectTitles) {
 
   const artistForSorting = convertMoreSpecialChars(str);
 
-  // replace smart apostrophes w/ straight ones
-  const obj = { artist, title, genre, artistForSorting };
-  for (const key in obj) {
-    const val = obj[key];
-    const idx = val.indexOf('’');
-    if (idx >= 0) {
-      const split = val.split('');
-      split.splice(idx, 1, "'");
-      obj[key] = split.join('');
-    }
-  }
+  const obj = replaceApostrophes({ artist, title, genre, artistForSorting });
 
   projects.push({
     ...obj,
@@ -55,7 +45,6 @@ for (const projectTitle of projectTitles) {
 
   fakeDate++;
 }
-
 
 // // to find artists w/ most projects
 // const seen = {};

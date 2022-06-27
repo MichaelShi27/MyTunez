@@ -2,13 +2,13 @@ const express = require('express');
 const path = require('path');
 // const bodyParser = require('body-parser');
 // const controller = require('./controller.js');
-const db = require('../database');
+require('../database');
 const { getAllProjects, addProject, getArtist, getProject, editProject, deleteProject } = require('./controller');
 const PORT = 8080;
 
 const app = express();
 
-app.use(express.urlencoded({ extended: true }));
+app.use( express.urlencoded({ extended: true }) );
 app.use(express.json());
 
 const buildDir = path.resolve(__dirname + '/../build');
@@ -18,7 +18,7 @@ app.use( express.static(buildDir) );
 
 app.get('/projects', getAllProjects);
 app.post('/addProject', addProject);
-app.get('/artists/:name', getArtist);
+app.get('/artists/:name(*)', getArtist);
 app.get('/projects/:id', getProject);
 app.patch('/editProject/:id', editProject);
 app.delete('/deleteProject/:id', deleteProject);

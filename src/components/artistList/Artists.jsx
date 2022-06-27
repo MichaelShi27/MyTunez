@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { StyledLink, Loading } from '../styles.js';
 import { FixedSizeList as List } from 'react-window';
+import { convertSlashes } from '../../helpers';
 
 const Artists = ({ sortedArtists }) => {
   const [ loading, setLoading ] = useState(true);
@@ -25,7 +26,7 @@ const Artists = ({ sortedArtists }) => {
         return (
           <div style={style}>
             <Artist key={index}>
-              <StyledLink to={`/artists/${name}`}>
+              <StyledLink to={`/artists/${convertSlashes(name)}`}>
                 <TextWrapper $type={'name'}>{name}</TextWrapper>
               </StyledLink>
               <TextWrapper $type={'number'}>{projectCount}</TextWrapper>

@@ -51,4 +51,12 @@ const wrangleInput = projectData => {
   projectData.artistForSorting = convertMoreSpecialChars(str);
 };
 
-export { validateInput, wrangleInput, convertSpecialChars, convertMoreSpecialChars };
+const convertSlashes = str => {
+  const arr = str.split('');
+  for (let i = 0; i < arr.length; i++)
+    if (arr[i] === '/')
+      arr[i] = '%2F';
+  return arr.join('');
+};
+
+export { validateInput, wrangleInput, convertSpecialChars, convertMoreSpecialChars, convertSlashes };

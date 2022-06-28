@@ -6,10 +6,7 @@ const SearchBar = ({ list, searchQuery, handleChange }) => (
     <form className="form">
       <label htmlFor="search">Search {list}:</label>
       <FieldWrapper>
-        <input
-          type="text"
-          id="search"
-          name="search"
+        <InputField
           value={searchQuery}
           onChange={handleChange}
         />
@@ -29,6 +26,16 @@ const FormWrapper = styled.div`
 
 const FieldWrapper = styled.span`
   margin: 10px 0 10px 10px;
+`;
+
+const InputField = styled.input.attrs({
+  type: "search",
+  id: "search",
+  name: "search"
+})`
+  &::-webkit-search-cancel-button {
+    opacity: 50%;
+  }
 `;
 
 export default SearchBar;

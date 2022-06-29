@@ -29,7 +29,7 @@ const App = () => {
   const [ includeArtists, setIncludeArtists ] = useState(true);
   const [ displayCheckbox, setDisplayCheckbox ] = useState(true);
 
-  const { pathname: path } = useLocation();
+  const { pathname: path, state: locationState } = useLocation();
 
   // determines what to render based on current URL
   useEffect(() => {
@@ -71,8 +71,8 @@ const App = () => {
 
   const getProjects = () => axios('/projects').then(({ data }) => setProjects(data));
 
-  // updates list when a project is added
-  useEffect(getProjects, [ projectsAdded ]);
+  // updates list when a project is added or deleted
+  useEffect(getProjects, [ projectsAdded, locationState ]);
 
   // displays success/error message
   useEffect(() => {

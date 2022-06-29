@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
@@ -9,7 +9,6 @@ import DeletionModal from './DeletionModal';
 
 import { Button, StyledLink } from '../styles.js';
 import { wrangleInput, validateInput } from '../../helpers.js';
-
 
 const ProjectPage = () => {
   const [ project, setProject ] = useState({});
@@ -67,9 +66,16 @@ const ProjectPage = () => {
     return () => clearTimeout(timeout);
   }, [ errorMessage, successfulEdit ]);
 
+  const navigate = useNavigate();
+
   const deleteProject = () => {
     axios.delete(`/deleteProject/${id}`)
-      .then(({ data }) => setDeleted(data === 'success'))
+      .then(({ data }) => {
+        setDeleted(data === 'success');
+        setTimeout(() => {
+          navigate('/', { state: { deleted: true } });
+        }, 3000);
+      })
       .catch(console.log);
   };
 
@@ -88,6 +94,7 @@ const ProjectPage = () => {
     display: 'block',
     fontSize: '10px'
   };
+
   return (<>
     <Container>
       <Name><em>{title}</em></Name>

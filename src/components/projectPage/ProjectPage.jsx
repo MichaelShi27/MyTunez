@@ -18,6 +18,7 @@ const ProjectPage = () => {
   const [ errorMessage, setErrorMessage ] = useState('');
   const [ deleted, setDeleted ] = useState(false);
   const [ displayModal, setDisplayModal ] = useState(false);
+  const [ returnHome, setReturnHome ] = useState(false);
   const { id } = useParams();
 
   const getProject = () => axios(`/projects/${id}`).then(({ data }) => setProject(data[0]));
@@ -68,13 +69,18 @@ const ProjectPage = () => {
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (returnHome) {
+      const timeout = setTimeout(() => navigate('/'), 3000);
+      return () => clearTimeout(timeout);
+    }
+  }, [ returnHome, navigate ]);
+
   const deleteProject = () => {
     axios.delete(`/deleteProject/${id}`)
       .then(({ data }) => {
         setDeleted(data === 'success');
-        setTimeout(() => {
-          navigate('/', { state: { deleted: true } });
-        }, 3000);
+        setReturnHome(true);
       })
       .catch(console.log);
   };

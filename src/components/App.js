@@ -29,11 +29,11 @@ const App = () => {
   const [ includeArtists, setIncludeArtists ] = useState(true);
   const [ displayCheckbox, setDisplayCheckbox ] = useState(true);
 
-  const { pathname: path, state: locationState } = useLocation();
+  const { pathname: path } = useLocation();
 
   // determines what to render based on current URL
   useEffect(() => {
-    setDisplayForm(!(path.indexOf('/projects') === 0));
+    setDisplayForm(path.indexOf('/projects') !== 0);
     setDisplaySearch(path === '/' || path === '/artists');
     setDisplayCheckbox(path === '/');
 
@@ -72,7 +72,7 @@ const App = () => {
   const getProjects = () => axios('/projects').then(({ data }) => setProjects(data));
 
   // updates list when a project is added or deleted
-  useEffect(getProjects, [ projectsAdded, locationState ]);
+  useEffect(getProjects, [ projectsAdded, currentList ]);
 
   // displays success/error message
   useEffect(() => {

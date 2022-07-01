@@ -33,7 +33,10 @@ const App = () => {
 
   // determines what to render based on current URL
   useEffect(() => {
-    setDisplayForm(path.indexOf('/projects') !== 0);
+    const notOnProjectPage = path.indexOf('/projects') !== 0;
+    setDisplayForm(notOnProjectPage);
+    setDisplayMessage(notOnProjectPage);
+
     setDisplaySearch(path === '/' || path === '/artists');
     setDisplayCheckbox(path === '/');
 

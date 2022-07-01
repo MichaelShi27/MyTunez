@@ -71,7 +71,7 @@ const ProjectPage = () => {
 
   useEffect(() => {
     if (returnHome) {
-      const timeout = setTimeout(() => navigate('/'), 3000);
+      const timeout = setTimeout(() => navigate(-1), 3000);
       return () => clearTimeout(timeout);
     }
   }, [ returnHome, navigate ]);

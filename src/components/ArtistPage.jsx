@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -6,7 +6,15 @@ import { StyledLink } from './styles.js';
 
 const ArtistPage = ({ allProjects }) => {
   const [ projects, setProjects ] = useState([]);
+
   const { name } = useParams();
+
+  // everything below til getProjects is for dynamically determining the width of the artist-name input field
+  const [ text, setText ] = useState(name);
+  const [ width, setWidth ] = useState(0);
+
+  const hiddenSpan = useRef();
+  useEffect(() => setWidth(hiddenSpan.current.offsetWidth), [ text ]);
 
   const getProjects = () => {
     axios(`/artists/${name}`)
@@ -16,10 +24,17 @@ const ArtistPage = ({ allProjects }) => {
   // retrieves the artist's projects upon first render, & also after a new project is added
   useEffect(getProjects, [ allProjects, name ]);
 
+  const handleChange = e => setText(e.target.value);
+
   return (
     <Container>
+      <HiddenSpan ref={hiddenSpan}>{text}</HiddenSpan> {/* for width-determing */}
       <NameContainer>
-        <Name>{name}</Name>
+        <Name
+          $width={width}
+          value={text}
+          onChange={handleChange}
+        />
         <EditTooltip>Click to edit name</EditTooltip>
       </NameContainer>
       <Header>
@@ -45,11 +60,18 @@ const Container = styled.div`
   width: 720px;
 `;
 
-const Name = styled.span`
+const HiddenSpan = styled.span`
+  visibility: hidden;
+  font-size: 25px;
+`;
+
+const Name = styled.input`
   display: table;
   margin: 15px auto;
   font-size: 25px;
   text-align: center;
+  border: 1px solid white;
+  width: ${({ $width }) => `${$width + ($width > 300 ? 80 : 50)}px`};
 `;
 
 const EditTooltip = styled.div`

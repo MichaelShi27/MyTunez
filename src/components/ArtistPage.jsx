@@ -37,11 +37,21 @@ const ArtistPage = ({ allProjects }) => {
   // retrieves the artist's projects upon first render, & also after a new project is added
   useEffect(getProjects, [ allProjects, name ]);
 
+  // const [ displayMessage, setDisplayMessage ] = useState(false);
+  const handleSubmit = e => {
+    e.preventDefault();
+    console.log('sub')
+    nameInput.current.blur();
+    setNameClicked(false);
+    // setDisplayMessage(true);
+    // actually save data to back end
+  };
+
   return (
     <Container>
       <HiddenSpan ref={hiddenSpan}>{text}</HiddenSpan> {/* for width-determing */}
       <NameContainer>
-        <form onSubmit={() => setNameClicked(false)}>
+        <form>
           <Name
             $width={width}
             value={text}
@@ -49,15 +59,9 @@ const ArtistPage = ({ allProjects }) => {
             onClick={() => setNameClicked(true)}
             ref={nameInput}
           />
+          {/* {displayMessage && <div>Saved!</div>} */}
           {!nameClicked && <EditTooltip>Click to edit name</EditTooltip>}
-          {nameClicked && (
-            <SaveButton
-              onClick={() => setNameClicked(false)}
-              type="submit"
-            >
-              Save
-            </SaveButton>
-          )}
+          {nameClicked && <SaveButton onClick={handleSubmit}>Save</SaveButton>}
         </form>
       </NameContainer>
       <Header>

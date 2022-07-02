@@ -8,13 +8,26 @@ const ArtistPage = ({ allProjects }) => {
   const [ projects, setProjects ] = useState([]);
 
   const { name } = useParams();
-
-  // everything below til getProjects is for dynamically determining the width of the artist-name input field
   const [ text, setText ] = useState(name);
+
+  // width state, hiddenSpan, & the useEffect are for dynamically determining the width of the artist-name input field
   const [ width, setWidth ] = useState(0);
 
   const hiddenSpan = useRef();
   useEffect(() => setWidth(hiddenSpan.current.offsetWidth), [ text ]);
+
+  // everything below til getProjects is for reverting nameClicked when user clicks outside the input field
+  const [ nameClicked, setNameClicked ] = useState(false);
+  const nameInput = useRef();
+  const handleClickOutside = e => {
+    if (nameInput.current && !nameInput.current.contains(e.target))
+      setNameClicked(false);
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside, false);
+    return () => document.removeEventListener('click', handleClickOutside, false);
+  }, []);
 
   const getProjects = () => {
     axios(`/artists/${name}`)
@@ -24,18 +37,28 @@ const ArtistPage = ({ allProjects }) => {
   // retrieves the artist's projects upon first render, & also after a new project is added
   useEffect(getProjects, [ allProjects, name ]);
 
-  const handleChange = e => setText(e.target.value);
-
   return (
     <Container>
       <HiddenSpan ref={hiddenSpan}>{text}</HiddenSpan> {/* for width-determing */}
       <NameContainer>
-        <Name
-          $width={width}
-          value={text}
-          onChange={handleChange}
-        />
-        <EditTooltip>Click to edit name</EditTooltip>
+        <form onSubmit={() => setNameClicked(false)}>
+          <Name
+            $width={width}
+            value={text}
+            onChange={e => setText(e.target.value)}
+            onClick={() => setNameClicked(true)}
+            ref={nameInput}
+          />
+          {!nameClicked && <EditTooltip>Click to edit name</EditTooltip>}
+          {nameClicked && (
+            <SaveButton
+              onClick={() => setNameClicked(false)}
+              type="submit"
+            >
+              Save
+            </SaveButton>
+          )}
+        </form>
       </NameContainer>
       <Header>
         <TextWrapper $header={'true'} $type={'title'}>Project Title</TextWrapper>
@@ -72,6 +95,11 @@ const Name = styled.input`
   text-align: center;
   border: 1px solid white;
   width: ${({ $width }) => `${$width + ($width > 300 ? 80 : 50)}px`};
+`;
+
+const SaveButton = styled.button`
+  display: flex;
+  margin: auto;
 `;
 
 const EditTooltip = styled.div`

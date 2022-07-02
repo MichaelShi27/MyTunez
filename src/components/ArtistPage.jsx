@@ -10,13 +10,20 @@ const ArtistPage = ({ allProjects }) => {
   const { name } = useParams();
   const [ text, setText ] = useState(name);
 
-  // width state, hiddenSpan, & the useEffect are for dynamically determining the width of the artist-name input field
-  const [ width, setWidth ] = useState(0);
+  // section 1 retrieves the artist's projects upon first render, & also after a new project is added
+  const getProjects = () => {
+    axios(`/artists/${name}`)
+      .then(({ data }) => setProjects(data));
+  };
 
+  useEffect(getProjects, [ allProjects, name ]);
+
+  // section 2 dynamically determines the width of the artist-name input field
+  const [ width, setWidth ] = useState(0);
   const hiddenSpan = useRef();
   useEffect(() => setWidth(hiddenSpan.current.offsetWidth), [ text ]);
 
-  // everything below til getProjects is for reverting nameClicked when user clicks outside the input field
+  // section 3 handles conditional rendering when user clicks outside the input field
   const [ nameClicked, setNameClicked ] = useState(false);
   const nameInput = useRef();
   const handleClickOutside = e => {
@@ -29,21 +36,14 @@ const ArtistPage = ({ allProjects }) => {
     return () => document.removeEventListener('click', handleClickOutside, false);
   }, []);
 
-  const getProjects = () => {
-    axios(`/artists/${name}`)
-      .then(({ data }) => setProjects(data));
-  };
+  // section 4 handles the edit-artist-name submit functionality
+  const [ displayMessage, setDisplayMessage ] = useState(false);
 
-  // retrieves the artist's projects upon first render, & also after a new project is added
-  useEffect(getProjects, [ allProjects, name ]);
-
-  // const [ displayMessage, setDisplayMessage ] = useState(false);
   const handleSubmit = e => {
     e.preventDefault();
-    console.log('sub')
     nameInput.current.blur();
     setNameClicked(false);
-    // setDisplayMessage(true);
+    setDisplayMessage(true);
     // actually save data to back end
   };
 
@@ -59,7 +59,7 @@ const ArtistPage = ({ allProjects }) => {
             onClick={() => setNameClicked(true)}
             ref={nameInput}
           />
-          {/* {displayMessage && <div>Saved!</div>} */}
+          {displayMessage && <div>Saved!</div>}
           {!nameClicked && <EditTooltip>Click to edit name</EditTooltip>}
           {nameClicked && <SaveButton onClick={handleSubmit}>Save</SaveButton>}
         </form>

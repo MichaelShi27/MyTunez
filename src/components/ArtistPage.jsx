@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
+
+import Message from './Message';
 import { StyledLink } from './styles.js';
 
 const ArtistPage = ({ allProjects }) => {
@@ -26,15 +28,18 @@ const ArtistPage = ({ allProjects }) => {
   // section 3 handles conditional rendering when user clicks outside the input field
   const [ nameClicked, setNameClicked ] = useState(false);
   const nameInput = useRef();
-  const handleClickOutside = e => {
-    if (nameInput.current && !nameInput.current.contains(e.target))
-      setNameClicked(false);
-  };
 
   useEffect(() => {
+    const handleClickOutside = e => {
+      if (nameInput.current && !nameInput.current.contains(e.target)) {
+        setNameClicked(false);
+        setText(name);
+      }
+    };
+
     document.addEventListener('click', handleClickOutside, false);
     return () => document.removeEventListener('click', handleClickOutside, false);
-  }, []);
+  }, [ name ]);
 
   // section 4 handles the edit-artist-name submit functionality
   const [ displayMessage, setDisplayMessage ] = useState(false);
@@ -43,8 +48,17 @@ const ArtistPage = ({ allProjects }) => {
     e.preventDefault();
     nameInput.current.blur();
     setNameClicked(false);
+
     setDisplayMessage(true);
+    setTimeout(() => setDisplayMessage(false), 2000);
     // actually save data to back end
+  };
+
+  const messageStyles = {
+    display: 'flex',
+    margin: 'auto',
+    width: '40px',
+    padding: '0 10px'
   };
 
   return (
@@ -59,8 +73,8 @@ const ArtistPage = ({ allProjects }) => {
             onClick={() => setNameClicked(true)}
             ref={nameInput}
           />
-          {displayMessage && <div>Saved!</div>}
-          {!nameClicked && <EditTooltip>Click to edit name</EditTooltip>}
+          {displayMessage && <Message saved={true} style={messageStyles} />}
+          {!nameClicked && !displayMessage && <EditTooltip>Click to edit name</EditTooltip>}
           {nameClicked && <SaveButton onClick={handleSubmit}>Save</SaveButton>}
         </form>
       </NameContainer>

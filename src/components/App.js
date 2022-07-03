@@ -30,13 +30,11 @@ const App = () => {
   const [ displayCheckbox, setDisplayCheckbox ] = useState(true);
 
   const { pathname: path } = useLocation();
+  const notOnProjectPage = path.indexOf('/projects') !== 0;
 
   // determines what to render based on current URL
   useEffect(() => {
-    const notOnProjectPage = path.indexOf('/projects') !== 0;
     setDisplayForm(notOnProjectPage);
-    setDisplayMessage(notOnProjectPage);
-
     setDisplaySearch(path === '/' || path === '/artists');
     setDisplayCheckbox(path === '/');
 
@@ -46,7 +44,7 @@ const App = () => {
       setCurrentList('artists');
     else
       setCurrentList('');
-  }, [ path ]);
+  }, [ path, notOnProjectPage ]);
 
   const addProject = e => {
     e.preventDefault();
@@ -89,7 +87,7 @@ const App = () => {
 
   return (<>
     <Header>myTunez</Header>
-    {displayMessage && (
+    {displayMessage && notOnProjectPage && (
       <Message
         message={errorMessage}
         added={successfulSubmit}

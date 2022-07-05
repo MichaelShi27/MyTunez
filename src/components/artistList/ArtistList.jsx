@@ -29,6 +29,7 @@ const ArtistList = ({ projects, searchQuery }) => {
       if (projectDate < firstAdded)
         firstAdded = projectDate;
     }
+    artists.push({ name: curArtist, projectCount, firstAdded });
     setArtists(artists);
   }, [ projects ]);
 

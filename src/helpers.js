@@ -44,6 +44,10 @@ const wrangleInput = projectData => {
     if (key !== 'dateAdded')
       projectData[key] = projectData[key].value;
 
+  createArtistForSorting(projectData);
+};
+
+const createArtistForSorting = projectData => {
   let str = projectData.artist.toLowerCase(); // MongoDB doesn't allow case-insensitive sorting
   if (str.indexOf('the ') === 0)
     str = str.slice(4);
@@ -59,4 +63,4 @@ const convertSlashes = str => {
   return arr.join('');
 };
 
-export { validateInput, wrangleInput, convertSpecialChars, convertMoreSpecialChars, convertSlashes };
+export { validateInput, wrangleInput, createArtistForSorting, convertSpecialChars, convertMoreSpecialChars, convertSlashes };

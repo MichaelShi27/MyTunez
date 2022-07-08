@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
 import Message from './Message';
 import { StyledLink } from './styles.js';
+import { createArtistForSorting } from '../helpers.js';
 
 const ArtistPage = ({ allProjects }) => {
   const [ projects, setProjects ] = useState([]);
@@ -43,22 +44,46 @@ const ArtistPage = ({ allProjects }) => {
 
   // section 4 handles the edit-artist-name submit functionality
   const [ displayMessage, setDisplayMessage ] = useState(false);
+  const [ errorMessage, setErrorMessage ] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = e => {
     e.preventDefault();
     nameInput.current.blur();
     setNameClicked(false);
 
+    for (const project of projects) {
+      const newData = { ...project, artist: text };
+      createArtistForSorting(newData);
+
+      axios.patch(`/editProject/${newData._id}`, newData)
+        .then(({ data }) => {
+          if (data === 'success' || data === 'duplicate input') {
+            setText(text);
+            setErrorMessage('');
+            navigate(`/artists/${text}`);
+          } else
+            setErrorMessage(data);
+        })
+        .catch(console.log);
+    }
+
     setDisplayMessage(true);
-    setTimeout(() => setDisplayMessage(false), 2000);
-    // actually save data to back end
   };
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setDisplayMessage(false);
+      setErrorMessage('');
+    }, errorMessage ? 5000 : 2000);
+    return () => clearTimeout(timeout);
+  }, [ displayMessage, errorMessage ]);
 
   const messageStyles = {
     display: 'flex',
     margin: 'auto',
-    width: '40px',
-    padding: '0 10px'
+    justifyContent: 'center',
+    width: '300px'
   };
 
   return (
@@ -73,7 +98,13 @@ const ArtistPage = ({ allProjects }) => {
             onClick={() => setNameClicked(true)}
             ref={nameInput}
           />
-          {displayMessage && <Message saved={true} style={messageStyles} />}
+          {displayMessage && (
+            <Message
+              saved={errorMessage ? false : true}
+              message={errorMessage}
+              style={messageStyles}
+            />
+          )}
           {!nameClicked && !displayMessage && <EditTooltip>Click to edit name</EditTooltip>}
           {nameClicked && <SaveButton onClick={handleSubmit}>Save</SaveButton>}
         </form>

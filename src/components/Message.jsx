@@ -10,7 +10,7 @@ const Message = ({ message, projectsAdded, added, edited, deleted, saved, center
   edited ? <Wrapper $success={edited}>Project successfully edited!</Wrapper> :
   deleted ? <Wrapper $success={deleted}>Project successfully deleted!</Wrapper> :
   saved ? <Wrapper $success={saved} style={style}>Saved!</Wrapper> :
-  message ? <Wrapper message={message}>Error: {message}</Wrapper> :
+  message ? <Wrapper style={style}>Error: {message}</Wrapper> :
   null
 );
 

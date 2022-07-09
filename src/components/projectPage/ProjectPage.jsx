@@ -21,15 +21,18 @@ const ProjectPage = () => {
   const [ returnHome, setReturnHome ] = useState(false);
   const { id } = useParams();
 
-  const getProject = () => axios(`/projects/${id}`).then(({ data }) => setProject(data[0]));
+  const getProject = () => axios(`/projects/${id}`).then( ({ data }) => setProject(data[0]) );
 
   // retrieves project info after clicking project name & re-renders page after edit
   useEffect(getProject, [ id, successfulEdit ]);
 
-  const { artist, dateAdded, genre, title } = project;
+  const { artist, dateAdded, genre, title, releaseYear } = project;
+
   const formatDate = () => {
     const date = new Date(dateAdded);
-    return `${1 + date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+    return (date.getFullYear() > 2000)
+      ? `${1 + date.getMonth()}/${date.getDate()}/${date.getFullYear()}`
+      : 'N/A';
   };
 
   const editProject = e => {
@@ -107,13 +110,17 @@ const ProjectPage = () => {
       <Header>
         <TextWrapper $header={'true'} $type={'artist'}>Artist</TextWrapper>
         <TextWrapper $header={'true'} $type={'genre'}>Genre</TextWrapper>
+        <TextWrapper $header={'true'} $type={'year'}>Release Year</TextWrapper>
         <TextWrapper $header={'true'} $type={'date'}>Date Added</TextWrapper>
       </Header>
       <Wrapper>
         <StyledLink to={`/artists/${artist}`}>
           <TextWrapper $type={'artist'}>{artist}</TextWrapper>
         </StyledLink>
-        <TextWrapper $type={'genre'} $genre={genre}>{genre && (genre[0].toUpperCase() + genre.slice(1))}</TextWrapper>
+        <TextWrapper $type={'genre'} $genre={genre}>
+          {genre && (genre[0].toUpperCase() + genre.slice(1))}
+        </TextWrapper>
+        <TextWrapper $type={'year'}>{releaseYear || 'N/A'}</TextWrapper>
         <TextWrapper $type={'date'}>{formatDate()}</TextWrapper>
       </Wrapper>
     </Container>
@@ -135,7 +142,7 @@ const ProjectPage = () => {
 
 const Container = styled.div`
   margin: auto;
-  width: 520px;
+  width: 650px;
 `;
 
 const Name = styled.div`
@@ -145,14 +152,14 @@ const Name = styled.div`
 `;
 
 const TextWrapper = styled.div`
-  margin: ${({ $type }) => $type === 'date' && '0 0 0 20px'};
   padding: 0 5px;
   display: inline-block;
-  text-align: ${({ $type }) => ($type === 'genre' || $type === 'date') && 'center'};
+  text-align: ${({ $type }) => $type !== 'artist' && 'center'};
   width: ${({ $type }) => (
     $type === 'artist' ? '250px' :
     $type === 'genre' ? '100px' :
-    $type === 'date' ? '100px' :
+    $type === 'date' ? '70px' :
+    $type === 'year' ? '170px' :
     null
   )};
   background-color: ${({ $genre, $header }) => (
@@ -167,7 +174,7 @@ const TextWrapper = styled.div`
 
 const Wrapper = styled.div`
   margin: 3px;
-  width: 500px;
+  width: 630px;
   padding: 3px;
   font-family: Helvetica, Arial, sans-serif;
   font-size: 15px;
@@ -180,7 +187,7 @@ const Header = styled(Wrapper)`
   background-color: #e0e0e0;
   border: none;
   padding: 8px 2px 5px;
-  width: 500x;
+  width: 634px;
 `;
 
 const MessageWrapper = styled.div`

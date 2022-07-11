@@ -1,4 +1,4 @@
-const { projectTitles } = require('./projectTitles');
+const { rawData } = require('./projectTitles');
 const { convertMoreSpecialChars, replaceApostrophes } = require('../helpers');
 
 // const subgenres = {
@@ -13,8 +13,11 @@ const projects = [];
 
 let title, artist;
 let fakeDate = 0;
-for (const projectTitle of projectTitles) {
-  const [ text, genreChar ] = projectTitle.split('***');
+
+for (const project of rawData) {
+  const [ text, minusTitle ] = project.split('***');
+  const [ genreChar, minusGenre ] = minusTitle.split(' --- ');
+  const [ releaseYear, dateAdded ] = minusGenre.split(' ___ ');
 
   const genre = (genreChar === undefined || genreChar === 'h') ? 'hip-hop' :
     genreChar === 'r' ? 'rock' :
@@ -34,13 +37,14 @@ for (const projectTitle of projectTitles) {
 
   const artistForSorting = convertMoreSpecialChars(str);
 
-  const obj = replaceApostrophes({ artist, title, genre, artistForSorting });
+  const obj = replaceApostrophes({ artist, title, artistForSorting });
 
   projects.push({
     ...obj,
-    dateAdded: `1900-01-${fakeDate}`,
+    genre,
     subgenre: '',
-    releaseYear: 0
+    releaseYear: releaseYear || 0,
+    dateAdded: dateAdded || `1900-01-${fakeDate}`
   });
 
   fakeDate++;

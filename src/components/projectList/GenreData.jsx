@@ -22,11 +22,11 @@ const GenreData = ({ projects, successfulSubmit }) => {
 
   return loading ? <LoadingText>LOADING...</LoadingText> : (
     <Wrapper>
-      <TextWrapper>Rock: {rock} projects ({getPercentage(rock)} %)</TextWrapper>
-      <TextWrapper>Hip-hop: {hipHop} projects ({getPercentage(hipHop)} %)</TextWrapper>
-      <TextWrapper>Electronic: {electronic} projects ({getPercentage(electronic)} %)</TextWrapper>
-      <TextWrapper>Pop: {pop} projects ({getPercentage(pop)} %)</TextWrapper>
-      <TextWrapper>Other: {other} projects ({getPercentage(other)} %)</TextWrapper>
+      <TextWrapper>Rock: {rock} projects ({getPercentage(rock)}%)</TextWrapper>
+      <TextWrapper>Hip-hop: {hipHop} projects ({getPercentage(hipHop)}%)</TextWrapper>
+      <TextWrapper>Electronic: {electronic} projects ({getPercentage(electronic)}%)</TextWrapper>
+      <TextWrapper>Pop: {pop} projects ({getPercentage(pop)}%)</TextWrapper>
+      <TextWrapper>Other: {other} projects ({getPercentage(other)}%)</TextWrapper>
     </Wrapper>
   );
 };

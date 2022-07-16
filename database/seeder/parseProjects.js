@@ -1,4 +1,4 @@
-const { rawData } = require('./projectTitles');
+const { rawData } = require('./rawData');
 const { convertMoreSpecialChars, replaceApostrophes } = require('../helpers');
 
 // const subgenres = {

@@ -5,7 +5,7 @@ import styled from 'styled-components';
 
 import Message from './Message';
 import { StyledLink } from './styles.js';
-import { createArtistForSorting } from '../helpers.js';
+import { createArtistForSorting, convertSlashes } from '../helpers.js';
 
 const ArtistPage = ({ allProjects }) => {
   const [ projects, setProjects ] = useState([]);
@@ -61,7 +61,7 @@ const ArtistPage = ({ allProjects }) => {
           if (data === 'success' || data === 'duplicate input') {
             setText(text);
             setErrorMessage('');
-            navigate(`/artists/${text}`);
+            navigate(`/artists/${convertSlashes(text)}`);
           } else
             setErrorMessage(data);
         })

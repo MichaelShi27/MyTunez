@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { StyledLink, Loading } from '../styles.js';
 import { Virtuoso } from 'react-virtuoso';
-import { convertSpecialChars } from '../../helpers';
+import { convertSpecialChars, convertSlashes } from '../../helpers';
 
 const NormalList = ({
   projects, sortBy, searchQuery, setQuantity, noSearchResults, setNoSearchResults, includeArtists
@@ -57,7 +57,7 @@ const NormalList = ({
             <StyledLink to={`/projects/${_id}`}>
               <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
             </StyledLink>
-            <StyledLink to={`/artists/${artist}`}>
+            <StyledLink to={`/artists/${convertSlashes(artist)}`}>
               <TextWrapper $type={'artist'}>{artist}</TextWrapper>
             </StyledLink>
             <TextWrapper $type={'genre'} $genre={genre}>

@@ -1,6 +1,6 @@
 const validateInput = ({ title, artist, releaseYear }) => (
   (!title || !artist) ? 'Please fill in both the title and artist fields!' :
-  isNaN(releaseYear) ? 'Please enter a number in the year field!' :
+  (releaseYear !== null && isNaN(releaseYear)) ? 'Please enter a number in the year field!' :
   (releaseYear > new Date().getYear() + 1900) ? 'Please enter a valid year!' : ''
 );
 

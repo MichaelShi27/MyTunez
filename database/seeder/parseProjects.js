@@ -43,7 +43,7 @@ for (const project of rawData) {
     ...obj,
     genre,
     subgenre: '',
-    releaseYear: releaseYear || 0,
+    releaseYear,
     dateAdded: dateAdded || `1900-01-${fakeDate}`
   });
 

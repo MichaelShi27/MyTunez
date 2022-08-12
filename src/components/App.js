@@ -54,6 +54,7 @@ const App = () => {
     const dateAdded = new Date();
     const newProject = { title, artist, genre, releaseYear, dateAdded };
     wrangleInput(newProject);
+    newProject.releaseYear = newProject.releaseYear || 0;
 
     const errMsg = validateInput(newProject);
     setErrorMessage(errMsg);

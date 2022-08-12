@@ -14,7 +14,9 @@ mongoose
   .then(() => console.log('connected to db!'));
 
 projects.forEach(async (project, idx) => {
-  await project.save(() => {
+  await project.save(err => {
+    if (err)
+      console.log(`\nError with ${project.title}:`, err);
     if (idx === projects.length - 1) {
       console.log("Done seeding data!");
       mongoose.disconnect();

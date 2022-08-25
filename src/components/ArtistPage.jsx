@@ -7,19 +7,16 @@ import Message from './Message';
 import { StyledLink } from './styles.js';
 import { createArtistForSorting, convertSlashes } from '../helpers.js';
 
-const ArtistPage = ({ allProjects }) => {
+const ArtistPage = ({ projects: allProjects, getProjectsForArtist }) => {
   const [ projects, setProjects ] = useState([]);
 
   const { name } = useParams();
   const [ text, setText ] = useState(name);
 
   // section 1 retrieves the artist's projects upon first render, & also after a new project is added
-  const getProjects = () => {
-    axios(`/artists/${name}`)
-      .then(({ data }) => setProjects(data));
-  };
-
-  useEffect(getProjects, [ allProjects, name ]);
+  useEffect(() => {
+    getProjectsForArtist(name).then(({ data }) => setProjects(data));
+  }, [ allProjects, name, getProjectsForArtist ]);
 
   // section 2 dynamically determines the width of the artist-name input field
   const [ width, setWidth ] = useState(0);

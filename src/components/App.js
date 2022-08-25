@@ -1,6 +1,6 @@
 // import logo from './logo.svg';
 // import './App.css';
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Routes, Route, Link, useLocation } from 'react-router-dom';
 import axios from 'axios';
 
@@ -71,10 +71,12 @@ const App = () => {
       .catch(console.log);
   };
 
-  const getProjects = () => axios('/projects').then(({ data }) => setProjects(data));
+  const getProjectsForArtist = useCallback(artist => axios(`/artists/${artist}`), []);
+
+  const getAllProjects = () => axios('/projects').then(({ data }) => setProjects(data));
 
   // updates list when a project is added or deleted
-  useEffect(getProjects, [ projectsAdded, currentList ]);
+  useEffect(getAllProjects, [ projectsAdded, currentList ]);
 
   // displays success/error message
   useEffect(() => {
@@ -113,18 +115,28 @@ const App = () => {
       {displayCheckbox && <ArtistCheckbox {...{ includeArtists, setIncludeArtists }}/>}
     </div>
     <Routes>
-      <Route path="/" element={
-        <ProjectList {...{
+      <Route
+        path="/"
+        element={<ProjectList {...{
           projects,
           searchQuery,
           setDisplaySearch,
           includeArtists,
           setDisplayCheckbox
-        }}/>
-      }/>
-      <Route path="/artists" element={<ArtistList {...{ projects, searchQuery }} />} />
-      <Route path="/artists/:name" element={<ArtistPage allProjects={projects} />} />
-      <Route path="/projects/:id" element={<ProjectPage />} />
+        }}/>}
+      />
+      <Route
+        path="/artists"
+        element={<ArtistList {...{ projects, searchQuery }} />}
+      />
+      <Route
+        path="/artists/:name"
+        element={<ArtistPage {...{ projects, getProjectsForArtist }} />}
+      />
+      <Route
+        path="/projects/:id"
+        element={<ProjectPage {...{ getProjectsForArtist }} />}
+      />
     </Routes>
   </>);
 };

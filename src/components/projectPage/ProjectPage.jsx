@@ -10,7 +10,7 @@ import DeletionModal from './DeletionModal';
 import { Button, StyledLink } from '../styles.js';
 import { wrangleInput, validateInput } from '../../helpers.js';
 
-const ProjectPage = () => {
+const ProjectPage = ({ getProjectsForArtist }) => {
   const [ project, setProject ] = useState({});
   const [ displayForm, setDisplayForm ] = useState(false);
   const [ successfulEdit, setSuccessfulEdit ] = useState(false);
@@ -18,7 +18,7 @@ const ProjectPage = () => {
   const [ errorMessage, setErrorMessage ] = useState('');
   const [ deleted, setDeleted ] = useState(false);
   const [ displayModal, setDisplayModal ] = useState(false);
-  const [ returnHome, setReturnHome ] = useState(false);
+  const [ goBack, setGoBack ] = useState(false);
   const { id } = useParams();
 
   const getProject = () => axios(`/projects/${id}`).then( ({ data }) => setProject(data[0]) );
@@ -63,27 +63,37 @@ const ProjectPage = () => {
   useEffect(() => {
     successfulEdit && setDisplayForm(false);
     setDisplayMessage(errorMessage || successfulEdit);
+
     const timeout = setTimeout(() => {
       setDisplayMessage(false);
       setErrorMessage('');
     }, 5000);
+
     return () => clearTimeout(timeout);
   }, [ errorMessage, successfulEdit ]);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (returnHome) {
-      const timeout = setTimeout(() => navigate(-1), 3000);
+    let timeout;
+
+    const asyncWrapper = async () => {
+      const { data } = await getProjectsForArtist(artist);
+      const destination = (data.length === 0) ? '/' : -1;
+      timeout = setTimeout(() => navigate(destination), 3000);
+    };
+
+    if (goBack) {
+      asyncWrapper();
       return () => clearTimeout(timeout);
     }
-  }, [ returnHome, navigate ]);
+  }, [ goBack, navigate, getProjectsForArtist, artist ]);
 
   const deleteProject = () => {
     axios.delete(`/deleteProject/${id}`)
       .then(({ data }) => {
         setDeleted(data === 'success');
-        setReturnHome(true);
+        setGoBack(true);
       })
       .catch(console.log);
   };

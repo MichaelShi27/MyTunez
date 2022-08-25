@@ -75,6 +75,8 @@ const ProjectPage = ({ getProjectsForArtist }) => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    if (!goBack) return;
+
     let timeout;
 
     const asyncWrapper = async () => {
@@ -83,10 +85,8 @@ const ProjectPage = ({ getProjectsForArtist }) => {
       timeout = setTimeout(() => navigate(destination), 3000);
     };
 
-    if (goBack) {
-      asyncWrapper();
-      return () => clearTimeout(timeout);
-    }
+    asyncWrapper();
+    return () => clearTimeout(timeout);
   }, [ goBack, navigate, getProjectsForArtist, artist ]);
 
   const deleteProject = () => {

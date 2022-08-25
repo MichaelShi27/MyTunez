@@ -10,8 +10,8 @@ import Message from './Message';
 import ArtistList from './artistList/ArtistList';
 import ArtistPage from './ArtistPage';
 import ProjectPage from './projectPage/ProjectPage';
-import SearchBar from './SearchBar';
-import ArtistCheckbox from './ArtistCheckbox';
+import SearchBar from './searchBar/SearchBar';
+import ArtistCheckbox from './searchBar/ArtistCheckbox';
 
 import { Header, Button } from './styles.js';
 import { wrangleInput, validateInput } from '../helpers.js';

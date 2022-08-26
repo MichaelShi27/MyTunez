@@ -4,19 +4,28 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 import Message from './Message';
+import ErrorPage from './ErrorPage';
 import { StyledLink } from './styles.js';
 import { createArtistForSorting, convertSlashes } from '../helpers.js';
 
-const ArtistPage = ({ projects: allProjects, getProjectsForArtist }) => {
+const ArtistPage = ({ projects: allProjects, getProjectsForArtist, setPageNotFound }) => {
   const [ projects, setProjects ] = useState([]);
 
   const { name } = useParams();
   const [ text, setText ] = useState(name);
 
   // section 1 retrieves the artist's projects upon first render, & also after a new project is added
+  const [ artistNotFound, setArtistNotFound ] = useState(false);
   useEffect(() => {
-    getProjectsForArtist(name).then(({ data }) => setProjects(data));
-  }, [ allProjects, name, getProjectsForArtist ]);
+    getProjectsForArtist(name)
+      .then(({ data }) => {
+        if (data.length === 0) {
+          setArtistNotFound(true);
+          setPageNotFound(true);
+        } else
+          setProjects(data);
+      });
+  }, [ allProjects, name, getProjectsForArtist, setPageNotFound ]);
 
   // section 2 dynamically determines the width of the artist-name input field
   const [ width, setWidth ] = useState(0);
@@ -83,29 +92,31 @@ const ArtistPage = ({ projects: allProjects, getProjectsForArtist }) => {
     width: '300px'
   };
 
-  return (
+  return artistNotFound ? <ErrorPage /> : (
     <Container>
       <HiddenSpan ref={hiddenSpan}>{text}</HiddenSpan> {/* for width-determing */}
-      <NameContainer>
-        <form>
-          <Name
-            $width={width}
-            value={text}
-            onChange={e => setText(e.target.value)}
-            onClick={() => setNameClicked(true)}
-            ref={nameInput}
-          />
-          {displayMessage && (
-            <Message
-              saved={errorMessage ? false : true}
-              message={errorMessage}
-              style={messageStyles}
+      {projects.length && (
+        <NameContainer>
+          <form>
+            <Name
+              $width={width}
+              value={text}
+              onChange={e => setText(e.target.value)}
+              onClick={() => setNameClicked(true)}
+              ref={nameInput}
             />
-          )}
-          {!nameClicked && !displayMessage && <EditTooltip>Click to edit name</EditTooltip>}
-          {nameClicked && <SaveButton onClick={handleSubmit}>Save</SaveButton>}
-        </form>
-      </NameContainer>
+            {displayMessage && (
+              <Message
+                saved={errorMessage ? false : true}
+                message={errorMessage}
+                style={messageStyles}
+              />
+            )}
+            {!nameClicked && !displayMessage && <EditTooltip>Click to edit name</EditTooltip>}
+            {nameClicked && <SaveButton onClick={handleSubmit}>Save</SaveButton>}
+          </form>
+        </NameContainer>
+      )}
       <Header>
         <TextWrapper $header={'true'} $type={'title'}>Project Title</TextWrapper>
         <TextWrapper $header={'true'} $type={'genre'}>Genre</TextWrapper>

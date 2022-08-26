@@ -29,7 +29,7 @@ const App = () => {
   const [ searchQuery, setSearchQuery ] = useState('');
   const [ includeArtists, setIncludeArtists ] = useState(true);
   const [ displayCheckbox, setDisplayCheckbox ] = useState(true);
-  const [ displayButtons, setDisplayButtons ] = useState(true);
+  const [ pageNotFound, setPageNotFound ] = useState(false);
 
   const { pathname: path } = useLocation();
   const notOnProjectPage = path.indexOf('/projects') !== 0;
@@ -39,6 +39,7 @@ const App = () => {
     setDisplayForm(notOnProjectPage);
     setDisplaySearch(path === '/' || path === '/artists');
     setDisplayCheckbox(path === '/');
+    setPageNotFound(false);
 
     if (path === '/')
       setCurrentList('projects');
@@ -46,17 +47,20 @@ const App = () => {
       setCurrentList('artists');
     else {
       setCurrentList('');
-      if ( // if page not found
+      if (
         path !== '/projects' &&
         path.indexOf('/projects') !== 0 &&
         path.indexOf('/artists') !== 0
-      ) {
-        setDisplayMessage(false);
-        setDisplayForm(false);
-        setDisplayButtons(false);
-      }
+      ) setPageNotFound(true);
     }
   }, [ path, notOnProjectPage ]);
+
+  useEffect(() => {
+    if (pageNotFound) {
+      setDisplayMessage(false);
+      setDisplayForm(false);
+    }
+  }, [ pageNotFound ]);
 
   const addProject = e => {
     e.preventDefault();
@@ -110,7 +114,7 @@ const App = () => {
       />
     )}
     {displayForm && <AddProjectForm addProject={addProject} />}
-    {displayButtons && (<>
+    {!pageNotFound && (<>
       <Link to="/">
         <Button $selected={currentList === 'projects'}>Projects</Button>
       </Link>
@@ -145,7 +149,7 @@ const App = () => {
       />
       <Route
         path="/artists/:name"
-        element={<ArtistPage {...{ projects, getProjectsForArtist }} />}
+        element={<ArtistPage {...{ projects, getProjectsForArtist, setPageNotFound }} />}
       />
       <Route
         path="/projects/:id"

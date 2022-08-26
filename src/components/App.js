@@ -153,7 +153,7 @@ const App = () => {
       />
       <Route
         path="/projects/:id"
-        element={<ProjectPage {...{ getProjectsForArtist }} />}
+        element={<ProjectPage {...{ getProjectsForArtist, setPageNotFound }} />}
       />
       <Route path="*" element={<ErrorPage />} />
     </Routes>

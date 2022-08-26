@@ -4,13 +4,14 @@ import axios from 'axios';
 import styled from 'styled-components';
 
 import Message from '../Message';
+import ErrorPage from '../ErrorPage';
 import EditProjectForm from './EditProjectForm';
 import DeletionModal from './DeletionModal';
 
 import { Button, StyledLink } from '../styles.js';
 import { wrangleInput, validateInput } from '../../helpers.js';
 
-const ProjectPage = ({ getProjectsForArtist }) => {
+const ProjectPage = ({ getProjectsForArtist, setPageNotFound }) => {
   const [ project, setProject ] = useState({});
   const [ displayForm, setDisplayForm ] = useState(false);
   const [ successfulEdit, setSuccessfulEdit ] = useState(false);
@@ -19,12 +20,23 @@ const ProjectPage = ({ getProjectsForArtist }) => {
   const [ deleted, setDeleted ] = useState(false);
   const [ displayModal, setDisplayModal ] = useState(false);
   const [ goBack, setGoBack ] = useState(false);
+  const [ projectNotFound, setProjectNotFound ] = useState(false);
   const { id } = useParams();
 
-  const getProject = () => axios(`/projects/${id}`).then( ({ data }) => setProject(data[0]) );
+  const getProject = () => {
+    axios(`/projects/${id}`)
+      .then(({ data }) => {
+        if (data === 'project not found') {
+          setProjectNotFound(true);
+          setPageNotFound(true);
+        } else
+          setProject(data[0]);
+      })
+      .catch(err => console.log(err));
+  };
 
   // retrieves project info after clicking project name & re-renders page after edit
-  useEffect(getProject, [ id, successfulEdit ]);
+  useEffect(getProject, [ id, successfulEdit, setPageNotFound ]);
 
   const { artist, dateAdded, genre, title, releaseYear } = project;
 
@@ -98,7 +110,6 @@ const ProjectPage = ({ getProjectsForArtist }) => {
       .catch(console.log);
   };
 
-  if (!artist) return null;
   if (deleted) return (
     <MessageWrapper>
       <Message deleted={deleted} />
@@ -114,7 +125,7 @@ const ProjectPage = ({ getProjectsForArtist }) => {
     fontSize: '10px'
   };
 
-  return (<>
+  return projectNotFound ? <ErrorPage /> : (<>
     <Container>
       <Name><em>{title}</em></Name>
       <Header>

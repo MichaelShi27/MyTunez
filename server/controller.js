@@ -29,7 +29,12 @@ exports.getArtist = (req, res) => {
 exports.getProject = (req, res) => {
   Project.find({ _id: req.params.id })
     .then(project => res.send(project))
-    .catch(console.log);
+    .catch(err => {
+      if (err.message.indexOf('Cast to ObjectId failed') === 0)
+        res.send('project not found');
+      else
+        console.log(err);
+    });
 };
 
 exports.editProject = (req, res) => {

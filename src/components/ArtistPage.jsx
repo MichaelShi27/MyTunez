@@ -95,7 +95,7 @@ const ArtistPage = ({ projects: allProjects, getProjectsForArtist, setPageNotFou
   return artistNotFound ? <ErrorPage /> : (
     <Container>
       <HiddenSpan ref={hiddenSpan}>{text}</HiddenSpan> {/* for width-determing */}
-      {projects.length && (
+      {projects.length > 0 && (<>
         <NameContainer>
           <form>
             <Name
@@ -116,21 +116,21 @@ const ArtistPage = ({ projects: allProjects, getProjectsForArtist, setPageNotFou
             {nameClicked && <SaveButton onClick={handleSubmit}>Save</SaveButton>}
           </form>
         </NameContainer>
-      )}
-      <Header>
-        <TextWrapper $header={'true'} $type={'title'}>Project Title</TextWrapper>
-        <TextWrapper $header={'true'} $type={'genre'}>Genre</TextWrapper>
-      </Header>
-      {projects.map(({ title, genre, _id }, idx) => (
-        <Project key={idx}>
-          <StyledLink to={`/projects/${_id}`}>
-            <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
-          </StyledLink>
-          <TextWrapper $type={'genre'} $genre={genre}>
-            {genre[0].toUpperCase() + genre.slice(1)}
-          </TextWrapper>
-        </Project>
-      ))}
+        <Header>
+          <TextWrapper $header={'true'} $type={'title'}>Project Title</TextWrapper>
+          <TextWrapper $header={'true'} $type={'genre'}>Genre</TextWrapper>
+        </Header>
+        {projects.map(({ title, genre, _id }, idx) => (
+          <Project key={idx}>
+            <StyledLink to={`/projects/${_id}`}>
+              <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
+            </StyledLink>
+            <TextWrapper $type={'genre'} $genre={genre}>
+              {genre[0].toUpperCase() + genre.slice(1)}
+            </TextWrapper>
+          </Project>
+        ))}
+      </>)}
     </Container>
   );
 };

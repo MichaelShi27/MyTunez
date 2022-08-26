@@ -1,7 +1,7 @@
 // import logo from './logo.svg';
 // import './App.css';
 import React, { useState, useEffect, useCallback } from 'react';
-import { Routes, Route, Link, useLocation } from 'react-router-dom';
+import { Routes, Route, Link, useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import AddProjectForm from './AddProjectForm';
@@ -104,8 +104,10 @@ const App = () => {
     return () => clearTimeout(timeout);
   }, [ projectsAdded, errorMessage ]);
 
+  const navigate = useNavigate();
+
   return (<>
-    <Header>myTunez</Header>
+    <Header onClick={() => navigate('/')}>myTunez</Header>
     {displayMessage && notOnProjectPage && (
       <Message
         message={errorMessage}

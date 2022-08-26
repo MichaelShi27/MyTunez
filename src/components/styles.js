@@ -6,6 +6,7 @@ export const Header = styled.div`
   margin: 15px;
   font-size: 25px;
   font-family: Verdana, Helvetica, sans-serif;
+  cursor: pointer;
 `;
 
 export const Button = styled.button`

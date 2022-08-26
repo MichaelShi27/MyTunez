@@ -1,5 +1,5 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import Message from './Message';
 
@@ -10,10 +10,22 @@ const messageStyles = {
   width: '300px'
 };
 
-const ErrorPage = ({ list, searchQuery, handleChange }) => (
-  <div style={{ padding: '80px', fontSize: '20px' }}>
-    <Message message={'Page not found!'} style={messageStyles} />
-  </div>
-);
+const ErrorPage = () => {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const timeout = setTimeout(() => navigate('/'), 4000);
+    return () => clearTimeout(timeout);
+  }, [ navigate ]);
+
+  return (
+    <div style={{ padding: '100px', fontSize: '20px', lineHeight: '40px' }}>
+      <Message
+        message={'page not found!\nRedirecting to Home...'}
+        style={messageStyles}
+      />
+    </div>
+  );
+};
 
 export default ErrorPage;

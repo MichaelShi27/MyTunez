@@ -12,6 +12,7 @@ import ArtistPage from './ArtistPage';
 import ProjectPage from './projectPage/ProjectPage';
 import SearchBar from './searchBar/SearchBar';
 import ArtistCheckbox from './searchBar/ArtistCheckbox';
+import ErrorPage from './ErrorPage';
 
 import { Header, Button } from './styles.js';
 import { wrangleInput, validateInput } from '../helpers.js';
@@ -28,6 +29,7 @@ const App = () => {
   const [ searchQuery, setSearchQuery ] = useState('');
   const [ includeArtists, setIncludeArtists ] = useState(true);
   const [ displayCheckbox, setDisplayCheckbox ] = useState(true);
+  const [ displayButtons, setDisplayButtons ] = useState(true);
 
   const { pathname: path } = useLocation();
   const notOnProjectPage = path.indexOf('/projects') !== 0;
@@ -42,8 +44,18 @@ const App = () => {
       setCurrentList('projects');
     else if (path === '/artists')
       setCurrentList('artists');
-    else
+    else {
       setCurrentList('');
+      if ( // if page not found
+        path !== '/projects' &&
+        path.indexOf('/projects') !== 0 &&
+        path.indexOf('/artists') !== 0
+      ) {
+        setDisplayMessage(false);
+        setDisplayForm(false);
+        setDisplayButtons(false);
+      }
+    }
   }, [ path, notOnProjectPage ]);
 
   const addProject = e => {
@@ -98,12 +110,14 @@ const App = () => {
       />
     )}
     {displayForm && <AddProjectForm addProject={addProject} />}
-    <Link to="/">
-      <Button $selected={currentList === 'projects'}>Projects</Button>
-    </Link>
-    <Link to="/artists">
-      <Button $selected={currentList === 'artists'}>Artists</Button>
-    </Link>
+    {displayButtons && (<>
+      <Link to="/">
+        <Button $selected={currentList === 'projects'}>Projects</Button>
+      </Link>
+      <Link to="/artists">
+        <Button $selected={currentList === 'artists'}>Artists</Button>
+      </Link>
+    </>)}
     <div style={{ display: 'flex' }}>
       {displaySearch && (
         <SearchBar
@@ -137,6 +151,7 @@ const App = () => {
         path="/projects/:id"
         element={<ProjectPage {...{ getProjectsForArtist }} />}
       />
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   </>);
 };

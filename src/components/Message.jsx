@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Message = ({ message, projectsAdded, added, edited, deleted, saved, centered, style }) => (
+const Message = ({ message, projectsAdded, added, edited, deleted, saved, style }) => (
   added ? (
     <Wrapper $success={added}>
       Project added! You have added {projectsAdded} project{projectsAdded === 1 ? '' : 's'}.

@@ -7,6 +7,7 @@ import Message from '../Message';
 import ErrorPage from '../ErrorPage';
 import EditProjectForm from './EditProjectForm';
 import DeletionModal from './DeletionModal';
+import ProjectImage from './ProjectImage';
 
 import { Button, StyledLink } from '../styles.js';
 import { wrangleInput, validateInput } from '../../helpers.js';
@@ -126,6 +127,9 @@ const ProjectPage = ({ getProjectsForArtist, setPageNotFound }) => {
   };
 
   return projectNotFound ? <ErrorPage /> : (<>
+    <div style={{ textAlign: 'center' }}>
+      <ProjectImage project={project} />
+    </div>
     <Container>
       <Name><em>{title}</em></Name>
       <Header>

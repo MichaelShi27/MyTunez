@@ -128,7 +128,13 @@ const ProjectPage = ({ getProjectsForArtist, setPageNotFound }) => {
 
   return projectNotFound ? <ErrorPage /> : (<>
     <div style={{ textAlign: 'center' }}>
-      <ProjectImage project={project} />
+      <div style={{
+        padding: '1px 1px 0px',
+        display: 'inline-block',
+        backgroundColor: '#d3d3d3'
+      }}>
+        <ProjectImage project={project} />
+      </div>
     </div>
     <Container>
       <Name><em>{title}</em></Name>

@@ -30,7 +30,7 @@ const ProjectImage = ({ project }) => {
   useEffect(() => {
     if (!project.title || !token) return;
 
-    let { title, artist } = project;
+    const { title, artist } = project;
 
     axios({
       url: `https://api.spotify.com/v1/search`,

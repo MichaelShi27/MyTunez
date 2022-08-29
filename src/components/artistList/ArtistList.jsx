@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import styled from 'styled-components';
 
 import Artists from './Artists';
-import { convertSpecialChars } from '../../helpers';
+import { convertMoreSpecialChars } from '../../helpers';
 
 const ArtistList = ({ projects, searchQuery }) => {
   const [ artists, setArtists ] = useState([]);
@@ -45,8 +45,11 @@ const ArtistList = ({ projects, searchQuery }) => {
 
   // filters list based on 'searchQuery' prop
   useEffect(() => {
-    const lowerCaseQuery = searchQuery.toLowerCase();
-    const filtered = artists.filter(({ name }) => convertSpecialChars(name).includes(lowerCaseQuery));
+    const convertedQuery = convertMoreSpecialChars(searchQuery);
+    const filtered = artists.filter(({ name }) => (
+      convertMoreSpecialChars(name).includes(convertedQuery) ||
+      name.toLowerCase().includes(searchQuery.toLowerCase())
+    ));
     setSortedArtists(filtered);
     setNoSearchResults(filtered.length === 0);
   }, [ searchQuery, artists ]);

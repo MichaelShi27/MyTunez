@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import { StyledLink, Loading } from '../styles.js';
 import { Virtuoso } from 'react-virtuoso';
-import { convertSpecialChars, convertSlashes } from '../../helpers';
+import { convertMoreSpecialChars, convertSlashes } from '../../helpers';
 
 const NormalList = ({
   projects, sortBy, searchQuery, setQuantity, noSearchResults, setNoSearchResults, includeArtists
@@ -25,10 +25,12 @@ const NormalList = ({
 
   // filters list based on 'searchQuery' && 'includeArtists' props
   useEffect(() => {
-    const lowerCaseQuery = searchQuery.toLowerCase();
+    const convertedQuery = convertMoreSpecialChars(searchQuery);
     const filtered = projects.filter(({ title, artist }) => (
-      convertSpecialChars(title).includes(lowerCaseQuery) ||
-      (includeArtists && convertSpecialChars(artist).includes(lowerCaseQuery))
+      convertMoreSpecialChars(title).includes(convertedQuery) ||
+      title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      ( includeArtists && convertMoreSpecialChars(artist).includes(convertedQuery) ) ||
+      ( includeArtists && artist.toLowerCase().includes(searchQuery.toLowerCase()) )
     ));
     setSortedProjects(filtered);
     setQuantity(filtered.length);

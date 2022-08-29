@@ -1,5 +1,5 @@
 const Project = require('../models/Project');
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const projectsData = require('./parseProjects');
 // const dev = require("../config/dev"); // get your mongoose string
 

@@ -8,7 +8,7 @@ import AddProjectForm from './AddProjectForm';
 import ProjectList from './projectList/ProjectList';
 import Message from './Message';
 import ArtistList from './artistList/ArtistList';
-import ArtistPage from './ArtistPage';
+import ArtistPage from './artistPage/ArtistPage';
 import ProjectPage from './projectPage/ProjectPage';
 import SearchBar from './searchBar/SearchBar';
 import ArtistCheckbox from './searchBar/ArtistCheckbox';

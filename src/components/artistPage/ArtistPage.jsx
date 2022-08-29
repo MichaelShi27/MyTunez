@@ -3,10 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 
-import Message from './Message';
-import ErrorPage from './ErrorPage';
-import { StyledLink } from './styles.js';
-import { createArtistForSorting, convertSlashes } from '../helpers.js';
+import Message from '../Message';
+import ErrorPage from '../ErrorPage';
+import ArtistImage from './ArtistImage';
+
+import { StyledLink } from '../styles.js';
+import { createArtistForSorting, convertSlashes } from '../../helpers.js';
 
 const ArtistPage = ({ projects: allProjects, getProjectsForArtist, setPageNotFound }) => {
   const [ projects, setProjects ] = useState([]);
@@ -92,7 +94,16 @@ const ArtistPage = ({ projects: allProjects, getProjectsForArtist, setPageNotFou
     width: '300px'
   };
 
-  return artistNotFound ? <ErrorPage /> : (
+  return artistNotFound ? <ErrorPage /> : (<>
+      <div style={{ textAlign: 'center' }}>
+      <div style={{
+        padding: '1px 1px 0px',
+        display: 'inline-block',
+        backgroundColor: '#d3d3d3'
+      }}>
+        <ArtistImage name={name} />
+      </div>
+    </div>
     <Container>
       <HiddenSpan ref={hiddenSpan}>{text}</HiddenSpan> {/* for width-determing */}
       {projects.length > 0 && (<>
@@ -132,7 +143,7 @@ const ArtistPage = ({ projects: allProjects, getProjectsForArtist, setPageNotFou
         ))}
       </>)}
     </Container>
-  );
+  </>);
 };
 
 const Container = styled.div`

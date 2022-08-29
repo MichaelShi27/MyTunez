@@ -35,6 +35,7 @@ const LoadingText = styled(Loading)`
   margin: 20px 320px;
   font-size: 15px;
 `;
+
 const Wrapper = styled.div`
   margin: 0 0 15px 18px;
   background-color: #f2f2f2;

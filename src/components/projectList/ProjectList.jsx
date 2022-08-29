@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import GenreData from './GenreData';
+import YearData from './YearData';
 import NormalList from './NormalList';
 import RawList from './RawList';
 
 const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, setDisplayCheckbox }) => {
   const [ displayGenres, setDisplayGenres ] = useState(false);
+  const [ displayYears, setDisplayYears ] = useState(false);
   const [ listFormat, setListFormat ] = useState('normal');
   const [ sortBy, setSortBy ] = useState('artist');
   const [ quantity, setQuantity ] = useState(projects.length);
@@ -49,6 +51,11 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, 
             {displayGenres ? 'Hide' : 'View'} Genre Data
           </Button>
         )}
+        {listFormat === 'normal' && (
+          <Button onClick={() => setDisplayYears(!displayYears)}>
+            {displayYears ? 'Hide' : 'View'} Year Data
+          </Button>
+        )}
         <Button onClick={rawDataClick}>
           {listFormat === 'raw' ? 'Back' : 'Raw Data'}
         </Button>
@@ -61,7 +68,8 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, 
         </>)}
       </>)}
     </Options>
-    {displayGenres && !searchQuery && <GenreData projects={projects}/>}
+    {displayGenres && !searchQuery && <GenreData projects={projects} />}
+    {displayYears && !searchQuery && <YearData projects={projects} />}
     {listFormat === 'normal' && <NormalList {...normalListProps} />}
     {listFormat === 'raw' && <RawList projects={projects} />}
   </>);

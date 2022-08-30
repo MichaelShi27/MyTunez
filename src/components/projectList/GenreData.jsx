@@ -25,7 +25,7 @@ const GenreData = ({ projects }) => {
   const genres = [ 'rock', 'hip-hop', 'electronic', 'pop', 'other' ];
   const chartData = {
     labels: genres.map(genre => (
-      `${ genre[0].toUpperCase() }${genre.slice(1)} (${ getPercentage(genreCounts[genre]) }%)`
+      ` ${ genre[0].toUpperCase() }${genre.slice(1)} (${ getPercentage(genreCounts[genre]) }%) `
     )),
     datasets: [{
       data: genres.map(genre => genreCounts[genre]),
@@ -52,8 +52,8 @@ const Wrapper = styled.div`
   padding: 15px;
   background-color: #eeeeee;
   display: inline-block;
-  width: 400px;
-  height: 400px;
+  width: 340px;
+  height: 340px;
 `;
 
 export default GenreData;

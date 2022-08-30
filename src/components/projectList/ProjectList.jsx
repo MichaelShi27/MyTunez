@@ -16,10 +16,14 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, 
   const [ quantity, setQuantity ] = useState(projects.length);
   const [ noSearchResults, setNoSearchResults ] = useState(false);
 
-  const rawDataClick = () => {
+  const rawListClick = () => {
     setDisplaySearch(listFormat === 'raw');
     setDisplayCheckbox(listFormat === 'raw');
     setListFormat(listFormat === 'normal' ? 'raw' : 'normal');
+
+    setDisplayGenres(false);
+    setDisplayDecades(false);
+    setDisplayYears(false);
   };
 
   // displays # of projects upon initial render,
@@ -62,7 +66,7 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, 
             </Button>
           ))
         )}
-        <Button onClick={rawDataClick}>
+        <Button onClick={rawListClick}>
           {listFormat === 'raw' ? 'Back' : 'Raw Project List'}
         </Button>
         {listFormat === 'normal' && (<>

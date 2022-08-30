@@ -11,48 +11,34 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const YearData = ({ projects }) => {
   const [ loading, setLoading ] = useState(true);
-  const [ decadeCounts, setDecadeCounts ] = useState({});
+  const [ yearCounts, setYearCounts ] = useState({});
 
   const getCounts = () => {
-    const yearCounts = {};
-    const decadeCounts = {};
-    for (const { releaseYear } of projects) {
-      const decade = releaseYear - (releaseYear % 10);
-      decadeCounts[decade] = 1 + (decadeCounts[decade] || 0);
-
-      yearCounts[releaseYear] = 1 + (yearCounts[releaseYear] || 0);
-    }
-    setDecadeCounts(decadeCounts);
+    const counts = {};
+    for (const { releaseYear } of projects)
+      counts[releaseYear] = 1 + (counts[releaseYear] || 0);
+    setYearCounts(counts);
   };
 
   useEffect(() => setLoading(false), []);
   useEffect(getCounts, [ projects ]);
 
-  const getPercentage = count => Math.round(count / projects.length * 100 * 100) / 100;
-
-  const getDecadeStr = decade => decade === '0' ? 'Unknown' : `${decade}s`;
-  const decades = Object.keys(decadeCounts).sort((a, b) => Number(a) - Number(b));
+  const years = Object.keys(yearCounts).sort((a, b) => Number(a) - Number(b));
 
   const chartData = {
-    labels: decades.map(decade => getDecadeStr(decade)),
+    labels: years.map(year => year === '0' ? 'Unknown' : year),
     datasets: [{
       label: '# of projects',
-      data: decades.map(decade => decadeCounts[decade]),
-      backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      data: years.map(year => yearCounts[year]),
+      backgroundColor: 'rgba(110, 212, 255, 0.7)',
     }]
   };
 
-  return loading ? <LoadingText>LOADING...</LoadingText> : (<>
+  return loading ? <LoadingText>LOADING...</LoadingText> : (
     <Wrapper>
       <Bar data={chartData}/>
-      {Object.keys(decadeCounts).map(decade => (
-        <TextWrapper key={decade}>
-          {getDecadeStr(decade)}: {getPercentage( decadeCounts[decade] )}%
-        </TextWrapper>
-      ))}
     </Wrapper>
-    <div style={{ height: '20px '}} />
-  </>);
+  );
 };
 
 const LoadingText = styled(Loading)`
@@ -65,18 +51,8 @@ const Wrapper = styled.div`
   background-color: #f2f2f2;
   display: inline-block;
   padding: 0 10px 0 10px;
-  height: 400px;
-  width: 800px;
-`;
-
-const TextWrapper = styled.div`
-  margin: 1px;
-  padding: 10px;
-  display: inline-block;
-  text-align: center;
-  font-size: 12px;
-  font-family: Arial, Helvetica, sans-serif;
-  color: rgba(0, 0, 0, 0.6);
+  height: 500px;
+  width: 1000px;
 `;
 
 export default YearData;

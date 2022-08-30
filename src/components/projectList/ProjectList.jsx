@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
 import GenreData from './GenreData';
+import DecadeData from './DecadeData';
 import YearData from './YearData';
 import NormalList from './NormalList';
 import RawList from './RawList';
 
 const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, setDisplayCheckbox }) => {
   const [ displayGenres, setDisplayGenres ] = useState(false);
+  const [ displayDecades, setDisplayDecades ] = useState(false);
   const [ displayYears, setDisplayYears ] = useState(false);
   const [ listFormat, setListFormat ] = useState('normal');
   const [ sortBy, setSortBy ] = useState('artist');
@@ -27,6 +29,12 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, 
   // ensures no-results message disappears after deleting text in search bar
   useEffect(() => !searchQuery && setNoSearchResults(false), [ searchQuery ]);
 
+  const charts = [
+    [ 'Genre', setDisplayGenres, displayGenres ],
+    [ 'Decade', setDisplayDecades, displayDecades ],
+    [ 'Year', setDisplayYears, displayYears ]
+  ];
+
   const normalListProps = {
     projects,
     sortBy,
@@ -36,6 +44,7 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, 
     setNoSearchResults,
     includeArtists
   };
+
   return (<>
     <Options>
       {noSearchResults ? (
@@ -47,14 +56,11 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, 
       </>)}
       {!searchQuery && (<>
         {listFormat === 'normal' && (
-          <Button onClick={() => setDisplayGenres(!displayGenres)}>
-            {displayGenres ? 'Hide' : 'View'} Genre Data
-          </Button>
-        )}
-        {listFormat === 'normal' && (
-          <Button onClick={() => setDisplayYears(!displayYears)}>
-            {displayYears ? 'Hide' : 'View'} Year Data
-          </Button>
+          charts.map(([ chart,  setState, state ]) => (
+            <Button onClick={() => setState(!state)} key={chart} >
+              {state ? 'Hide' : 'View'} {chart} Data
+            </Button>
+          ))
         )}
         <Button onClick={rawDataClick}>
           {listFormat === 'raw' ? 'Back' : 'Raw Data'}
@@ -69,6 +75,7 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, 
       </>)}
     </Options>
     {displayGenres && !searchQuery && <GenreData projects={projects} />}
+    {displayDecades && !searchQuery && <DecadeData projects={projects} />}
     {displayYears && !searchQuery && <YearData projects={projects} />}
     {listFormat === 'normal' && <NormalList {...normalListProps} />}
     {listFormat === 'raw' && <RawList projects={projects} />}

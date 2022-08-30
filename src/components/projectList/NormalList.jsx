@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import { StyledLink, Loading } from '../styles.js';
+import { StyledLink, Loading, colors } from '../styles.js';
 import { Virtuoso } from 'react-virtuoso';
 import { convertMoreSpecialChars, convertSlashes } from '../../helpers';
 
@@ -82,14 +82,7 @@ const TextWrapper = styled.div`
     $type === 'genre' ? '80px' :
     null
   )};
-  background-color: ${({ $genre, $header }) => (
-    $genre === 'rock' ? 'rgb(255, 255, 49)' :
-    $genre === 'pop' ? 'rgb(255, 158, 242)' :
-    $genre === 'hip-hop' ? 'rgb(71, 250, 86);)' :
-    $genre === 'electronic' ? 'aqua' :
-    $genre === 'other' ? '#ff9700' :
-    $header ? '#e0e0e0' : 'white'
-  )};
+  background-color: ${({ $genre, $header }) => colors[$genre] ?? ($header ? '#e0e0e0' : 'white')};
 `;
 
 const Project = styled.div`

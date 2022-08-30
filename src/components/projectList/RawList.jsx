@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Loading } from '../styles.js';
+import { Loading, colors } from '../styles.js';
 
 const RawList = ({ projects }) => {
   const [ loading, setLoading ] = useState(true);
@@ -44,13 +44,7 @@ const RawList = ({ projects }) => {
 };
 
 const Project = styled.span`
-  background-color: ${({ $genre }) => (
-    $genre === 'rock' ? 'rgb(255, 255, 49)' :
-    $genre === 'pop' ? 'rgb(255, 158, 242)' :
-    $genre === 'hip-hop' ? 'rgb(71, 250, 86);)' :
-    $genre === 'electronic' ? 'aqua' :
-    '#ff9700'
-  )};
+  background-color: ${({ $genre, $header }) => colors[$genre] ?? 'ff9700'};
 `;
 
 export default RawList;

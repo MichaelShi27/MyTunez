@@ -9,7 +9,7 @@ import EditProjectForm from './EditProjectForm';
 import DeletionModal from './DeletionModal';
 import ProjectImage from './ProjectImage';
 
-import { Button, StyledLink } from '../styles.js';
+import { Button, StyledLink, colors } from '../styles.js';
 import { wrangleInput, validateInput } from '../../helpers.js';
 
 const ProjectPage = ({ getProjectsForArtist, setPageNotFound }) => {
@@ -193,14 +193,7 @@ const TextWrapper = styled.div`
     $type === 'year' ? '170px' :
     null
   )};
-  background-color: ${({ $genre, $header }) => (
-    $genre === 'rock' ? 'rgb(255, 255, 49)' :
-    $genre === 'pop' ? 'rgb(255, 158, 242)' :
-    $genre === 'hip-hop' ? 'rgb(71, 250, 86);)' :
-    $genre === 'electronic' ? 'aqua' :
-    $genre === 'other' ? '#ff9700' :
-    $header ? '#e0e0e0' : 'white'
-  )};
+  background-color: ${({ $genre, $header }) => colors[$genre] ?? ($header ? '#e0e0e0' : 'white')};
 `;
 
 const Wrapper = styled.div`

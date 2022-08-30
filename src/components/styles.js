@@ -26,3 +26,11 @@ export const Loading = styled.div`
   color: blue;
   font-size: 30px;
 `;
+
+export const colors = {
+  rock: 'rgb(255, 255, 49)',
+  'hip-hop': 'rgb(71, 250, 86)',
+  pop: 'rgb(255, 158, 242)',
+  electronic: 'aqua',
+  other: 'ff9700'
+};

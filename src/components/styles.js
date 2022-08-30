@@ -28,9 +28,9 @@ export const Loading = styled.div`
 `;
 
 export const colors = {
-  rock: 'rgb(255, 255, 49)',
-  'hip-hop': 'rgb(71, 250, 86)',
-  pop: 'rgb(255, 158, 242)',
-  electronic: 'aqua',
-  other: 'ff9700'
+  rock: 'rgba(255, 255, 49, 1)',
+  'hip-hop': 'rgba(71, 250, 86, 1)',
+  pop: 'rgba(255, 158, 242, 1)',
+  electronic: 'rgba(0, 255, 255, 1)',
+  other: 'rgba(255, 151, 0, 1)'
 };

@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Loading } from '../styles.js';
+import { Loading, colors } from '../styles.js';
+
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
+import { Pie } from 'react-chartjs-2';
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const GenreData = ({ projects }) => {
   const [ loading, setLoading ] = useState(true);
@@ -17,16 +21,23 @@ const GenreData = ({ projects }) => {
   useEffect(getCounts, [ projects ]);
 
   const getPercentage = count => Math.round(count / projects.length * 100 * 100) / 100;
-  const { rock, electronic, pop, other } = genreCounts;
-  const hipHop = genreCounts['hip-hop'];
+
+  const genres = [ 'rock', 'hip-hop', 'electronic', 'pop', 'other' ];
+  const chartData = {
+    labels: genres.map(genre => (
+      `${ genre[0].toUpperCase() }${genre.slice(1)} (${ getPercentage(genreCounts[genre]) }%)`
+    )),
+    datasets: [{
+      data: genres.map(genre => genreCounts[genre]),
+      backgroundColor: genres.map(genre => colors[genre]),
+      borderColor: genres.map(genre => colors[genre]),
+      borderWidth: 1,
+    }]
+  };
 
   return loading ? <LoadingText>LOADING...</LoadingText> : (
     <Wrapper>
-      <TextWrapper>Rock: {rock} projects ({getPercentage(rock)}%)</TextWrapper>
-      <TextWrapper>Hip-hop: {hipHop} projects ({getPercentage(hipHop)}%)</TextWrapper>
-      <TextWrapper>Electronic: {electronic} projects ({getPercentage(electronic)}%)</TextWrapper>
-      <TextWrapper>Pop: {pop} projects ({getPercentage(pop)}%)</TextWrapper>
-      <TextWrapper>Other: {other} projects ({getPercentage(other)}%)</TextWrapper>
+      <Pie data={chartData} />
     </Wrapper>
   );
 };
@@ -38,16 +49,11 @@ const LoadingText = styled(Loading)`
 
 const Wrapper = styled.div`
   margin: 0 0 15px 18px;
-  background-color: #f2f2f2;
+  padding: 15px;
+  background-color: #eeeeee;
   display: inline-block;
-`;
-
-const TextWrapper = styled.div`
-  padding: 10px 20px;
-  display: inline-block;
-  text-align: center;
-  font-size: 12px;
-  font-family: Arial, Helvetica, sans-serif;
+  width: 400px;
+  height: 400px;
 `;
 
 export default GenreData;

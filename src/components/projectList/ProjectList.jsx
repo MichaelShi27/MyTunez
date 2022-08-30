@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import GenreData from './GenreData';
-import DecadeData from './DecadeData';
-import YearData from './YearData';
+import GenreData from './dataCharts/GenreData';
+import DecadeData from './dataCharts/DecadeData';
+import YearData from './dataCharts/YearData';
 import NormalList from './NormalList';
 import RawList from './RawList';
 
@@ -63,7 +63,7 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, 
           ))
         )}
         <Button onClick={rawDataClick}>
-          {listFormat === 'raw' ? 'Back' : 'Raw Data'}
+          {listFormat === 'raw' ? 'Back' : 'Raw Project List'}
         </Button>
         {listFormat === 'normal' && (<>
           <label htmlFor="sortBy">Sort by: </label>

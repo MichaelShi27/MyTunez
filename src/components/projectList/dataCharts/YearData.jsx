@@ -36,7 +36,7 @@ const YearData = ({ projects }) => {
 
   return loading ? <LoadingText>LOADING...</LoadingText> : (
     <Wrapper>
-      <Bar data={chartData}/>
+      <Bar data={chartData} />
     </Wrapper>
   );
 };

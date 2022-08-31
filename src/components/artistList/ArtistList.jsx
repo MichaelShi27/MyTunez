@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import Artists from './Artists';
 import { convertMoreSpecialChars } from '../../helpers';
 
-const ArtistList = ({ projects, searchQuery }) => {
+const ArtistList = ({ filteredProjects: projects, searchQuery }) => {
   const [ artists, setArtists ] = useState([]);
   const [ sortBy, setSortBy ] = useState('name');
   const [ sortedArtists, setSortedArtists ] = useState([]);

@@ -19,6 +19,7 @@ import { wrangleInput, validateInput } from '../helpers.js';
 
 const App = () => {
   const [ projects, setProjects ] = useState([]);
+  const [ filteredProjects, setFilteredProjects ] = useState([]);
   const [ projectsAdded, setProjectsAdded ] = useState(0);
   const [ successfulSubmit, setSuccessfulSubmit ] = useState(false);
   const [ displayMessage, setDisplayMessage ] = useState(false);
@@ -30,6 +31,7 @@ const App = () => {
   const [ includeArtists, setIncludeArtists ] = useState(true);
   const [ displayCheckbox, setDisplayCheckbox ] = useState(true);
   const [ pageNotFound, setPageNotFound ] = useState(false);
+  const [ filter, setFilter ] = useState({});
 
   const { pathname: path } = useLocation();
   const notOnProjectPage = path.indexOf('/projects') !== 0;
@@ -89,7 +91,13 @@ const App = () => {
 
   const getProjectsForArtist = useCallback(artist => axios(`/artists/${artist}`), []);
 
-  const getAllProjects = () => axios('/projects').then(({ data }) => setProjects(data));
+  const getAllProjects = () => {
+    axios('/projects')
+      .then(({ data }) => {
+        setProjects(data);
+        setFilteredProjects(data);
+      });
+  };
 
   // updates list when a project is added or deleted
   useEffect(getAllProjects, [ projectsAdded, currentList ]);
@@ -103,6 +111,26 @@ const App = () => {
     }, 5000);
     return () => clearTimeout(timeout);
   }, [ projectsAdded, errorMessage ]);
+
+  // applies genre/decade/year filters if needed
+  useEffect(() => {
+    if (!filter.type) return;
+
+    const { type, value } = filter;
+    let filtered;
+
+    if (type === 'genre') {
+      // to-do
+    } else {
+      const year = Number(value);
+      if (type === 'decade') {
+        filtered = projects.filter(({ releaseYear }) => releaseYear >= year && releaseYear <= year + 9);
+      } else if (type === 'year') {
+        // to-do
+      }
+    }
+    setFilteredProjects(filtered);
+  }, [ filter, projects ]);
 
   const navigate = useNavigate();
 
@@ -138,8 +166,9 @@ const App = () => {
       <Route
         path="/"
         element={<ProjectList {...{
-          projects,
+          filteredProjects,
           searchQuery,
+          setFilter,
           setDisplaySearch,
           includeArtists,
           setDisplayCheckbox
@@ -147,11 +176,11 @@ const App = () => {
       />
       <Route
         path="/artists"
-        element={<ArtistList {...{ projects, searchQuery }} />}
+        element={<ArtistList {...{ filteredProjects, searchQuery }} />}
       />
       <Route
         path="/artists/:name"
-        element={<ArtistPage {...{ projects, getProjectsForArtist, setPageNotFound }} />}
+        element={<ArtistPage {...{ filteredProjects, getProjectsForArtist, setPageNotFound }} />}
       />
       <Route
         path="/projects/:id"

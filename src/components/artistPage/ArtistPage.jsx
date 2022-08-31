@@ -10,7 +10,7 @@ import ArtistImage from './ArtistImage';
 import { StyledLink, colors } from '../styles.js';
 import { createArtistForSorting, convertSlashes } from '../../helpers.js';
 
-const ArtistPage = ({ projects: allProjects, getProjectsForArtist, setPageNotFound }) => {
+const ArtistPage = ({ filteredProjects: allProjects, getProjectsForArtist, setPageNotFound }) => {
   const [ projects, setProjects ] = useState([]);
 
   const { name } = useParams();

@@ -7,7 +7,9 @@ import YearData from './dataCharts/YearData';
 import NormalList from './NormalList';
 import RawList from './RawList';
 
-const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, setDisplayCheckbox }) => {
+const ProjectList = ({
+  filteredProjects: projects, searchQuery, setDisplaySearch, includeArtists, setDisplayCheckbox, setFilter
+}) => {
   const [ displayGenres, setDisplayGenres ] = useState(false);
   const [ displayDecades, setDisplayDecades ] = useState(false);
   const [ displayYears, setDisplayYears ] = useState(false);
@@ -16,7 +18,15 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, 
   const [ quantity, setQuantity ] = useState(projects.length);
   const [ noSearchResults, setNoSearchResults ] = useState(false);
 
+  // displays # of projects upon initial render,
+  // & prevents overriding of # of projects when query changes
+  useEffect(() => !searchQuery && setQuantity(projects.length), [ searchQuery, projects ]);
+
+  // ensures no-results message disappears after deleting text in search bar
+  useEffect(() => !searchQuery && setNoSearchResults(false), [ searchQuery ]);
+
   const rawListClick = () => {
+    setFilter({});
     setDisplaySearch(listFormat === 'raw');
     setDisplayCheckbox(listFormat === 'raw');
     setListFormat(listFormat === 'normal' ? 'raw' : 'normal');
@@ -25,13 +35,6 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, 
     setDisplayDecades(false);
     setDisplayYears(false);
   };
-
-  // displays # of projects upon initial render,
-  // & prevents overriding of # of projects when query changes
-  useEffect(() => !searchQuery && setQuantity(projects.length), [ searchQuery, projects ]);
-
-  // ensures no-results message disappears after deleting text in search bar
-  useEffect(() => !searchQuery && setNoSearchResults(false), [ searchQuery ]);
 
   const charts = [
     [ 'Genre', setDisplayGenres, displayGenres ],
@@ -79,7 +82,7 @@ const ProjectList = ({ projects, searchQuery, setDisplaySearch, includeArtists, 
       </>)}
     </Options>
     {displayGenres && !searchQuery && <GenreData projects={projects} />}
-    {displayDecades && !searchQuery && <DecadeData projects={projects} />}
+    {displayDecades && !searchQuery && <DecadeData projects={projects} setFilter={setFilter} />}
     {displayYears && !searchQuery && <YearData projects={projects} />}
     {listFormat === 'normal' && <NormalList {...normalListProps} />}
     {listFormat === 'raw' && <RawList projects={projects} />}

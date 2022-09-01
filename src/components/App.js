@@ -102,6 +102,15 @@ const App = () => {
   // updates list when a project is added or deleted
   useEffect(getAllProjects, [ projectsAdded, currentList ]);
 
+  useEffect(() => {
+    if (filter.type)
+      setDisplayForm(false);
+    else { // when a filter is cleared
+      getAllProjects();
+      setDisplayForm(true);
+    }
+  }, [ filter ]);
+
   // displays success/error message
   useEffect(() => {
     setDisplayMessage(projectsAdded || errorMessage);
@@ -171,7 +180,8 @@ const App = () => {
           setFilter,
           setDisplaySearch,
           includeArtists,
-          setDisplayCheckbox
+          setDisplayCheckbox,
+          filterType: filter.type
         }}/>}
       />
       <Route

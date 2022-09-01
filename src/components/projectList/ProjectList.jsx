@@ -8,7 +8,8 @@ import NormalList from './NormalList';
 import RawList from './RawList';
 
 const ProjectList = ({
-  filteredProjects: projects, searchQuery, setDisplaySearch, includeArtists, setDisplayCheckbox, setFilter
+  filteredProjects: projects, searchQuery, setDisplaySearch,
+  includeArtists, setDisplayCheckbox, setFilter, filterType
 }) => {
   const [ displayGenres, setDisplayGenres ] = useState(false);
   const [ displayDecades, setDisplayDecades ] = useState(false);
@@ -22,8 +23,15 @@ const ProjectList = ({
   // & prevents overriding of # of projects when query changes
   useEffect(() => !searchQuery && setQuantity(projects.length), [ searchQuery, projects ]);
 
-  // ensures no-results message disappears after deleting text in search bar
-  useEffect(() => !searchQuery && setNoSearchResults(false), [ searchQuery ]);
+  //
+  useEffect(() => {
+    if (searchQuery) {
+      setDisplayGenres(false);
+      setDisplayDecades(false);
+      setDisplayYears(false);
+    } else
+      setNoSearchResults(false) // clear no-results message after clearing search bar
+  }, [ searchQuery ]);
 
   const rawListClick = () => {
     setFilter({});
@@ -52,26 +60,39 @@ const ProjectList = ({
     includeArtists
   };
 
+  const chartButtonClick = (chart, setState, state, filterType) => {
+    setState(!state);
+    if (filterType === chart.toLowerCase())
+      setFilter({});
+  };
+
   return (<>
     <Options>
       {noSearchResults ? (
         <div style={{ margin: '20px 90px', color: 'red' }}>No projects found!</div>
-      ) : (<>
-        {quantity !== 0 && listFormat === 'normal' && (
+      ) : (
+        quantity !== 0 && listFormat === 'normal' && (
           <TextWrapper># of projects: {quantity}</TextWrapper>
-        )}
-      </>)}
+        )
+      )}
       {!searchQuery && (<>
         {listFormat === 'normal' && (
           charts.map(([ chart,  setState, state ]) => (
-            <Button onClick={() => setState(!state)} key={chart} >
-              {state ? 'Hide' : 'View'} {chart} Data
+            <Button
+              onClick={() => chartButtonClick(chart, setState, state, filterType)}
+              key={chart}
+            >
+              {filterType === chart.toLowerCase()
+                ? `Clear ${chart} Filter`
+                : `${state ? 'Hide' : 'View'} ${chart} Data`}
             </Button>
           ))
         )}
-        <Button onClick={rawListClick}>
-          {listFormat === 'raw' ? 'Back' : 'Raw Project List'}
-        </Button>
+        {!filterType && (
+          <Button onClick={rawListClick}>
+            {listFormat === 'raw' ? 'Back' : 'Raw Project List'}
+          </Button>
+        )}
         {listFormat === 'normal' && (<>
           <label htmlFor="sortBy">Sort by: </label>
           <select id="sortBy" value={sortBy} onChange={e => setSortBy(e.target.value)}>
@@ -81,9 +102,9 @@ const ProjectList = ({
         </>)}
       </>)}
     </Options>
-    {displayGenres && !searchQuery && <GenreData projects={projects} />}
-    {displayDecades && !searchQuery && <DecadeData projects={projects} setFilter={setFilter} />}
-    {displayYears && !searchQuery && <YearData projects={projects} />}
+    {displayGenres && <GenreData projects={projects} />}
+    {displayDecades && <DecadeData {...{ projects, setFilter, setDisplayDecades }} />}
+    {displayYears && <YearData projects={projects} />}
     {listFormat === 'normal' && <NormalList {...normalListProps} />}
     {listFormat === 'raw' && <RawList projects={projects} />}
   </>);

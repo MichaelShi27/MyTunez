@@ -132,11 +132,10 @@ const App = () => {
       // to-do
     } else {
       const year = Number(value);
-      if (type === 'decade') {
+      if (type === 'decade')
         filtered = projects.filter(({ releaseYear }) => releaseYear >= year && releaseYear <= year + 9);
-      } else if (type === 'year') {
-        // to-do
-      }
+      else if (type === 'year')
+        filtered = projects.filter(({ releaseYear }) => releaseYear === year);
     }
     setFilteredProjects(filtered);
   }, [ filter, projects ]);

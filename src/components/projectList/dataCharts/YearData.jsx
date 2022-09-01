@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Loading } from '../../styles.js';
 
 import {
   Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend,
 } from 'chart.js';
-import { Bar } from 'react-chartjs-2';
+import { Bar, getElementAtEvent } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const YearData = ({ projects }) => {
+const YearData = ({ projects, setFilter, setDisplayYearChart, setMessage }) => {
   const [ loading, setLoading ] = useState(true);
   const [ yearCounts, setYearCounts ] = useState({});
 
@@ -34,9 +34,27 @@ const YearData = ({ projects }) => {
     }]
   };
 
+  const chartRef = useRef();
+  const onChartClick = event => {
+    const clicked = getElementAtEvent(chartRef.current, event);
+    if (clicked.length) { // if a bar was clicked
+      const year = years[clicked[0].index];
+      setFilter({
+        type: 'year',
+        value: year
+      });
+      setDisplayYearChart(false);
+      setMessage(`Year filter applied: ${year === '0' ? 'Unknown' : year}`);
+    }
+  };
+
   return loading ? <LoadingText>LOADING...</LoadingText> : (
     <Wrapper>
-      <Bar data={chartData} />
+      <Bar
+        data={chartData}
+        ref={chartRef}
+        onClick={onChartClick}
+      />
     </Wrapper>
   );
 };

@@ -26,7 +26,6 @@ const ProjectList = ({
   // & prevents overriding of # of projects when query changes
   useEffect(() => !searchQuery && setQuantity(projects.length), [ searchQuery, projects ]);
 
-  //
   useEffect(() => {
     if (searchQuery) {
       setDisplayGenreChart(false);

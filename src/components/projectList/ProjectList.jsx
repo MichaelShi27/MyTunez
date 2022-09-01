@@ -11,9 +11,9 @@ const ProjectList = ({
   filteredProjects: projects, searchQuery, setDisplaySearch,
   includeArtists, setDisplayCheckbox, setFilter, filterType
 }) => {
-  const [ displayGenres, setDisplayGenres ] = useState(false);
-  const [ displayDecades, setDisplayDecades ] = useState(false);
-  const [ displayYears, setDisplayYears ] = useState(false);
+  const [ displayGenreChart, setDisplayGenreChart ] = useState(false);
+  const [ displayDecadeChart, setDisplayDecadeChart ] = useState(false);
+  const [ displayYearChart, setDisplayYearChart ] = useState(false);
   const [ listFormat, setListFormat ] = useState('normal');
   const [ sortBy, setSortBy ] = useState('artist');
   const [ quantity, setQuantity ] = useState(projects.length);
@@ -26,9 +26,9 @@ const ProjectList = ({
   //
   useEffect(() => {
     if (searchQuery) {
-      setDisplayGenres(false);
-      setDisplayDecades(false);
-      setDisplayYears(false);
+      setDisplayGenreChart(false);
+      setDisplayDecadeChart(false);
+      setDisplayYearChart(false);
     } else
       setNoSearchResults(false) // clear no-results message after clearing search bar
   }, [ searchQuery ]);
@@ -39,15 +39,15 @@ const ProjectList = ({
     setDisplayCheckbox(listFormat === 'raw');
     setListFormat(listFormat === 'normal' ? 'raw' : 'normal');
 
-    setDisplayGenres(false);
-    setDisplayDecades(false);
-    setDisplayYears(false);
+    setDisplayGenreChart(false);
+    setDisplayDecadeChart(false);
+    setDisplayYearChart(false);
   };
 
   const charts = [
-    [ 'Genre', setDisplayGenres, displayGenres ],
-    [ 'Decade', setDisplayDecades, displayDecades ],
-    [ 'Year', setDisplayYears, displayYears ]
+    [ 'Genre', setDisplayGenreChart, displayGenreChart ],
+    [ 'Decade', setDisplayDecadeChart, displayDecadeChart ],
+    [ 'Year', setDisplayYearChart, displayYearChart ]
   ];
 
   const normalListProps = {
@@ -102,9 +102,9 @@ const ProjectList = ({
         </>)}
       </>)}
     </Options>
-    {displayGenres && <GenreData projects={projects} />}
-    {displayDecades && <DecadeData {...{ projects, setFilter, setDisplayDecades }} />}
-    {displayYears && <YearData projects={projects} />}
+    {displayGenreChart && <GenreData projects={projects} />}
+    {displayDecadeChart && <DecadeData {...{ projects, setFilter, setDisplayDecadeChart }} />}
+    {displayYearChart && <YearData projects={projects} />}
     {listFormat === 'normal' && <NormalList {...normalListProps} />}
     {listFormat === 'raw' && <RawList projects={projects} />}
   </>);

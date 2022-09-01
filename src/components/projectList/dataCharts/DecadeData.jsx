@@ -9,7 +9,7 @@ import { Bar, getElementAtEvent } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const DecadeData = ({ projects, setFilter, setDisplayDecades }) => {
+const DecadeData = ({ projects, setFilter, setDisplayDecadeChart }) => {
   const [ loading, setLoading ] = useState(true);
   const [ decadeCounts, setDecadeCounts ] = useState({});
 
@@ -48,7 +48,7 @@ const DecadeData = ({ projects, setFilter, setDisplayDecades }) => {
         type: 'decade',
         value: decades[index]
       });
-      setDisplayDecades(false);
+      setDisplayDecadeChart(false);
     }
   };
 

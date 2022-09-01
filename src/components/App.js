@@ -129,7 +129,7 @@ const App = () => {
     let filtered;
 
     if (type === 'genre') {
-      // to-do
+      filtered = projects.filter(({ genre }) => genre === value);
     } else {
       const year = Number(value);
       if (type === 'decade')

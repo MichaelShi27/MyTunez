@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Loading, colors } from '../../styles.js';
 
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
-import { Pie } from 'react-chartjs-2';
+import { Pie, getElementAtEvent } from 'react-chartjs-2';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const GenreData = ({ projects }) => {
+const GenreData = ({ projects, setFilter, setDisplayGenreChart, setMessage }) => {
   const [ loading, setLoading ] = useState(true);
   const [ genreCounts, setGenreCounts ] = useState({});
 
@@ -35,9 +35,27 @@ const GenreData = ({ projects }) => {
     }]
   };
 
+  const chartRef = useRef();
+  const onChartClick = event => {
+    const clicked = getElementAtEvent(chartRef.current, event);
+    if (clicked.length) { // if a bar was clicked
+      const genre = genres[clicked[0].index];
+      setFilter({
+        type: 'genre',
+        value: genre
+      });
+      setDisplayGenreChart(false);
+      setMessage(`Genre filter applied: ${genre[0].toUpperCase()}${genre.slice(1)}`);
+    }
+  };
+
   return loading ? <LoadingText>LOADING...</LoadingText> : (
     <Wrapper>
-      <Pie data={chartData} />
+      <Pie
+        data={chartData}
+        ref={chartRef}
+        onClick={onChartClick}
+      />
     </Wrapper>
   );
 };

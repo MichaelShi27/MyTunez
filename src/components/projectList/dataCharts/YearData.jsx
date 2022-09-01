@@ -9,7 +9,7 @@ import { Bar, getElementAtEvent } from 'react-chartjs-2';
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const YearData = ({ projects, setFilter, setDisplayYearChart, setMessage }) => {
+const YearData = ({ projects, filters, setFilters, setDisplayYearChart, setMessage }) => {
   const [ loading, setLoading ] = useState(true);
   const [ yearCounts, setYearCounts ] = useState({});
 
@@ -39,10 +39,7 @@ const YearData = ({ projects, setFilter, setDisplayYearChart, setMessage }) => {
     const clicked = getElementAtEvent(chartRef.current, event);
     if (clicked.length) { // if a bar was clicked
       const year = years[clicked[0].index];
-      setFilter({
-        type: 'year',
-        value: year
-      });
+      setFilters({ ...filters, year });
       setDisplayYearChart(false);
       setMessage(`Year filter applied: ${year === '0' ? 'Unknown' : year}`);
     }

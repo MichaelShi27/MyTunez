@@ -10,7 +10,7 @@ import Message from '../Message';
 
 const ProjectList = ({
   filteredProjects: projects, searchQuery, setDisplaySearch,
-  includeArtists, setDisplayCheckbox, setFilter, filterType
+  includeArtists, setDisplayCheckbox, setFilters, filters
 }) => {
   const [ displayGenreChart, setDisplayGenreChart ] = useState(false);
   const [ displayDecadeChart, setDisplayDecadeChart ] = useState(false);
@@ -42,7 +42,7 @@ const ProjectList = ({
   }, [ message ]);
 
   const rawListClick = () => {
-    setFilter({});
+    setFilters({ genre: '', decade: '', year: '' });
     setDisplaySearch(listFormat === 'raw');
     setDisplayCheckbox(listFormat === 'raw');
     setListFormat(listFormat === 'normal' ? 'raw' : 'normal');
@@ -53,13 +53,14 @@ const ProjectList = ({
     setDisplayYearChart(false);
   };
 
-  const chartButtonClick = (chart, setState, state, filterType) => {
+  const chartButtonClick = (chart, setState, state, filters) => {
     setState(!state);
-    if (filterType === chart.toLowerCase()) {
-      setFilter({});
-      setMessage(`Cleared ${filterType} filter!`);
-    } else // just opened/closed chart
-      setMessage(state ? '' : `Click on a ${chart.toLowerCase()} to view those projects!`);
+    chart = chart.toLowerCase();
+    if (filters[chart]) { // clicked a 'Clear ___ Filter' button
+      setFilters({ ...filters, [chart]: '' });
+      setMessage(`Cleared ${chart} filter!`);
+    } else // just opened/closed a chart
+      setMessage(state ? '' : `Click on a ${chart} to view those projects!`);
   };
 
   const charts = [
@@ -80,7 +81,8 @@ const ProjectList = ({
 
   const chartProps = {
     projects,
-    setFilter,
+    filters,
+    setFilters,
     setDisplayGenreChart,
     setDisplayDecadeChart,
     setDisplayYearChart,
@@ -100,16 +102,16 @@ const ProjectList = ({
         {listFormat === 'normal' && (
           charts.map(([ chart,  setState, state ]) => (
             <Button
-              onClick={() => chartButtonClick(chart, setState, state, filterType)}
+              onClick={() => chartButtonClick(chart, setState, state, filters)}
               key={chart}
             >
-              {filterType === chart.toLowerCase()
+              {filters[chart.toLowerCase()]
                 ? `Clear ${chart} Filter`
                 : `${state ? 'Hide' : 'View'} ${chart} Data`}
             </Button>
           ))
         )}
-        {!filterType && (
+        {!filters.genre && !filters.decade && !filters.year && (
           <Button onClick={rawListClick}>
             {listFormat === 'raw' ? 'Back' : 'Raw Project List'}
           </Button>

@@ -6,7 +6,7 @@ import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js';
 import { Pie, getElementAtEvent } from 'react-chartjs-2';
 ChartJS.register(ArcElement, Tooltip, Legend);
 
-const GenreData = ({ projects, setFilter, setDisplayGenreChart, setMessage }) => {
+const GenreData = ({ projects, filters, setFilters, setDisplayGenreChart, setMessage }) => {
   const [ loading, setLoading ] = useState(true);
   const [ genreCounts, setGenreCounts ] = useState({});
 
@@ -38,12 +38,9 @@ const GenreData = ({ projects, setFilter, setDisplayGenreChart, setMessage }) =>
   const chartRef = useRef();
   const onChartClick = event => {
     const clicked = getElementAtEvent(chartRef.current, event);
-    if (clicked.length) { // if a bar was clicked
+    if (clicked.length) { // if a genre was clicked
       const genre = genres[clicked[0].index];
-      setFilter({
-        type: 'genre',
-        value: genre
-      });
+      setFilters({ ...filters, genre });
       setDisplayGenreChart(false);
       setMessage(`Genre filter applied: ${genre[0].toUpperCase()}${genre.slice(1)}`);
     }

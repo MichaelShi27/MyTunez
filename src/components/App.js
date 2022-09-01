@@ -31,7 +31,7 @@ const App = () => {
   const [ includeArtists, setIncludeArtists ] = useState(true);
   const [ displayCheckbox, setDisplayCheckbox ] = useState(true);
   const [ pageNotFound, setPageNotFound ] = useState(false);
-  const [ filter, setFilter ] = useState({});
+  const [ filters, setFilters ] = useState({ genre: '', decade: '', year: '' });
 
   const { pathname: path } = useLocation();
   const notOnProjectPage = path.indexOf('/projects') !== 0;
@@ -103,13 +103,13 @@ const App = () => {
   useEffect(getAllProjects, [ projectsAdded, currentList ]);
 
   useEffect(() => {
-    if (filter.type)
+    if (filters.genre || filters.decade || filters.year)
       setDisplayForm(false);
-    else { // when a filter is cleared
+    else {
       getAllProjects();
       setDisplayForm(true);
     }
-  }, [ filter ]);
+  }, [ filters ]);
 
   // displays success/error message
   useEffect(() => {
@@ -123,22 +123,22 @@ const App = () => {
 
   // applies genre/decade/year filters if needed
   useEffect(() => {
-    if (!filter.type) return;
+    if (!filters.genre && !filters.decade && !filters.year) return;
 
-    const { type, value } = filter;
-    let filtered;
+    let filtered = projects.slice();
 
-    if (type === 'genre') {
-      filtered = projects.filter(({ genre }) => genre === value);
-    } else {
-      const year = Number(value);
-      if (type === 'decade')
-        filtered = projects.filter(({ releaseYear }) => releaseYear >= year && releaseYear <= year + 9);
-      else if (type === 'year')
-        filtered = projects.filter(({ releaseYear }) => releaseYear === year);
+    if (filters.genre)
+      filtered = filtered.filter(({ genre }) => genre === filters.genre);
+    if (filters.decade) {
+      const year = Number(filters.decade);
+      filtered = filtered.filter(({ releaseYear }) => releaseYear >= year && releaseYear <= year + 9);
+    }
+    if (filters.year) {
+      const year = Number(filters.year);
+      filtered = filtered.filter(({ releaseYear }) => releaseYear === year);
     }
     setFilteredProjects(filtered);
-  }, [ filter, projects ]);
+  }, [ filters, projects ]);
 
   const navigate = useNavigate();
 
@@ -176,11 +176,11 @@ const App = () => {
         element={<ProjectList {...{
           filteredProjects,
           searchQuery,
-          setFilter,
+          filters,
+          setFilters,
           setDisplaySearch,
           includeArtists,
-          setDisplayCheckbox,
-          filterType: filter.type
+          setDisplayCheckbox
         }}/>}
       />
       <Route

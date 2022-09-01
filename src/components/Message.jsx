@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { colors } from './styles.js';
 
 const Message = ({ message, projectsAdded, added, edited, deleted, saved, style }) => (
   added ? (
@@ -15,7 +16,7 @@ const Message = ({ message, projectsAdded, added, edited, deleted, saved, style 
 );
 
 const Wrapper = styled.div`
-  color: ${({ $success }) => $success ? '#0aca01' : 'red'};
+  color: ${({ $success }) => $success ? colors.green : 'red'};
   margin: 10px;
   font-family: Helvetica, Arial, sans-serif;
 `;

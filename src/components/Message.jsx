@@ -2,7 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { colors } from './styles.js';
 
-const Message = ({ message, projectsAdded, added, edited, deleted, saved, style }) => (
+const Message = ({ message, projectsAdded, added, edited, deleted, saved, style, msg }) => (
   added ? (
     <Wrapper $success={added}>
       Project added! You have added {projectsAdded} project{projectsAdded === 1 ? '' : 's'}.
@@ -12,6 +12,7 @@ const Message = ({ message, projectsAdded, added, edited, deleted, saved, style 
   deleted ? <Wrapper $success={deleted}>Project successfully deleted!</Wrapper> :
   saved ? <Wrapper $success={saved} style={style}>Saved!</Wrapper> :
   message ? <Wrapper style={style}>Error: {message}</Wrapper> :
+  msg ? <Wrapper style={style}>{msg}</Wrapper> :
   null
 );
 

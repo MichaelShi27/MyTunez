@@ -6,6 +6,7 @@ import DecadeData from './dataCharts/DecadeData';
 import YearData from './dataCharts/YearData';
 import NormalList from './NormalList';
 import RawList from './RawList';
+import Message from '../Message';
 
 const ProjectList = ({
   filteredProjects: projects, searchQuery, setDisplaySearch,
@@ -18,6 +19,8 @@ const ProjectList = ({
   const [ sortBy, setSortBy ] = useState('artist');
   const [ quantity, setQuantity ] = useState(projects.length);
   const [ noSearchResults, setNoSearchResults ] = useState(false);
+  const [ displayMessage, setDisplayMessage ] = useState(false);
+  const [ message, setMessage] = useState('');
 
   // displays # of projects upon initial render,
   // & prevents overriding of # of projects when query changes
@@ -33,21 +36,37 @@ const ProjectList = ({
       setNoSearchResults(false) // clear no-results message after clearing search bar
   }, [ searchQuery ]);
 
+  useEffect(() => {
+    setDisplayMessage(true);
+    const timeout = setTimeout(() => setDisplayMessage(false), 5000);
+    return () => clearTimeout(timeout);
+  }, [ message ]);
+
   const rawListClick = () => {
     setFilter({});
     setDisplaySearch(listFormat === 'raw');
     setDisplayCheckbox(listFormat === 'raw');
     setListFormat(listFormat === 'normal' ? 'raw' : 'normal');
 
+    setMessage('');
     setDisplayGenreChart(false);
     setDisplayDecadeChart(false);
     setDisplayYearChart(false);
   };
 
+  const chartButtonClick = (chart, setState, state, filterType) => {
+    setState(!state);
+    if (filterType === chart.toLowerCase()) {
+      setFilter({});
+      setMessage(`Cleared ${filterType} filter!`);
+    } else // just opened/closed chart
+      setMessage(state ? '' : `Click on a ${chart.toLowerCase()} to view those projects!`);
+  };
+
   const charts = [
-    [ 'Genre', setDisplayGenreChart, displayGenreChart ],
-    [ 'Decade', setDisplayDecadeChart, displayDecadeChart ],
-    [ 'Year', setDisplayYearChart, displayYearChart ]
+    [ 'Genre', setDisplayGenreChart, displayGenreChart, GenreData ],
+    [ 'Decade', setDisplayDecadeChart, displayDecadeChart, DecadeData ],
+    [ 'Year', setDisplayYearChart, displayYearChart, YearData ]
   ];
 
   const normalListProps = {
@@ -60,10 +79,13 @@ const ProjectList = ({
     includeArtists
   };
 
-  const chartButtonClick = (chart, setState, state, filterType) => {
-    setState(!state);
-    if (filterType === chart.toLowerCase())
-      setFilter({});
+  const chartProps = {
+    projects,
+    setFilter,
+    setDisplayGenreChart,
+    setDisplayDecadeChart,
+    setDisplayYearChart,
+    setMessage
   };
 
   return (<>
@@ -102,9 +124,15 @@ const ProjectList = ({
         </>)}
       </>)}
     </Options>
-    {displayGenreChart && <GenreData projects={projects} />}
-    {displayDecadeChart && <DecadeData {...{ projects, setFilter, setDisplayDecadeChart }} />}
-    {displayYearChart && <YearData projects={projects} />}
+    {displayMessage && (
+      <Message
+        msg={message}
+        style={{ margin: '10px 10px 20px 30px', color: 'rgb(116, 43, 161)' }}
+      />
+    )}
+    {charts.map(([ type, , displayChart, Component ]) => (
+      displayChart ? <Component {...chartProps} key={type} /> : null
+    ))}
     {listFormat === 'normal' && <NormalList {...normalListProps} />}
     {listFormat === 'raw' && <RawList projects={projects} />}
   </>);

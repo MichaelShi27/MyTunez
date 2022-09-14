@@ -99,23 +99,29 @@ const ProjectList = ({
         )
       )}
       {!searchQuery && (<>
-        {listFormat === 'normal' && (
-          charts.map(([ chart,  setState, state ]) => (
-            <Button
-              onClick={() => chartButtonClick(chart, setState, state, filters)}
-              key={chart}
-            >
-              {filters[chart.toLowerCase()]
-                ? `Clear ${chart} Filter`
-                : `${state ? 'Hide' : 'View'} ${chart} Data`}
+        <span style={{
+          padding: '10px 0',
+          backgroundColor: '#e0e0e0',
+          margin: '0 30px 0 20px'
+        }}>
+          {listFormat === 'normal' && (
+            charts.map(([ chart,  setState, state ]) => (
+              <Button
+                onClick={() => chartButtonClick(chart, setState, state, filters)}
+                key={chart}
+              >
+                {filters[chart.toLowerCase()]
+                  ? `Clear ${chart} Filter`
+                  : `${state ? 'Hide' : 'View'} ${chart} Data`}
+              </Button>
+            ))
+          )}
+          {!filters.genre && !filters.decade && !filters.year && (
+            <Button onClick={rawListClick}>
+              {listFormat === 'raw' ? 'Back' : 'Raw Project List'}
             </Button>
-          ))
-        )}
-        {!filters.genre && !filters.decade && !filters.year && (
-          <Button onClick={rawListClick}>
-            {listFormat === 'raw' ? 'Back' : 'Raw Project List'}
-          </Button>
-        )}
+          )}
+        </span>
         {listFormat === 'normal' && (<>
           <label htmlFor="sortBy">Sort by: </label>
           <select id="sortBy" value={sortBy} onChange={e => setSortBy(e.target.value)}>

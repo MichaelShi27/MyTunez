@@ -105,10 +105,13 @@ const ProjectList = ({
           margin: '0 30px 0 20px'
         }}>
           {listFormat === 'normal' && (
-            charts.map(([ chart,  setState, state ]) => (
+            charts.map(([ chart, setState, state ]) => (
               <Button
                 onClick={() => chartButtonClick(chart, setState, state, filters)}
                 key={chart}
+                style={{
+                  border: (filters[chart.toLowerCase()] || state) && '1px solid blue'
+                }}
               >
                 {filters[chart.toLowerCase()]
                   ? `Clear ${chart} Filter`

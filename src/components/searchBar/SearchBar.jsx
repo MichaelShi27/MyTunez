@@ -2,9 +2,11 @@ import React from 'react';
 import styled from 'styled-components';
 
 const SearchBar = ({ list, searchQuery, handleChange }) => (
-  <FormWrapper>
+  <FormWrapper $favorites={list === 'favorites'}>
     <form className="form">
-      <label htmlFor="search">Search {list}:</label>
+      <label htmlFor="search">
+        {list === 'favorites' ? `Add to Favorites:` : `Search ${list}:`}
+      </label>
       <FieldWrapper>
         <InputField
           value={searchQuery}
@@ -17,7 +19,7 @@ const SearchBar = ({ list, searchQuery, handleChange }) => (
 
 const FormWrapper = styled.div`
   background-color: #f2f2f2;
-  width: 260px;
+  width: ${({ $favorites }) => $favorites ? '270px' : '260px'};
   margin-left: 15px;
   padding: 10px;
   font-family: Verdana, Helvetica, sans-serif;

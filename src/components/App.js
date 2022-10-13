@@ -13,6 +13,7 @@ import ProjectPage from './projectPage/ProjectPage';
 import SearchBar from './searchBar/SearchBar';
 import ArtistCheckbox from './searchBar/ArtistCheckbox';
 import ErrorPage from './ErrorPage';
+import Favorites from './favorites/Favorites';
 
 import { Header, Button } from './styles.js';
 import { wrangleInput, validateInput } from '../helpers.js';
@@ -34,11 +35,11 @@ const App = () => {
   const [ filters, setFilters ] = useState({ genre: '', decade: '', year: '' });
 
   const { pathname: path } = useLocation();
-  const notOnProjectPage = path.indexOf('/projects') !== 0;
+  const notOnProjectPageOrFavorites = (path.indexOf('/projects') !== 0) && (path !== '/favorites');
 
   // determines what to render based on current URL
   useEffect(() => {
-    setDisplayForm(notOnProjectPage);
+    setDisplayForm(notOnProjectPageOrFavorites);
     setDisplaySearch(path === '/' || path === '/artists');
     setDisplayCheckbox(path === '/');
     setPageNotFound(false);
@@ -47,6 +48,8 @@ const App = () => {
       setCurrentList('projects');
     else if (path === '/artists')
       setCurrentList('artists');
+    else if (path === '/favorites')
+      setCurrentList('favorites');
     else {
       setCurrentList('');
       if (
@@ -55,7 +58,7 @@ const App = () => {
         path.indexOf('/artists') !== 0
       ) setPageNotFound(true);
     }
-  }, [ path, notOnProjectPage ]);
+  }, [ path, notOnProjectPageOrFavorites ]);
 
   useEffect(() => {
     if (pageNotFound) {
@@ -144,7 +147,7 @@ const App = () => {
 
   return (<>
     <Header onClick={() => navigate('/')}>myTunez</Header>
-    {displayMessage && notOnProjectPage && (
+    {displayMessage && notOnProjectPageOrFavorites && (
       <Message
         message={errorMessage}
         added={successfulSubmit}
@@ -158,6 +161,9 @@ const App = () => {
       </Link>
       <Link to="/artists">
         <Button $selected={currentList === 'artists'}>Artists</Button>
+      </Link>
+      <Link to="/favorites">
+        <Button $selected={currentList === 'favorites'}>Favorites</Button>
       </Link>
     </>)}
     <div style={{ display: 'flex' }}>
@@ -194,6 +200,10 @@ const App = () => {
       <Route
         path="/projects/:id"
         element={<ProjectPage {...{ getProjectsForArtist, setPageNotFound }} />}
+      />
+      <Route
+        path="/favorites"
+        element={<Favorites projects={projects} />}
       />
       <Route path="*" element={<ErrorPage />} />
     </Routes>

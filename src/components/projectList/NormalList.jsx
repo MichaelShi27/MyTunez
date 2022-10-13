@@ -23,7 +23,7 @@ const NormalList = ({
     );
   }, [ projects, sortBy ]);
 
-  // filters list based on 'searchQuery' && 'includeArtists' props
+  // filters list based on 'searchQuery' & 'includeArtists' props
   useEffect(() => {
     const convertedQuery = convertMoreSpecialChars(searchQuery);
     const filtered = projects.filter(({ title, artist }) => (
@@ -39,7 +39,7 @@ const NormalList = ({
 
   return (
     loading ? <Loading>LOADING...</Loading> :
-    noSearchResults ?  null : (<>
+    noSearchResults ? null : (<>
       <Header>
         <TextWrapper $header={'true'} $type={'title'}>Project Title</TextWrapper>
         <TextWrapper $header={'true'} $type={'artist'}>Artist</TextWrapper>

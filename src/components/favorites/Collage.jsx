@@ -7,7 +7,12 @@ const Collage = ({ favorites }) => {
   const [ loading, setLoading ] = useState(true);
 
   return (<>
-    {loading && <Loading>LOADING...</Loading>}
+    {!favorites.length && (
+      <Loading style={{ color: '#e0e0e0', fontFamily: 'Helvetica' }}>
+        No favorites added!
+      </Loading>
+    )}
+    {favorites.length > 0 && loading && <Loading>LOADING...</Loading>}
     <div style={{ marginTop: '20px' }}>
       {favorites.map(project => (
         <ProjectImage 

@@ -57,8 +57,7 @@ const SearchResults = ({ projects, searchQuery, setQuery, setFavorites, favorite
         style={{
           height: Math.min(200, 30 * sortedProjects.length),
           width: 850,
-          border: '1px solid gray',
-          marginTop: 5
+          border: '1px solid gray'
         }}
         data={sortedProjects}
         totalCount={sortedProjects.length}

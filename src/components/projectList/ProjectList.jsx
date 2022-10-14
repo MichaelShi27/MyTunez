@@ -110,7 +110,8 @@ const ProjectList = ({
                 onClick={() => chartButtonClick(chart, setState, state, filters)}
                 key={chart}
                 style={{
-                  border: (filters[chart.toLowerCase()] || state) && '1px solid blue'
+                  border: (filters[chart.toLowerCase()] || state) && '1px solid blue',
+                  backgroundColor: (filters[chart.toLowerCase()] || state) && '#cccccc'
                 }}
               >
                 {filters[chart.toLowerCase()]

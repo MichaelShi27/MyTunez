@@ -25,8 +25,9 @@ const Favorites = ({ projects }) => {
       list={'favorites'}
       searchQuery={query}
       handleChange={e => setQuery(e.target.value)}
-      style={{ marginBottom: '20px' }}
+      style={{ margin: '0 20px 5px 0', display: 'inline-block' }}
     />
+    <button>Text list</button>
     <SearchResults 
       projects={projects}
       searchQuery={query}

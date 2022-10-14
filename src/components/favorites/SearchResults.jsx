@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 
-import { StyledLink, Loading, colors } from '../styles.js';
+import { Loading, colors } from '../styles.js';
 import { Virtuoso } from 'react-virtuoso';
-import { convertMoreSpecialChars, convertSlashes } from '../../helpers';
+import { convertMoreSpecialChars } from '../../helpers';
 
-const SearchResults = ({
-  projects, searchQuery
-}) => {
+const SearchResults = ({ projects, searchQuery, setQuery }) => {
   const [ sortedProjects, setSortedProjects ] = useState([]);
   const [ loading, setLoading ] = useState(true);
+  const [ hoveredIdx, setHoveredIdx ] = useState(null);
 
   useEffect(() => setLoading(false), []);
 
@@ -25,13 +24,14 @@ const SearchResults = ({
     setSortedProjects(filtered);
   }, [ searchQuery, projects ]);
 
+  const addFavorite = () => {
+    setQuery('');
+    setHoveredIdx(null);
+  };
+
   return (
     loading ? <Loading>LOADING...</Loading> :
-    !searchQuery ? null : (<>
-      {/* <Header>
-        <TextWrapper $header={'true'} $type={'title'}>Project Title</TextWrapper>
-        <TextWrapper $header={'true'} $type={'artist'}>Artist</TextWrapper>
-      </Header> */}
+    !searchQuery ? null : (
       <Virtuoso
         style={{
           height: Math.min(200, 30 * sortedProjects.length),
@@ -41,14 +41,23 @@ const SearchResults = ({
         }}
         data={sortedProjects}
         totalCount={sortedProjects.length}
-        itemContent={(idx, { title, artist, genre, _id }) => (
-          <Project key={idx}>
-            <TextWrapper $type={'title'}><em>{title}</em></TextWrapper>
-            <TextWrapper $type={'artist'}>{artist}</TextWrapper>
+        itemContent={(idx, { title, artist }) => (
+          <Project 
+            key={idx}
+            onClick={() => addFavorite()}
+            onMouseEnter={() => setHoveredIdx(idx)}
+            onMouseLeave={() => setHoveredIdx(null)}
+          >
+            <TextWrapper $type={'title'} $hovered={idx === hoveredIdx}>
+              <em>{title}</em>
+            </TextWrapper>
+            <TextWrapper $type={'artist'} $hovered={idx === hoveredIdx}>
+              {artist}
+            </TextWrapper>
           </Project>
         )}
       />
-    </>)
+    )
   );
 };
 
@@ -61,7 +70,7 @@ const TextWrapper = styled.div`
     $type === 'artist' ? '280px' :
     null
   )};
-  background-color: ${({ $genre, $header }) => colors[$genre] ?? ($header ? '#e0e0e0' : 'white')};
+  background-color: ${({ $genre, $hovered }) => colors[$genre] ?? ($hovered ? '#edeeee' : 'white')};
 `;
 
 const Project = styled.div`
@@ -71,15 +80,12 @@ const Project = styled.div`
   font-family: Helvetica, Arial, sans-serif;
   font-size: 15px;
   border: 1px solid gray;
+  cursor: pointer;
+  &:hover {
+    color: blue;
+    border: 1px solid blue;
+    background-color: #edeeee;
+  }
 `;
-
-// const Header = styled(Project)`
-//   font-family: Palatino, Lucida Console, serif;
-//   font-size: 13px;
-//   background-color: #e0e0e0;
-//   border: none;
-//   padding: 8px 8px 5px;
-//   width: 990px;
-// `;
 
 export default SearchResults;

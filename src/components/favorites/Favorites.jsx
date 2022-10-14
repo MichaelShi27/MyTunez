@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-// import styled from 'styled-components';
 
 import SearchBar from '../searchBar/SearchBar';
 import SearchResults from './SearchResults';
@@ -10,14 +9,13 @@ const Favorites = ({ projects }) => {
   return (<>
     <SearchBar
       list={'favorites'}
-      query={query}
+      searchQuery={query}
       handleChange={e => setQuery(e.target.value)}
     />
     <SearchResults 
       projects={projects}
       searchQuery={query}
-      setQuantity={() => {}}
-      setNoSearchResults={() => {}}
+      setQuery={setQuery}
     />
   </>);
 };

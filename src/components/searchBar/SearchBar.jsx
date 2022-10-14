@@ -5,7 +5,7 @@ const SearchBar = ({ list, searchQuery, handleChange, style }) => (
   <FormWrapper $favorites={list === 'favorites'} style={style}>
     <form className="form">
       <label htmlFor="search">
-        {list === 'favorites' ? `Add to Favorites:` : `Search ${list}:`}
+        {list === 'favorites' ? `Add to favorites:` : `Search ${list}:`}
       </label>
       <FieldWrapper>
         <InputField

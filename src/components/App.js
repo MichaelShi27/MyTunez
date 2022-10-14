@@ -112,7 +112,7 @@ const App = () => {
       getAllProjects();
       notOnProjectPageOrFavorites && setDisplayForm(true);
     }
-  }, [ filters ]);
+  }, [ filters, notOnProjectPageOrFavorites ]);
 
   // displays success/error message
   useEffect(() => {

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 
 import { Loading, colors } from '../styles.js';
@@ -10,9 +10,12 @@ const SearchResults = ({ projects, searchQuery, setQuery, setFavorites, favorite
   const [ loading, setLoading ] = useState(true);
   const [ hoveredId, setHoveredId ] = useState(null);
 
-  const existingFavorites = {};
-  for (const { title, artist } of favorites)
-    existingFavorites[`${title} - ${artist}`] = true;
+  const existingFavorites = useMemo(() => {
+    const obj = {};
+    for (const { title, artist } of favorites)
+      obj[`${title} - ${artist}`] = true;
+    return obj;
+  }, [ favorites ]);
 
   useEffect(() => setLoading(false), []);
 
@@ -28,7 +31,7 @@ const SearchResults = ({ projects, searchQuery, setQuery, setFavorites, favorite
       )
     ));
     setSortedProjects(filtered);
-  }, [ searchQuery, projects ]);
+  }, [ searchQuery, projects, existingFavorites ]);
 
   const addFavorite = (id, title, artist) => {
     setQuery('');

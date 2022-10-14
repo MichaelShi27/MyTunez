@@ -25,6 +25,7 @@ const Favorites = ({ projects }) => {
       list={'favorites'}
       searchQuery={query}
       handleChange={e => setQuery(e.target.value)}
+      style={{ marginBottom: '20px' }}
     />
     <SearchResults 
       projects={projects}

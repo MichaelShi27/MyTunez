@@ -1,8 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const SearchBar = ({ list, searchQuery, handleChange }) => (
-  <FormWrapper $favorites={list === 'favorites'}>
+const SearchBar = ({ list, searchQuery, handleChange, style }) => (
+  <FormWrapper $favorites={list === 'favorites'} style={style}>
     <form className="form">
       <label htmlFor="search">
         {list === 'favorites' ? `Add to Favorites:` : `Search ${list}:`}

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
+import { Virtuoso } from 'react-virtuoso';
 
 import { StyledLink, Loading, colors } from '../styles.js';
-import { Virtuoso } from 'react-virtuoso';
 import { convertMoreSpecialChars, convertSlashes } from '../../helpers';
 
 const NormalList = ({

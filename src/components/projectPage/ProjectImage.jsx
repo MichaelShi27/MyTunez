@@ -47,8 +47,8 @@ const ProjectImage = ({ project, style, onLoad }) => {
     <img 
       alt="project cover art" 
       src={imageUrl}
-      style={style && style}
-      onLoad={onLoad || (() => {})}
+      style={style}
+      onLoad={onLoad}
     />
   );
 };

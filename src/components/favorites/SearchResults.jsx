@@ -1,14 +1,16 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
-
-import { Loading, colors } from '../styles.js';
 import { Virtuoso } from 'react-virtuoso';
+
+import Message from '../Message';
+import { Loading, colors } from '../styles.js';
 import { convertMoreSpecialChars } from '../../helpers';
 
 const SearchResults = ({ projects, searchQuery, setQuery, setFavorites, favorites }) => {
   const [ sortedProjects, setSortedProjects ] = useState([]);
   const [ loading, setLoading ] = useState(true);
   const [ hoveredId, setHoveredId ] = useState(null);
+  const [ message, setMessage ] = useState('');
 
   const existingFavorites = useMemo(() => {
     const obj = {};
@@ -33,16 +35,24 @@ const SearchResults = ({ projects, searchQuery, setQuery, setFavorites, favorite
     setSortedProjects(filtered);
   }, [ searchQuery, projects, existingFavorites ]);
 
+  useEffect(() => {
+    const timeout = setTimeout(() => setMessage(''), 4000);
+    return () => clearTimeout(timeout);
+  }, [ message ]);
+
   const addFavorite = (id, title, artist) => {
     setQuery('');
     setHoveredId(null);
 
-    setFavorites([ ...favorites, { id, title, artist } ]);
+    if (favorites.length === 180)
+      setMessage("You can't add any more favorites!");
+    else
+      setFavorites([ ...favorites, { id, title, artist } ]);
   };
 
-  return (
-    loading ? <Loading>LOADING...</Loading> :
-    !searchQuery ? null :
+  return loading ? <Loading>LOADING...</Loading> : (<>
+    {message && <Message msg={message} />}
+    {!searchQuery ? null : (
       <Virtuoso
         style={{
           height: Math.min(200, 30 * sortedProjects.length),
@@ -68,7 +78,8 @@ const SearchResults = ({ projects, searchQuery, setQuery, setFavorites, favorite
           </Project>
         )}
       />
-  );
+    )}
+  </>);
 };
 
 const TextWrapper = styled.div`

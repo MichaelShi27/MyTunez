@@ -15,7 +15,7 @@ const authOptions = {
   }
 };
 
-const ProjectImage = ({ project }) => {
+const ProjectImage = ({ project, style, onLoad }) => {
   const [ token, setToken ] = useState('');
   const [ imageUrl, setImageUrl ] = useState('');
 
@@ -43,7 +43,14 @@ const ProjectImage = ({ project }) => {
       .catch(console.log);
   }, [ project, token ]);
 
-  return !imageUrl ? null : <img alt="project cover art" src={imageUrl} />;
+  return !imageUrl ? null : (
+    <img 
+      alt="project cover art" 
+      src={imageUrl}
+      style={style && style}
+      onLoad={onLoad || (() => {})}
+    />
+  );
 };
 
 export default ProjectImage;

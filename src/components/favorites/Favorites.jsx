@@ -1,11 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import SearchBar from '../searchBar/SearchBar';
 import SearchResults from './SearchResults';
+import Collage from './Collage';
 
 const Favorites = ({ projects }) => {
   const [ query, setQuery ] = useState('');
   const [ favorites, setFavorites ] = useState([]);
+
+  // // placeholder - fills in albums
+  // useEffect(() => {
+  //   const arr = []
+  //   for (let i = 0; i < 180; i++) {
+  //     if (i === 17)
+  //       arr.push({ title: 'Red Light', artist: 'Bladee', id: i });
+  //     else
+  //       arr.push({ title: 'Spiderr', artist: 'Bladee', id: i });
+  //   }
+  //   setFavorites(arr);
+  // }, []);
 
   return (<>
     <SearchBar
@@ -20,9 +33,7 @@ const Favorites = ({ projects }) => {
       setFavorites={setFavorites}
       favorites={favorites}
     />
-    {favorites.map(({ artist, title, id }) => (
-      <div key={id}>{title} - {artist}</div>
-    ))}
+    <Collage favorites={favorites} />
   </>);
 };
 

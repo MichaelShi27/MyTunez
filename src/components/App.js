@@ -110,7 +110,7 @@ const App = () => {
       setDisplayForm(false);
     else {
       getAllProjects();
-      setDisplayForm(true);
+      notOnProjectPageOrFavorites && setDisplayForm(true);
     }
   }, [ filters ]);
 

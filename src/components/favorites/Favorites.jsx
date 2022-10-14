@@ -5,6 +5,7 @@ import SearchResults from './SearchResults';
 
 const Favorites = ({ projects }) => {
   const [ query, setQuery ] = useState('');
+  const [ favorites, setFavorites ] = useState([]);
 
   return (<>
     <SearchBar
@@ -16,7 +17,12 @@ const Favorites = ({ projects }) => {
       projects={projects}
       searchQuery={query}
       setQuery={setQuery}
+      setFavorites={setFavorites}
+      favorites={favorites}
     />
+    {favorites.map(({ artist, title, id }) => (
+      <div key={id}>{title} - {artist}</div>
+    ))}
   </>);
 };
 

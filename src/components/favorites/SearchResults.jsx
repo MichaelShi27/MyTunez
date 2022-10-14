@@ -5,10 +5,14 @@ import { Loading, colors } from '../styles.js';
 import { Virtuoso } from 'react-virtuoso';
 import { convertMoreSpecialChars } from '../../helpers';
 
-const SearchResults = ({ projects, searchQuery, setQuery }) => {
+const SearchResults = ({ projects, searchQuery, setQuery, setFavorites, favorites }) => {
   const [ sortedProjects, setSortedProjects ] = useState([]);
   const [ loading, setLoading ] = useState(true);
-  const [ hoveredIdx, setHoveredIdx ] = useState(null);
+  const [ hoveredId, setHoveredId ] = useState(null);
+
+  const existingFavorites = {};
+  for (const { title, artist } of favorites)
+    existingFavorites[`${title} - ${artist}`] = true;
 
   useEffect(() => setLoading(false), []);
 
@@ -16,22 +20,26 @@ const SearchResults = ({ projects, searchQuery, setQuery }) => {
   useEffect(() => {
     const convertedQuery = convertMoreSpecialChars(searchQuery);
     const filtered = projects.filter(({ title, artist }) => (
-      convertMoreSpecialChars(title).includes(convertedQuery) ||
-      title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      convertMoreSpecialChars(artist).includes(convertedQuery) ||
-      artist.toLowerCase().includes(searchQuery.toLowerCase())
+      existingFavorites[`${title} - ${artist}`] === undefined && (
+        convertMoreSpecialChars(title).includes(convertedQuery) ||
+        title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        convertMoreSpecialChars(artist).includes(convertedQuery) ||
+        artist.toLowerCase().includes(searchQuery.toLowerCase())
+      )
     ));
     setSortedProjects(filtered);
   }, [ searchQuery, projects ]);
 
-  const addFavorite = () => {
+  const addFavorite = (id, title, artist) => {
     setQuery('');
-    setHoveredIdx(null);
+    setHoveredId(null);
+
+    setFavorites([ ...favorites, { id, title, artist } ]);
   };
 
   return (
     loading ? <Loading>LOADING...</Loading> :
-    !searchQuery ? null : (
+    !searchQuery ? null :
       <Virtuoso
         style={{
           height: Math.min(200, 30 * sortedProjects.length),
@@ -41,23 +49,22 @@ const SearchResults = ({ projects, searchQuery, setQuery }) => {
         }}
         data={sortedProjects}
         totalCount={sortedProjects.length}
-        itemContent={(idx, { title, artist }) => (
+        itemContent={(idx, { title, artist, _id }) => (
           <Project 
-            key={idx}
-            onClick={() => addFavorite()}
-            onMouseEnter={() => setHoveredIdx(idx)}
-            onMouseLeave={() => setHoveredIdx(null)}
+            key={_id}
+            onClick={() => addFavorite(_id, title, artist)}
+            onMouseEnter={() => setHoveredId(_id)}
+            onMouseLeave={() => setHoveredId(null)}
           >
-            <TextWrapper $type={'title'} $hovered={idx === hoveredIdx}>
+            <TextWrapper $type={'title'} $hovered={_id === hoveredId}>
               <em>{title}</em>
             </TextWrapper>
-            <TextWrapper $type={'artist'} $hovered={idx === hoveredIdx}>
+            <TextWrapper $type={'artist'} $hovered={_id === hoveredId}>
               {artist}
             </TextWrapper>
           </Project>
         )}
       />
-    )
   );
 };
 

@@ -55,6 +55,19 @@ exports.deleteProject = (req, res) => {
     .catch(console.log);
 };
 
+exports.addFavorite = (req, res) => {
+  const { id, idx } = req.body;
+  Project.updateOne({ _id: id }, { favoritesIdx: idx })
+    .then((data) => res.send(data))
+    .catch(err => {
+      console.log(err);
+      // if (err.code === 11000)
+      //   res.send('duplicate input');
+      // else
+      //   res.status(400).send(err);
+    });
+};
+
 // exports.addProject = (req, res) => Project.create(
 //   req.body,
 //   (err, data) => err ? console.log(err) : res.send(data)

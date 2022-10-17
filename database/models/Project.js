@@ -7,7 +7,8 @@ const projectSchema = new mongoose.Schema({
   subgenre: String,
   dateAdded: { type: Date, required: true },
   artistForSorting: { type: String, required: true },
-  releaseYear: { type: Number }
+  releaseYear: Number,
+  favoritesIdx: Number
 });
 
 projectSchema.index({ artist: 1, title: 1 }, { unique: true });

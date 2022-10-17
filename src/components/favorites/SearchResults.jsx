@@ -51,10 +51,7 @@ const SearchResults = ({ projects, searchQuery, setQuery, setFavorites, favorite
     }
 
     axios.patch('/addFavorite', { id, idx: favorites.length })
-      .then(({ data }) => {
-        console.log('data:', data)
-        setFavorites([ ...favorites, { id, title, artist } ]);
-      })
+      .then(({ data }) => setFavorites([ ...favorites, { ...data } ]))
       .catch(console.log);
   };
 

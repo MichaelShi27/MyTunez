@@ -15,7 +15,7 @@ const Favorites = ({ projects, filteredProjects, filters }) => {
   const [ displayDecadeChart, setDisplayDecadeChart ] = useState(false);
   const [ displayYearChart, setDisplayYearChart ] = useState(false);
 
-  useEffect(() => setFavorites(
+  useEffect(() => filteredProjects.length <= 180 && setFavorites(
     filteredProjects.sort((a, b) => a.favoritesIdx - b.favoritesIdx)
   ), [ filteredProjects ]);
 

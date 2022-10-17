@@ -15,9 +15,9 @@ let title, artist;
 let fakeDate = 0;
 
 for (const project of rawData) {
-  const [ text, minusTitle ] = project.split('***');
-  const [ genreChar, minusGenre ] = minusTitle.split(' --- ');
-  const [ releaseYear, dateAdded ] = minusGenre.split(' ___ ');
+  const [ text, minusTitle ] = project.split(' *genre* ');
+  const [ genreChar, minusGenre ] = minusTitle.split(' *releaseYear* ');
+  const [ releaseYear, dateAdded ] = minusGenre.split(' *dateAdded* ');
 
   const genre = (genreChar === undefined || genreChar === 'h') ? 'hip-hop' :
     genreChar === 'r' ? 'rock' :

@@ -20,9 +20,9 @@ const RawList = ({ projects }) => {
       const genreChar = genre === 'rock' ? 'r' :
         genre === 'hip-hop' ? 'h' :
         genre === 'electronic' ? 'e' :
-        genre === 'pop' ? 'p' : '';
+        genre === 'pop' ? 'p' : 'o';
 
-      newTitle += '***' + genreChar;
+      newTitle += ' *genre* ' + genreChar;
 
       const shortenedDate = dateAdded.slice(0, 10);
 
@@ -36,7 +36,7 @@ const RawList = ({ projects }) => {
     list.map(({ title, genre, releaseYear, dateAdded }, idx) => (
       <div key={idx}>
         <Project $genre={genre}>
-          {`${title} --- ${releaseYear} ___ ${dateAdded}`}
+          {`${title} *releaseYear* ${releaseYear} *dateAdded* ${dateAdded}`}
         </Project>
       </div>
     ))
@@ -44,7 +44,7 @@ const RawList = ({ projects }) => {
 };
 
 const Project = styled.span`
-  background-color: ${({ $genre, $header }) => colors[$genre] ?? 'ff9700'};
+  background-color: ${({ $genre }) => colors[$genre] ?? 'ff9700'};
 `;
 
 export default RawList;

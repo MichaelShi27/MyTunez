@@ -19,17 +19,6 @@ const Favorites = ({ projects, filteredProjects, filters }) => {
     filteredProjects.sort((a, b) => a.favoritesIdx - b.favoritesIdx)
   ), [ filteredProjects ]);
 
-  // // placeholder - fills in albums
-  // useEffect(() => {
-  //   const arr = []
-  //   for (let i = 0; i < 180; i++)
-  //     if (i === 17)
-  //       arr.push({ title: 'Red Light', artist: 'Bladee', id: i });
-  //     else
-  //       arr.push({ title: 'Spiderr', artist: 'Bladee', id: i });
-  //   setFavorites(arr);
-  // }, []);
-
   const charts = [
     [ 'genre', setDisplayGenreChart, displayGenreChart, GenreData, 'Genre' ],
     [ 'decade', setDisplayDecadeChart, displayDecadeChart, DecadeData, 'Decade' ],

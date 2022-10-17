@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { Virtuoso } from 'react-virtuoso';
+import axios from 'axios';
 
 import Message from '../Message';
 import { Loading, colors } from '../styles.js';
@@ -44,10 +45,17 @@ const SearchResults = ({ projects, searchQuery, setQuery, setFavorites, favorite
     setQuery('');
     setHoveredId(null);
 
-    if (favorites.length === 180)
+    if (favorites.length === 180) {
       setMessage("You can't add any more favorites!");
-    else
-      setFavorites([ ...favorites, { id, title, artist } ]);
+      return;
+    }
+
+    axios.patch('/addFavorite', { id, idx: favorites.length })
+      .then(({ data }) => {
+        console.log('data:', data)
+        setFavorites([ ...favorites, { id, title, artist } ]);
+      })
+      .catch(console.log);
   };
 
   return loading ? <Loading>LOADING...</Loading> : (<>

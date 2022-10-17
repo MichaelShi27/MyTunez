@@ -32,7 +32,7 @@ const App = () => {
   const [ includeArtists, setIncludeArtists ] = useState(true);
   const [ displayCheckbox, setDisplayCheckbox ] = useState(true);
   const [ pageNotFound, setPageNotFound ] = useState(false);
-  const [ filters, setFilters ] = useState({ genre: '', decade: '', year: '' });
+  const [ filters, setFilters ] = useState({ genre: '', decade: '', year: '', favorites: false });
 
   const { pathname: path } = useLocation();
   const notOnProjectPageOrFavorites = (path.indexOf('/projects') !== 0) && (path !== '/favorites');
@@ -48,9 +48,10 @@ const App = () => {
       setCurrentList('projects');
     else if (path === '/artists')
       setCurrentList('artists');
-    else if (path === '/favorites')
+    else if (path === '/favorites') {
       setCurrentList('favorites');
-    else {
+      setFilters({ ...filters, favorites: true });
+    } else {
       setCurrentList('');
       if (
         path !== '/projects' &&
@@ -106,7 +107,7 @@ const App = () => {
   useEffect(getAllProjects, [ projectsAdded, currentList ]);
 
   useEffect(() => {
-    if (filters.genre || filters.decade || filters.year)
+    if (filters.genre || filters.decade || filters.year || filters.favorites)
       setDisplayForm(false);
     else {
       getAllProjects();
@@ -124,22 +125,23 @@ const App = () => {
     return () => clearTimeout(timeout);
   }, [ projectsAdded, errorMessage ]);
 
-  // applies genre/decade/year filters if needed
+  // applies genre/decade/year/favorites filters if needed
   useEffect(() => {
-    if (!filters.genre && !filters.decade && !filters.year) return;
+    const { genre, decade, year, favorites } = filters;
+    if (!genre && !decade && !year && !favorites) return;
 
     let filtered = projects.slice();
 
-    if (filters.genre)
-      filtered = filtered.filter(({ genre }) => genre === filters.genre);
-    if (filters.decade) {
-      const year = Number(filters.decade);
-      filtered = filtered.filter(({ releaseYear }) => releaseYear >= year && releaseYear <= year + 9);
-    }
-    if (filters.year) {
-      const year = Number(filters.year);
-      filtered = filtered.filter(({ releaseYear }) => releaseYear === year);
-    }
+    if (genre)
+      filtered = filtered.filter(({ genre: projGenre }) => projGenre === genre);
+    if (decade)
+      filtered = filtered.filter(({ releaseYear }) => (
+        (releaseYear >= Number(decade)) && (releaseYear <= Number(decade) + 9)
+      ));
+    if (year)
+      filtered = filtered.filter(({ releaseYear }) => releaseYear === Number(year));
+    if (favorites)
+      filtered = filtered.filter(({ favoritesIdx }) => favoritesIdx >= 0);
     setFilteredProjects(filtered);
   }, [ filters, projects ]);
 
@@ -163,7 +165,12 @@ const App = () => {
         <Button $selected={currentList === 'artists'}>Artists</Button>
       </Link>
       <Link to="/favorites">
-        <Button $selected={currentList === 'favorites'}>Favorites</Button>
+        <Button 
+          $selected={currentList === 'favorites'}
+          onClick={() => setFilters({ genre: '', year: '', decade: '', favorites: true })}
+        >
+          Favorites
+        </Button>
       </Link>
     </>)}
     <div style={{ display: 'flex' }}>
@@ -203,7 +210,7 @@ const App = () => {
       />
       <Route
         path="/favorites"
-        element={<Favorites projects={projects} />}
+        element={<Favorites {...{ projects, filteredProjects, filters }} />}
       />
       <Route path="*" element={<ErrorPage />} />
     </Routes>

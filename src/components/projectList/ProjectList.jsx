@@ -55,7 +55,6 @@ const ProjectList = ({
 
   const chartButtonClick = (chart, setState, state, filters) => {
     setState(!state);
-    chart = chart.toLowerCase();
     if (filters[chart]) { // clicked a 'Clear ___ Filter' button
       setFilters({ ...filters, [chart]: '' });
       setMessage(`Cleared ${chart} filter!`);
@@ -64,9 +63,9 @@ const ProjectList = ({
   };
 
   const charts = [
-    [ 'Genre', setDisplayGenreChart, displayGenreChart, GenreData ],
-    [ 'Decade', setDisplayDecadeChart, displayDecadeChart, DecadeData ],
-    [ 'Year', setDisplayYearChart, displayYearChart, YearData ]
+    [ 'genre', setDisplayGenreChart, displayGenreChart, GenreData, 'Genre' ],
+    [ 'decade', setDisplayDecadeChart, displayDecadeChart, DecadeData, 'Decade' ],
+    [ 'year', setDisplayYearChart, displayYearChart, YearData, 'Year' ]
   ];
 
   const normalListProps = {
@@ -105,19 +104,16 @@ const ProjectList = ({
           margin: '0 30px 0 20px'
         }}>
           {listFormat === 'normal' && (
-            charts.map(([ chart, setState, state ]) => (
-              <Button
+            charts.map(([ chart, setState, state, , upperChart ]) => (
+              <ChartButton
                 onClick={() => chartButtonClick(chart, setState, state, filters)}
                 key={chart}
-                style={{
-                  border: (filters[chart.toLowerCase()] || state) && '1px solid blue',
-                  backgroundColor: (filters[chart.toLowerCase()] || state) && '#cccccc'
-                }}
+                {...{ filters, state, chart }}
               >
-                {filters[chart.toLowerCase()]
-                  ? `Clear ${chart} Filter`
-                  : `${state ? 'Hide' : 'View'} ${chart} Data`}
-              </Button>
+                {filters[chart]
+                  ? `Clear ${upperChart} Filter`
+                  : `${state ? 'Hide' : 'View'} ${upperChart} Data`}
+              </ChartButton>
             ))
           )}
           {!filters.genre && !filters.decade && !filters.year && (
@@ -160,6 +156,15 @@ const TextWrapper = styled.div`
 
 const Button = styled.button`
   margin: 15px;
+`;
+
+const ChartButton = styled(Button)`
+  border: ${({ filters, chart, state }) => (
+    (filters[chart] || state) && '1px solid blue'
+  )};
+  background-color: ${({ filters, chart, state }) => (
+    (filters[chart] || state) && '#cccccc'
+  )};
 `;
 
 export default ProjectList;

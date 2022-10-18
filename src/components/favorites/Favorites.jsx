@@ -4,20 +4,38 @@ import styled from 'styled-components';
 import SearchBar from '../searchBar/SearchBar';
 import SearchResults from './SearchResults';
 import Collage from './Collage';
+import Message from '../Message';
 import GenreData from '../projectList/dataCharts/GenreData';
 import DecadeData from '../projectList/dataCharts/DecadeData';
 import YearData from '../projectList/dataCharts/YearData';
 
-const Favorites = ({ projects, filteredProjects, filters }) => {
+const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
   const [ query, setQuery ] = useState('');
   const [ favorites, setFavorites ] = useState([]);
   const [ displayGenreChart, setDisplayGenreChart ] = useState(false);
   const [ displayDecadeChart, setDisplayDecadeChart ] = useState(false);
   const [ displayYearChart, setDisplayYearChart ] = useState(false);
+  const [ message, setMessage ] = useState('');
+  const [ displayMessage, setDisplayMessage ] = useState(false);
 
   useEffect(() => filteredProjects.length <= 180 && setFavorites(
     filteredProjects.sort((a, b) => a.favoritesIdx - b.favoritesIdx)
   ), [ filteredProjects ]);
+
+  useEffect(() => {
+    setDisplayMessage(true);
+    const timeout = setTimeout(() => setDisplayMessage(false), 5000);
+    return () => clearTimeout(timeout);
+  }, [ message ]);
+
+  const chartButtonClick = (chart, setState, state, filters) => {
+    setState(!state);
+    if (filters[chart]) { // clicked a 'Clear ___ Filter' button
+      setFilters({ ...filters, [chart]: '' });
+      setMessage(`Cleared ${chart} filter!`);
+    } else // just opened/closed a chart
+      setMessage(state ? '' : `Click on a ${chart} to view those projects!`);
+  };
 
   const charts = [
     [ 'genre', setDisplayGenreChart, displayGenreChart, GenreData, 'Genre' ],
@@ -25,7 +43,15 @@ const Favorites = ({ projects, filteredProjects, filters }) => {
     [ 'year', setDisplayYearChart, displayYearChart, YearData, 'Year' ]
   ];
 
-  const chartButtonClick = () => console.log('clicked');
+  const chartProps = {
+    projects: favorites,
+    filters,
+    setFilters,
+    setDisplayGenreChart,
+    setDisplayDecadeChart,
+    setDisplayYearChart,
+    setMessage
+  };
 
   return (<>
     <SearchBar
@@ -59,6 +85,15 @@ const Favorites = ({ projects, filteredProjects, filters }) => {
       setFavorites={setFavorites}
       favorites={favorites}
     />
+    {displayMessage && (
+      <Message
+        msg={message}
+        style={{ margin: '10px 10px 20px 30px', color: 'rgb(116, 43, 161)' }}
+      />
+    )}
+    {charts.map(([ type, , displayChart, Component ]) => (
+      displayChart ? <Component {...chartProps} key={type} /> : null
+    ))}
     <Collage favorites={favorites} />
   </>);
 };

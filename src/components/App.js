@@ -210,7 +210,7 @@ const App = () => {
       />
       <Route
         path="/favorites"
-        element={<Favorites {...{ projects, filteredProjects, filters }} />}
+        element={<Favorites {...{ projects, filteredProjects, filters, setFilters }} />}
       />
       <Route path="*" element={<ErrorPage />} />
     </Routes>

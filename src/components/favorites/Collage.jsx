@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import ProjectImage from '../projectPage/ProjectImage';
 import { Loading } from '../styles.js';
 
-const Collage = ({ favorites }) => {
+const Collage = ({ favorites, tileSize }) => {
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
@@ -25,8 +25,8 @@ const Collage = ({ favorites }) => {
           project={project}
           onLoad={() => setLoading(false)}
           style={{
-            width: '62px',
-            height: '62px',
+            height: `${tileSize}px`,
+            width: `${tileSize}px`,
             margin: '0 1px 0 1px'
           }}
         />

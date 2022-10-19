@@ -17,6 +17,13 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
   const [ displayYearChart, setDisplayYearChart ] = useState(false);
   const [ message, setMessage ] = useState('');
   const [ displayMessage, setDisplayMessage ] = useState(false);
+  const [ displayTextList, setDisplayTextList ] = useState(false);
+
+  // variables regarding the favorites collage
+  const tileSize = 62;
+  const rowLen = Math.floor(
+    (window.innerWidth - 15) / (tileSize + 2) // + 2 bc of margin
+  );
 
   useEffect(() => filteredProjects.length <= 180 && setFavorites(
     filteredProjects.sort((a, b) => a.favoritesIdx - b.favoritesIdx)
@@ -74,16 +81,15 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
                 : `${state ? 'Hide' : 'View'} ${upperChart} Data`}
             </ChartButton>
           ))}
-          <Button onClick={() => {}}>Text List</Button>
+          <Button onClick={() => setDisplayTextList(!displayTextList)}>
+            {displayTextList ? 'Back' : 'Text List'}
+          </Button>
         </span>
       )}
     </Options>
     <SearchResults 
-      projects={projects}
       searchQuery={query}
-      setQuery={setQuery}
-      setFavorites={setFavorites}
-      favorites={favorites}
+      {...{ projects, setQuery, setFavorites, favorites }}
     />
     {displayMessage && (
       <Message
@@ -94,7 +100,14 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
     {charts.map(([ type, , displayChart, Component ]) => (
       displayChart ? <Component {...chartProps} key={type} /> : null
     ))}
-    <Collage favorites={favorites} />
+    {displayTextList ? (
+      favorites.map(({ _id, artist, title }, idx) => (
+        <div key={_id} style={{ fontSize: '8px', marginLeft: '10px' }}>
+          {(idx % rowLen === 0) && <br />}
+          <div>{artist} - {title}</div>
+        </div>
+      ))
+    ) : <Collage {...{ favorites, tileSize }} />}
   </>);
 };
 

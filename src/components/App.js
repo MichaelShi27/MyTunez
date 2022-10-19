@@ -44,9 +44,10 @@ const App = () => {
     setDisplayCheckbox(path === '/');
     setPageNotFound(false);
 
-    if (path === '/')
+    if (path === '/') {
       setCurrentList('projects');
-    else if (path === '/artists')
+      setFilters({ ...filters, favorites: false });
+    } else if (path === '/artists')
       setCurrentList('artists');
     else if (path === '/favorites') {
       setCurrentList('favorites');
@@ -148,7 +149,7 @@ const App = () => {
   const navigate = useNavigate();
 
   return (<>
-    <Header onClick={() => navigate('/')}>myTunez</Header>
+    <Header onClick={() => navigate('/')}>MyTunez</Header>
     {displayMessage && notOnProjectPageOrFavorites && (
       <Message
         message={errorMessage}

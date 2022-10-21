@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import qs from 'qs';
+import { clientId, clientSecret } from '../../auth.js';
 
-const clientId = '00785d3dc1db4f7993e1bcb6ff6c8d36';
-const clientSecret = 'a48ed976c25a403c9094dce87f2741f8';
 const authStr = btoa(`${clientId}:${clientSecret}`);
 
 const authOptions = {

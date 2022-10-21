@@ -68,7 +68,7 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
       style={{ margin: '0 20px 5px 10px', display: 'inline-block' }}
     />
     <Options>
-      {!query && (
+      {!query && (<>
         <span style={{ padding: '10px 0', backgroundColor: '#e0e0e0' }}>
           {charts.map(([ chart, setState, state, , upperChart ]) => (
             <ChartButton
@@ -81,11 +81,24 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
                 : `${state ? 'Hide' : 'View'} ${upperChart} Data`}
             </ChartButton>
           ))}
-          <Button onClick={() => setDisplayTextList(!displayTextList)}>
+          <Button 
+            onClick={() => setDisplayTextList(!displayTextList)} 
+            style={displayTextList ? { 
+              border: '1px solid blue', 
+              backgroundColor: '#cccccc' 
+            } : {}}
+          >
             {displayTextList ? 'Back' : 'Text List'}
           </Button>
         </span>
-      )}
+        <div style={{ width: '20px', display: 'inline-block' }} />
+        {/* <Button>
+          Most Popular Artists
+        </Button>
+        <Button>
+          History
+        </Button> */}
+      </>)}
     </Options>
     <SearchResults 
       searchQuery={query}

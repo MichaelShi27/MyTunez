@@ -11,7 +11,7 @@ const ArtistList = ({ filteredProjects: projects, searchQuery }) => {
   const [ noSearchResults, setNoSearchResults ] = useState(false);
 
   const getArtists = useCallback(() => {
-    const artists = [];
+    const artistArr = [];
     let curArtist = projects[0].artist;
     let projectCount = 0;
     const now = new Date();
@@ -19,7 +19,7 @@ const ArtistList = ({ filteredProjects: projects, searchQuery }) => {
 
     for (const { artist, dateAdded } of projects) {
       if (artist !== curArtist) {
-        artists.push({ name: curArtist, projectCount, firstAdded });
+        artistArr.push({ name: curArtist, projectCount, firstAdded });
         curArtist = artist;
         projectCount = 0;
         firstAdded = now;
@@ -29,8 +29,8 @@ const ArtistList = ({ filteredProjects: projects, searchQuery }) => {
       if (projectDate < firstAdded)
         firstAdded = projectDate;
     }
-    artists.push({ name: curArtist, projectCount, firstAdded });
-    setArtists(artists);
+    artistArr.push({ name: curArtist, projectCount, firstAdded });
+    setArtists(artistArr);
   }, [ projects ]);
 
   // extracts artists from 'projects' prop

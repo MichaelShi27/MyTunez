@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import SearchBar from '../searchBar/SearchBar';
 import SearchResults from './SearchResults';
 import Collage from './Collage';
+import MostPopularArtists from './MostPopularArtists';
 import Message from '../Message';
 import GenreData from '../projectList/dataCharts/GenreData';
 import DecadeData from '../projectList/dataCharts/DecadeData';
@@ -18,6 +19,8 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
   const [ message, setMessage ] = useState('');
   const [ displayMessage, setDisplayMessage ] = useState(false);
   const [ displayTextList, setDisplayTextList ] = useState(false);
+  // not actually a "separate" page, just renders to look like one
+  const [ separatePage, setSeparatePage ] = useState(null); 
 
   // variables regarding the favorites collage
   const tileSize = 62;
@@ -61,43 +64,55 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
   };
 
   return (<>
-    <SearchBar
-      list={'favorites'}
-      searchQuery={query}
-      handleChange={e => setQuery(e.target.value)}
-      style={{ margin: '0 20px 5px 10px', display: 'inline-block' }}
-    />
+    {!separatePage && (
+      <SearchBar
+        list={'favorites'}
+        searchQuery={query}
+        handleChange={e => setQuery(e.target.value)}
+        style={{ margin: '0 20px 5px 10px', display: 'inline-block' }}
+      />
+    )}
     <Options>
       {!query && (<>
-        <span style={{ padding: '10px 0', backgroundColor: '#e0e0e0' }}>
-          {charts.map(([ chart, setState, state, , upperChart ]) => (
-            <ChartButton
-              onClick={() => chartButtonClick(chart, setState, state, filters)}
-              key={chart}
-              {...{ filters, state, chart }}
+        {!separatePage && (
+          <span style={{ padding: '10px 0', backgroundColor: '#e0e0e0' }}>
+            {charts.map(([ chart, setState, state, , upperChart ]) => (
+              <ChartButton
+                onClick={() => chartButtonClick(chart, setState, state, filters)}
+                key={chart}
+                {...{ filters, state, chart }}
+              >
+                {filters[chart]
+                  ? `Clear ${upperChart} Filter`
+                  : `${state ? 'Hide' : 'View'} ${upperChart} Data`}
+              </ChartButton>
+            ))}
+            <Button 
+              onClick={() => setDisplayTextList(!displayTextList)} 
+              style={displayTextList ? { 
+                border: '1px solid blue', 
+                backgroundColor: '#cccccc' 
+              } : {}}
             >
-              {filters[chart]
-                ? `Clear ${upperChart} Filter`
-                : `${state ? 'Hide' : 'View'} ${upperChart} Data`}
-            </ChartButton>
-          ))}
-          <Button 
-            onClick={() => setDisplayTextList(!displayTextList)} 
-            style={displayTextList ? { 
-              border: '1px solid blue', 
-              backgroundColor: '#cccccc' 
-            } : {}}
-          >
-            {displayTextList ? 'Back' : 'Text List'}
-          </Button>
-        </span>
+              {displayTextList ? 'Back To Collage' : 'Text List'}
+            </Button>
+          </span>
+        )}
         <div style={{ width: '20px', display: 'inline-block' }} />
-        {/* <Button>
-          Most Popular Artists
-        </Button>
-        <Button>
-          History
-        </Button> */}
+        {separatePage !== 'history' && (
+          <Button 
+            onClick={() => setSeparatePage(separatePage === 'popular' ? null : 'popular')}
+          >
+            {separatePage === 'popular' ? 'Back' : 'Most Popular Artists'}
+          </Button>
+        )}
+        {separatePage !== 'popular' && (
+          <Button
+            onClick={() => setSeparatePage(separatePage === 'history' ? null : 'history')}
+          >
+            {separatePage === 'history' ? 'Back' : 'History'}
+          </Button>
+        )}
       </>)}
     </Options>
     <SearchResults 
@@ -111,16 +126,20 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
       />
     )}
     {charts.map(([ type, , displayChart, Component ]) => (
-      displayChart ? <Component {...chartProps} key={type} /> : null
+      (displayChart && !separatePage) ? <Component {...chartProps} key={type} /> : null
     ))}
-    {displayTextList ? (
-      favorites.map(({ _id, artist, title }, idx) => (
-        <div key={_id} style={{ fontSize: '8px', marginLeft: '10px' }}>
-          {(idx % rowLen === 0) && <br />}
-          <div>{artist} - {title}</div>
-        </div>
-      ))
-    ) : <Collage {...{ favorites, tileSize }} />}
+    {!separatePage && (
+      displayTextList ? (
+        favorites.map(({ _id, artist, title }, idx) => (
+          <div key={_id} style={{ fontSize: '8px', marginLeft: '10px' }}>
+            {(idx % rowLen === 0) && <br />}
+            <div>{artist} - {title}</div>
+          </div>
+        ))
+      ) : (<Collage {...{ favorites, tileSize }} />)
+    )}
+    {separatePage === 'popular' && <MostPopularArtists favorites={favorites}/>}
+    {separatePage === 'history' && <div>History</div>}
   </>);
 };
 

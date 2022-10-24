@@ -84,7 +84,7 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
               >
                 {filters[chart]
                   ? `Clear ${upperChart} Filter`
-                  : `${state ? 'Hide' : 'View'} ${upperChart} Data`}
+                  : `${state ? 'Hide' : ''} ${upperChart} Data`}
               </ChartButton>
             ))}
             <Button 

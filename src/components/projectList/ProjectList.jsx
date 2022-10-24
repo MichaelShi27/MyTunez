@@ -112,13 +112,13 @@ const ProjectList = ({
               >
                 {filters[chart]
                   ? `Clear ${upperChart} Filter`
-                  : `${state ? 'Hide' : 'View'} ${upperChart} Data`}
+                  : `${state ? 'Hide' : ''} ${upperChart} Data`}
               </ChartButton>
             ))
           )}
           {!filters.genre && !filters.decade && !filters.year && (
             <Button onClick={rawListClick}>
-              {listFormat === 'raw' ? 'Back' : 'Raw Project List'}
+              {listFormat === 'raw' ? 'Back' : 'Raw List'}
             </Button>
           )}
         </span>

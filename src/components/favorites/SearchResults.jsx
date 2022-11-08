@@ -41,7 +41,7 @@ const SearchResults = ({ projects, searchQuery, setQuery, setFavorites, favorite
     return () => clearTimeout(timeout);
   }, [ message ]);
 
-  const addFavorite = (id, title, artist) => {
+  const addFavorite = id => {
     setQuery('');
     setHoveredId(null);
 

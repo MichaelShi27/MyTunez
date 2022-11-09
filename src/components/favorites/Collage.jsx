@@ -28,10 +28,18 @@ const Collage = ({ favorites, tileSize }) => {
         const { _id: id } = project;
         return (
           <Wrapper key={id} $size={tileSize}>
-            {/* {id === hoveredId && <DeleteButton />} */}
+            {id === hoveredId && (
+              <DeleteButton 
+                onMouseEnter={() => setHoveredId(id)}
+                onMouseLeave={() => setHoveredId(null)}
+              >
+                &#xd7;
+              </DeleteButton>
+            )}
             <ImageWrapper 
               onMouseEnter={() => setHoveredId(id)}
               onMouseLeave={() => setHoveredId(null)}
+              $deleteHovered={id === hoveredId}
             >
               <ProjectImage 
                 project={project}
@@ -39,7 +47,7 @@ const Collage = ({ favorites, tileSize }) => {
                 onClick={() => navigate(`/projects/${id}`)}
                 style={{
                   height: `${tileSize}px`,
-                  width: `${tileSize}px`,
+                  width: `${tileSize}px`
                 }}
               />
             </ImageWrapper>
@@ -55,20 +63,31 @@ const Wrapper = styled.div`
   width: ${({ $size }) => `${$size}px`};
   display: inline-block;
   margin: 0 1px 0 1px;
-
+  position: relative;
+  cursor: pointer;
 `;
 
 const ImageWrapper = styled.div`
-  cursor: pointer;
+  filter: ${({ $deleteHovered }) => $deleteHovered && 'brightness(30%)'};
   &:hover {
-    filter: brightness(50%)
+    filter: brightness(70%)
   }
 `;
 
-// const DeleteButton = styled.div`
-//   height: 10px;
-//   width: 10px;
-//   background-color: red;
-// `;
+const DeleteButton = styled.div`
+  height: 12px;
+  width: 12px;
+  background-color: red;
+  position: absolute;
+  z-index: 1;
+  text-align: center;
+  vertical-align: middle;
+  font-family: Verdana;
+  font-size: 9px;
+  color: white;
+  &:hover {
+    border: 1px solid white;
+  }
+`;
 
 export default Collage;

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
+import axios from 'axios';
 
 import SearchBar from '../searchBar/SearchBar';
 import SearchResults from './SearchResults';
@@ -34,9 +35,12 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
 
   useEffect(() => {
     setDisplayMessage(true);
-    const timeout = setTimeout(() => setDisplayMessage(false), 5000);
+    const timeout = setTimeout(() => {
+      setDisplayMessage(false);
+      setMessage('');
+    }, 5000);
     return () => clearTimeout(timeout);
-  }, [ message ]);
+  }, [ message, displayMessage ]);
 
   const chartButtonClick = (chart, setState, state, filters) => {
     setState(!state);
@@ -61,6 +65,20 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
     setDisplayDecadeChart,
     setDisplayYearChart,
     setMessage
+  };
+
+  const addFavorite = id => {
+    setQuery('');
+
+    if (favorites.length > 2) { // = 180
+      setMessage("You can't add any more favorites!");
+      setDisplayMessage(false);
+      return;
+    }
+
+    axios.patch('/addFavorite', { id, idx: favorites.length })
+      .then(({ data }) => setFavorites([ ...favorites, { ...data } ]))
+      .catch(console.log);
   };
 
   return (<>
@@ -115,14 +133,14 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
         )}
       </>)}
     </Options>
-    <SearchResults 
-      searchQuery={query}
-      {...{ projects, setQuery, setFavorites, favorites }}
-    />
+    <SearchResults {...{ projects, query, addFavorite, favorites }} />
     {displayMessage && (
       <Message
         msg={message}
-        style={{ margin: '10px 10px 20px 30px', color: 'rgb(116, 43, 161)' }}
+        style={{ 
+          margin: '10px 10px 20px 30px', 
+          color: message === "You can't add any more favorites!" ? 'red' : 'rgb(116, 43, 161)' 
+        }}
       />
     )}
     {charts.map(([ type, , displayChart, Component ]) => (

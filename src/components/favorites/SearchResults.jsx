@@ -1,17 +1,14 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import styled from 'styled-components';
 import { Virtuoso } from 'react-virtuoso';
-import axios from 'axios';
 
-import Message from '../Message';
 import { Loading, colors } from '../styles.js';
 import { convertMoreSpecialChars } from '../../helpers';
 
-const SearchResults = ({ projects, searchQuery, setQuery, setFavorites, favorites }) => {
+const SearchResults = ({ projects, query, addFavorite, favorites }) => {
   const [ sortedProjects, setSortedProjects ] = useState([]);
   const [ loading, setLoading ] = useState(true);
   const [ hoveredId, setHoveredId ] = useState(null);
-  const [ message, setMessage ] = useState('');
 
   const existingFavorites = useMemo(() => {
     const obj = {};
@@ -22,42 +19,22 @@ const SearchResults = ({ projects, searchQuery, setQuery, setFavorites, favorite
 
   useEffect(() => setLoading(false), []);
 
-  // filters list based on 'searchQuery' props
+  // filters list based on 'query' props
   useEffect(() => {
-    const convertedQuery = convertMoreSpecialChars(searchQuery);
+    const convertedQuery = convertMoreSpecialChars(query);
     const filtered = projects.filter(({ title, artist }) => (
       existingFavorites[`${title} - ${artist}`] === undefined && (
         convertMoreSpecialChars(title).includes(convertedQuery) ||
-        title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        title.toLowerCase().includes(query.toLowerCase()) ||
         convertMoreSpecialChars(artist).includes(convertedQuery) ||
-        artist.toLowerCase().includes(searchQuery.toLowerCase())
+        artist.toLowerCase().includes(query.toLowerCase())
       )
     ));
     setSortedProjects(filtered);
-  }, [ searchQuery, projects, existingFavorites ]);
+  }, [ query, projects, existingFavorites ]);
 
-  useEffect(() => {
-    const timeout = setTimeout(() => setMessage(''), 4000);
-    return () => clearTimeout(timeout);
-  }, [ message ]);
-
-  const addFavorite = id => {
-    setQuery('');
-    setHoveredId(null);
-
-    if (favorites.length === 180) {
-      setMessage("You can't add any more favorites!");
-      return;
-    }
-
-    axios.patch('/addFavorite', { id, idx: favorites.length })
-      .then(({ data }) => setFavorites([ ...favorites, { ...data } ]))
-      .catch(console.log);
-  };
-
-  return loading ? <Loading>LOADING...</Loading> : (<>
-    {message && <Message msg={message} />}
-    {!searchQuery ? null : (
+  return loading ? <Loading>LOADING...</Loading> : (
+    !query ? null : (
       <Virtuoso
         style={{
           height: Math.min(200, 30 * sortedProjects.length),
@@ -66,10 +43,10 @@ const SearchResults = ({ projects, searchQuery, setQuery, setFavorites, favorite
         }}
         data={sortedProjects}
         totalCount={sortedProjects.length}
-        itemContent={(idx, { title, artist, _id }) => (
+        itemContent={(idx, { title, artist, _id }) => ( // idx is just for React Virtuoso
           <Project 
             key={_id}
-            onClick={() => addFavorite(_id, title, artist)}
+            onClick={() => addFavorite(_id)}
             onMouseEnter={() => setHoveredId(_id)}
             onMouseLeave={() => setHoveredId(null)}
           >
@@ -82,8 +59,8 @@ const SearchResults = ({ projects, searchQuery, setQuery, setFavorites, favorite
           </Project>
         )}
       />
-    )}
-  </>);
+    )
+  );
 };
 
 const TextWrapper = styled.div`

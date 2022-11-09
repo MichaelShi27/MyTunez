@@ -24,35 +24,51 @@ const Collage = ({ favorites, tileSize }) => {
       </Loading>
     )}
     <div style={{ marginTop: '20px' }}>
-      {favorites.map(project => (
-        <ImageWrapper $size={tileSize}>
-          <ProjectImage 
-            key={project._id}
-            project={project}
-            onLoad={() => setLoading(false)}
-            onClick={() => navigate(`/projects/${project._id}`)}
-            // onMouseEnter={() => setHoveredId(project._id)}
-            // onMouseLeave={() => setHoveredId(null)}
-            style={{
-              height: `${tileSize}px`,
-              width: `${tileSize}px`,
-            }}
-          />
-        </ImageWrapper>
-      ))}
+      {favorites.map(project => {
+        const { _id: id } = project;
+        return (
+          <Wrapper key={id} $size={tileSize}>
+            {/* {id === hoveredId && <DeleteButton />} */}
+            <ImageWrapper 
+              onMouseEnter={() => setHoveredId(id)}
+              onMouseLeave={() => setHoveredId(null)}
+            >
+              <ProjectImage 
+                project={project}
+                onLoad={() => setLoading(false)}
+                onClick={() => navigate(`/projects/${id}`)}
+                style={{
+                  height: `${tileSize}px`,
+                  width: `${tileSize}px`,
+                }}
+              />
+            </ImageWrapper>
+          </Wrapper>
+        );
+      })}
     </div>
   </>);
 };
 
-const ImageWrapper = styled.div`
-  // height: ${({ $size }) => `${$size}px`};
-  // width: ${({ $size }) => `${$size}px`};
-  margin: 0 1px 0 1px;
-  cursor: pointer;
+const Wrapper = styled.div`
+  height: ${({ $size }) => `${$size}px`};
+  width: ${({ $size }) => `${$size}px`};
   display: inline-block;
+  margin: 0 1px 0 1px;
+
+`;
+
+const ImageWrapper = styled.div`
+  cursor: pointer;
   &:hover {
     filter: brightness(50%)
   }
 `;
+
+// const DeleteButton = styled.div`
+//   height: 10px;
+//   width: 10px;
+//   background-color: red;
+// `;
 
 export default Collage;

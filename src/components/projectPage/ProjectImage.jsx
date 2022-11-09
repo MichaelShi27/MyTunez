@@ -14,7 +14,7 @@ const authOptions = {
   }
 };
 
-const ProjectImage = ({ project, style, onLoad }) => {
+const ProjectImage = ({ project, style, onLoad, onClick }) => {
   const [ token, setToken ] = useState('');
   const [ imageUrl, setImageUrl ] = useState('');
 
@@ -36,18 +36,19 @@ const ProjectImage = ({ project, style, onLoad }) => {
       headers: { 'Authorization': `Bearer ${token}` },
       params: {
         q: `${title} ${artist}`,
-        type: 'album'
+        type: 'album', 
+        limit: 5
       }
-    }).then( ({ data: { albums } }) => setImageUrl(albums.items[0].images[1].url) )
-      .catch(console.log);
+    }).then(({ data: { albums: { items } } }) => setImageUrl(
+      items.length ? items[0].images[1].url : '/images/questionMark.png'
+    )).catch(console.log);
   }, [ project, token ]);
 
   return !imageUrl ? null : (
     <img 
       alt="project cover art" 
       src={imageUrl}
-      style={style}
-      onLoad={onLoad}
+      {...{ style, onLoad, onClick }}
     />
   );
 };

@@ -47,9 +47,10 @@ const App = () => {
     if (path === '/') {
       setCurrentList('projects');
       setFilters(prevFilters => ({ ...prevFilters, favorites: false }));
-    } else if (path === '/artists')
+    } else if (path === '/artists') {
       setCurrentList('artists');
-    else if (path === '/favorites') {
+      setFilters({ genre: '', decade: '', year: '', favorites: false });
+    } else if (path === '/favorites') {
       setCurrentList('favorites');
       setFilters(prevFilters => ({ ...prevFilters, favorites: true }));
     } else {

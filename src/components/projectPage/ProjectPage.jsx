@@ -130,10 +130,9 @@ const ProjectPage = ({ getProjectsForArtist, setPageNotFound }) => {
     <div style={{ textAlign: 'center' }}>
       <div style={{
         padding: '1px 1px 0px',
-        display: 'inline-block',
-        backgroundColor: '#d3d3d3'
+        display: 'inline-block'
       }}>
-        <ProjectImage project={project} />
+        <ProjectImage project={project} style={{ border: '1px solid #d3d3d3' }} />
       </div>
     </div>
     <Container>

@@ -105,7 +105,7 @@ const App = () => {
   };
 
   // updates list when a project is added or deleted
-  useEffect(getAllProjects, [ projectsAdded, currentList ]);
+  useEffect(() => getAllProjects, [ projectsAdded ]);
 
   useEffect(() => {
     if (filters.genre || filters.decade || filters.year || filters.favorites)

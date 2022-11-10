@@ -70,7 +70,7 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
   const addFavorite = id => {
     setQuery('');
 
-    if (favorites.length > 2) { // = 180
+    if (favorites.length === 180) {
       setMessage("You can't add any more favorites!");
       setDisplayMessage(false);
       return;

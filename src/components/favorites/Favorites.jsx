@@ -81,6 +81,14 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
       .catch(console.log);
   };
 
+  const removeFavorite = id => {
+    setQuery('');
+
+    axios.patch('/removeFavorite', { id })
+      .then(() => setFavorites( favorites.filter(({ _id }) => _id !== id) ))
+      .catch(console.log);
+  };
+
   return (<>
     {!separatePage && (
       <SearchBar
@@ -154,7 +162,7 @@ const Favorites = ({ projects, filteredProjects, filters, setFilters }) => {
             <div>{artist} - {title}</div>
           </div>
         ))
-      ) : (<Collage {...{ favorites, tileSize }} />)
+      ) : (<Collage {...{ favorites, tileSize, removeFavorite }} />)
     )}
     {separatePage === 'popular' && <MostPopularArtists favorites={favorites}/>}
     {separatePage === 'history' && <div>History</div>}

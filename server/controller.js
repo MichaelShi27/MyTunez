@@ -61,3 +61,10 @@ exports.addFavorite = (req, res) => {
     .then(newFavorite => res.send(newFavorite))
     .catch(console.log);
 };
+
+exports.removeFavorite = (req, res) => {
+  const { id } = req.body;
+  Project.findOneAndUpdate({ _id: id }, { favoritesIdx: -1 })
+    .then(() => res.send('success'))
+    .catch(console.log);
+};

@@ -5,7 +5,7 @@ const path = require('path');
 require('../database');
 const { 
   getAllProjects, addProject, getArtist, getProject, 
-  editProject, deleteProject, addFavorite 
+  editProject, deleteProject, addFavorite, removeFavorite
 } = require('./controller');
 const PORT = 8080;
 
@@ -17,6 +17,8 @@ app.use(express.json());
 const buildDir = path.resolve(__dirname + '/../build');
 app.use( express.static(buildDir) );
 
+app.use( express.static('assets') );
+
 // app.get('/', (req, res) => res.sendFile(buildIndexFile)); // we don't appear to actually need this line
 
 app.get('/projects', getAllProjects);
@@ -25,6 +27,7 @@ app.get('/artists/:name(*)', getArtist);
 app.get('/projects/:id', getProject);
 app.patch('/editProject/:id', editProject);
 app.patch('/addFavorite', addFavorite);
+app.patch('/removeFavorite', removeFavorite);
 app.delete('/deleteProject/:id', deleteProject);
 
 app.listen(PORT, () => console.log(`listening on port ${PORT}!`));

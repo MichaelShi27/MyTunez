@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import ProjectImage from '../projectPage/ProjectImage';
 import { Loading } from '../styles.js';
 
-const Collage = ({ favorites, tileSize }) => {
+const Collage = ({ favorites, tileSize, removeFavorite }) => {
   const [ loading, setLoading ] = useState(true);
   const [ hoveredId, setHoveredId ] = useState(null);
 
@@ -24,7 +24,7 @@ const Collage = ({ favorites, tileSize }) => {
       </Loading>
     )}
     <div style={{ marginTop: '20px' }}>
-      {favorites.map(project => {
+      {favorites.map((project, idx) => {
         const { _id: id } = project;
         return (
           <Wrapper key={id} $size={tileSize}>
@@ -32,6 +32,11 @@ const Collage = ({ favorites, tileSize }) => {
               <DeleteButton 
                 onMouseEnter={() => setHoveredId(id)}
                 onMouseLeave={() => setHoveredId(null)}
+                onClick={() => {
+                  removeFavorite(id);
+                  const nextEl = favorites[idx + 1];
+                  setHoveredId(nextEl ? nextEl._id : null);
+                }}
               >
                 &#xd7;
               </DeleteButton>
